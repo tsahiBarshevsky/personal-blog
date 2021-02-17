@@ -1,4 +1,5 @@
 $container-color: #386796;
+$post-color: rgb(112, 80, 172);
 
 * {
   margin: 0;
@@ -27,4 +28,16 @@ form {
   align-items: center;
   width: 100%;
   padding-top: 8px;
+}
+
+/* === Dashboard === */
+
+.post {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  white-space: pre-wrap;
+  width: 100%;
+  background-color: $post-color;
 }

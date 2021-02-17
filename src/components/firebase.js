@@ -43,6 +43,20 @@ class Firebase
     {
         return this.auth.currentUser;
     }
+
+    addPost(post)
+    {
+        return this.db.doc(`posts/try`).set({
+            post: post
+        });
+    }
+
+    async getPost()
+    {
+        const reference = this.db.collection(`posts`).doc(`try`);
+        const doc = await reference.get();
+        return doc.data();
+    }
 }
 
 export default new Firebase();
