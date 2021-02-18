@@ -18,6 +18,7 @@ const theme = createMuiTheme({
 function Dashboard(props) {
 
     const [posts, setPosts] = useState([]);
+    console.log(posts.sort((a,b) => (a.category > b.category) ? 1 : ((b.category > a.category) ? -1 : 0)));
 
     useEffect(() => {
         firebase.getAllPosts().then(setPosts);
@@ -27,6 +28,24 @@ function Dashboard(props) {
 		props.history.replace('/admin');
 		return null;
 	}
+
+    const renderPosts = () =>
+    {
+        var sorted = posts.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
+        return (
+            <tbody>
+                {sorted.map((post, index) =>
+                    <tr index={index}>
+                        <td>{index+1}</td>
+                        <td>{post.title}</td>
+                        <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
+                        <td>{post.category}</td>
+                        <td>עריכה/מחיקה</td>
+                    </tr>
+                )}
+            </tbody>
+        )
+    }
 
     return (
         <div className="container">
@@ -40,7 +59,7 @@ function Dashboard(props) {
                 <Button variant="contained" onClick={logout}>התנתק</Button>
             </div>
             <div className="table-container">
-            <table>
+                <table>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -50,38 +69,11 @@ function Dashboard(props) {
                             <th>אפשרויות</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {posts.map((post, index) =>
-                            <tr index={index}>
-                                <td>{index+1}</td>
-                                <td>{post.title}</td>
-                                <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
-                                <td>{post.category}</td>
-                                <td>עריכה/מחיקה</td>
-                            </tr>
-                        )}
-                    </tbody>
+                    {renderPosts()}
                 </table>
             </div>
         </div>
     )
-
-    /*async function addPost()
-    {
-        await firebase.addPost(title, subtitle, null, category, text);
-    }
-
-    async function getPost()
-	{
-		try 
-		{
-			await firebase.getPost("פוסט ניסיון").then(setPost);
-		} 
-		catch (error) 
-		{
-			console.log(error.message);
-		}
-	}*/
 
     async function logout() {
 		await firebase.logout();

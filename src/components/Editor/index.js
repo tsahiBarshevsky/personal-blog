@@ -20,13 +20,13 @@ const theme = createMuiTheme({
 
 function Editor(props) {
 
-    const [post, setPost] = useState('');
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [date, setDate] = React.useState(new Date());
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
+    console.log(date);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
