@@ -44,18 +44,28 @@ class Firebase
         return this.auth.currentUser;
     }
 
-    addPost(post)
+    addPost(title, subtitle, date, category, text)
     {
-        return this.db.doc(`posts/try`).set({
-            post: post
+        return this.db.doc(`posts/${title}`).set({
+            title: title,
+            subtitle: subtitle,
+            date: date,
+            category: category,
+            text: text
         });
     }
 
-    async getPost()
+    async getPost(title)
     {
-        const reference = this.db.collection(`posts`).doc(`try`);
+        const reference = this.db.collection(`posts`).doc(`${title}`);
         const doc = await reference.get();
         return doc.data();
+    }
+
+    async getAllPosts()
+    {
+        const snapshot = await app.firestore().collection('posts').get();
+        return snapshot.docs.map(doc => doc.data());
     }
 }
 

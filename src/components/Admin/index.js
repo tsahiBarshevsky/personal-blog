@@ -82,13 +82,18 @@ const theme = createMuiTheme({
 });
 
 function Admin(props) {
-    const { classes } = props;
+    
+	const { classes } = props;
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
+	console.log('====================================');
+	console.log(firebase.getCurrentUsername());
+	console.log('====================================');
 
-	if (firebase.getCurrentUsername()) {
+	if (firebase.getCurrentUsername())
+	{
 		props.history.replace('/dashboard');
 		return null;
 	}

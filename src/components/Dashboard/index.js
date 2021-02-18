@@ -1,70 +1,85 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Editor } from '@tinymce/tinymce-react';
+
+const theme = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Varela Round", sans-serif`,
+		}
+	}
+});
 
 function Dashboard(props) {
 
-    const [post, setPost] = useState('');
-    const [content, setContent] = useState('');
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        firebase.getAllPosts().then(setPosts);
+    }, []);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
 		return null;
 	}
 
-    const handleEditorChange = (content, editor) => 
-    {
-        setPost(content);
-    }
-
     return (
         <div className="container">
-            <Editor
-                apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
-                outputFormat='text'
-                init={{
-                height: 500,
-                width: '80%',
-                menubar: false,
-                directionality: 'rtl',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar:
-                    'undo redo | formatselect | bold italic backcolor | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | removeformat | help'
-                }}
-                onEditorChange={handleEditorChange}
-            />
-            <div className="post">{post}</div>
-            <Button onClick={addPost}>הוסף</Button>
-            <Button onClick={getPost}>קבל</Button>
-            <Button onClick={logout}>התנתק</Button>
-            <div className="post">{content.post}</div>
+            <div className="header">
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h4">פוסטים</Typography>
+                </MuiThemeProvider>
+                <Button variant="contained">פוסט חדש</Button>
+                <Button variant="contained" onClick={logout}>התנתק</Button>
+            </div>
+            <div className="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>כותרת</th>
+                            <th>תאריך</th>
+                            <th>קטגוריה</th>
+                            <th>אפשרויות</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {posts.map((post, index) =>
+                            <tr index={index}>
+                                <td>{index+1}</td>
+                                <td>{post.title}</td>
+                                <td>{post.date}</td>
+                                <td>{post.category}</td>
+                                <td>עריכה/מחיקה</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 
-    async function addPost()
+    /*async function addPost()
     {
-        await firebase.addPost(post);
+        await firebase.addPost(title, subtitle, null, category, text);
     }
 
     async function getPost()
 	{
 		try 
 		{
-			await firebase.getPost().then(setContent);
+			await firebase.getPost("פוסט ניסיון").then(setPost);
 		} 
 		catch (error) 
 		{
 			console.log(error.message);
 		}
-	}
+	}*/
 
     async function logout() {
 		await firebase.logout();

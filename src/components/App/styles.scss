@@ -5,6 +5,7 @@ $post-color: rgb(112, 80, 172);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Varela Round", sans-serif;
 }
 
 /* === General selectors === */
@@ -13,10 +14,11 @@ $post-color: rgb(112, 80, 172);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   width: 100%;
   background-color: $container-color;
-  padding: 15px;
+  padding: 25px;
+  cursor: default;
 }
 
 /* === Admin === */
@@ -31,6 +33,55 @@ form {
 }
 
 /* === Dashboard === */
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
+
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+  padding-top: 10px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+tr {
+  &:nth-child(odd) {
+    background-color: #e0e0e0;
+  }
+  &:hover {
+    background-color: #bdbdbd;
+  }
+}
+
+th {
+  color: whitesmoke;
+  font-size: 17px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: right;
+  background-color: #455a64;
+  padding: 15px;
+  &:first-child {
+    border-top-right-radius: 15px;
+  }
+  &:last-child {
+    border-top-left-radius: 15px;
+  }
+}
+
+td {
+  padding: 15px;
+  font-size: 15px;
+}
 
 .post {
   display: flex;
