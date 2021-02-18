@@ -7,6 +7,7 @@ import firebase from '../firebase';
 import Homepage from '../Homepage';
 import Admin from '../Admin';
 import Dashboard from '../Dashboard';
+import Editor from '../Editor';
 
 const theme = createMuiTheme();
 
@@ -28,6 +29,7 @@ export default function App()
                     <Route exact path="/" component={Homepage} />
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/dashboard" component={Dashboard} />
+					<Route exact path="/editor" component={Editor} />
 				</Switch>
 			</Router>
 		</MuiThemeProvider>

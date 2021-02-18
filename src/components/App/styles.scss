@@ -1,4 +1,5 @@
-$container-color: #386796;
+//$container-color: #386796;
+$container-color: #f5f5f5;
 $post-color: rgb(112, 80, 172);
 
 * {
@@ -19,6 +20,7 @@ $post-color: rgb(112, 80, 172);
   background-color: $container-color;
   padding: 25px;
   cursor: default;
+  border-bottom: 1px solid black;
 }
 
 /* === Admin === */
