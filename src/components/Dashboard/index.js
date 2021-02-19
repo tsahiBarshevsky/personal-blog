@@ -18,7 +18,6 @@ const theme = createMuiTheme({
 function Dashboard(props) {
 
     const [posts, setPosts] = useState([]);
-    console.log(posts.sort((a,b) => (a.category > b.category) ? 1 : ((b.category > a.category) ? -1 : 0)));
 
     useEffect(() => {
         firebase.getAllPosts().then(setPosts);

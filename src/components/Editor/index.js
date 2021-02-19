@@ -25,8 +25,10 @@ function Editor(props) {
     const [date, setDate] = React.useState(new Date());
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
+    const [mainImageLink, setMainImageLink] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
-    console.log(date);
+    const [openError, setOpenError] = useState(false);
+    const [error, setError] = useState('');
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -51,6 +53,7 @@ function Editor(props) {
     const closeSnackbar = () =>
 	{
 		setOpenSuccess(false);
+        setOpenError(false);
 	}
 
     return (
@@ -78,6 +81,14 @@ function Editor(props) {
                     autoComplete="off" 
                     value={category} 
                     onChange={e => setCategory(e.target.value)} />
+            </FormControl>
+            <FormControl margin="normal" fullWidth>
+                <Input id="main-image-link" name="main-image-link"
+                    inputProps={{min: 0, style: { marginLeft: '20px' }}} 
+                    placeholder="לינק לתמונה ראשית"
+                    autoComplete="off" 
+                    value={mainImageLink} 
+                    onChange={e => setMainImageLink(e.target.value)} />
             </FormControl>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
@@ -116,7 +127,16 @@ function Editor(props) {
                 <Alert onClose={closeSnackbar} severity="success">
                     <MuiThemeProvider theme={theme}>
                         <Typography align="center" variant="subtitle2">
-                            {' הפוסט נוסף בהצלחה'}
+                            {' הפוסט נוסף בהצלחה '}
+                        </Typography>
+                    </MuiThemeProvider>
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
+                <Alert onClose={closeSnackbar} severity="error">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography align="center" variant="subtitle2">
+                            {error}
                         </Typography>
                     </MuiThemeProvider>
                 </Alert>
@@ -128,7 +148,7 @@ function Editor(props) {
     {
         try 
         {
-            await firebase.addPost(title, subtitle, date, category, text);
+            await firebase.addPost(title, subtitle, date, category, text, mainImageLink);
             setOpenSuccess(true);
             setTimeout(() => 
             {
@@ -139,8 +159,6 @@ function Editor(props) {
         {
             console.log(error.message);
         }
-        
-        
     }
 }
 

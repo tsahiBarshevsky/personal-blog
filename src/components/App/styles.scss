@@ -1,5 +1,6 @@
 //$container-color: #386796;
 $container-color: #f5f5f5;
+$card-color: #7671bb;
 $post-color: rgb(112, 80, 172);
 
 * {
@@ -21,6 +22,48 @@ $post-color: rgb(112, 80, 172);
   padding: 25px;
   cursor: default;
   border-bottom: 1px solid black;
+}
+
+/* === Card === */
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 300px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: $card-color;
+
+  &:hover > .image {
+    opacity: 0.7;
+  }
+
+  .image {
+    width: 270px;
+    height: 150px;
+    align-self: center;
+    border-radius: 5px;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .image-container {
+    position: relative;
+  }
+
+  .category-container {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 3px 10px; //top-bottom right-left
+    background-color: rgba(255, 255, 255, 0.5);
+    border-bottom-right-radius: 5px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
 }
 
 /* === Admin === */
@@ -72,6 +115,7 @@ th {
   text-align: right;
   background-color: #455a64;
   padding: 15px;
+
   &:first-child {
     border-top-right-radius: 15px;
   }
@@ -92,5 +136,6 @@ td {
   align-items: center;
   white-space: pre-wrap;
   width: 100%;
+  padding: 30px;
   background-color: $post-color;
 }
