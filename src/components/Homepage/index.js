@@ -4,19 +4,25 @@ import firebase from '../firebase';
 
 export default function Homepage() 
 {
-    const [post, setPost] = useState('');
+    const [posts, setPosts] = useState([]);
 
     useEffect(() =>
     {
-        firebase.getPost("על הגובה").then(setPost);
+        firebase.getAllPosts().then(setPosts);
     }, []);
 
     return (
         <div className="container">
-            <Card mainImageLink={post.mainImageLink}
-                category={post.category}
-                title={post.title}
-                subtitle={post.subtitle} />
+            <div className="posts">
+                {posts.map((post, index) =>
+                    <div index={index}>
+                        <Card mainImageLink={post.mainImageLink}
+                            category={post.category}
+                            title={post.title}
+                            subtitle={post.subtitle} />
+                    </div>
+                )}
+            </div>
         </div>
     )
 }
