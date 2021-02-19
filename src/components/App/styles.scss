@@ -23,10 +23,38 @@ $header-color: #159753;
   cursor: default;
   border-bottom: 1px solid black;
 }
+
 .posts {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+/* === Hero === */
+
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  //align-items: center;
+  padding: 100px;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #008aff, #ff137d),
+    url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      fixed;
+  background-blend-mode: screen;
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 }
 
 /* === Card === */
