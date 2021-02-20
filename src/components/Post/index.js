@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { Typography } from '@material-ui/core';
+import { Helmet } from 'react-helmet';
 
 const theme = createMuiTheme({
 	typography:
@@ -32,11 +33,16 @@ export default function Post(props)
                 setPost(doc.data());
             else
                 setFault(true);
-        })
+        });
+        document.addEventListener('contextmenu', (e) => 
+        {
+            e.preventDefault();
+        });
     }, [])
 
     return (
         <div className="root">
+            <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
             <div className="post-header" style={background}>
                 <div className="subtitle-container">
                     <MuiThemeProvider theme={theme}>

@@ -18,10 +18,15 @@ const theme = createMuiTheme({
 function Dashboard(props) {
 
     const [posts, setPosts] = useState([]);
+    const [update, setUpdate] = useState(true);
 
     useEffect(() => {
-        firebase.getAllPosts().then(setPosts);
-    }, []);
+        if (update)
+        {
+            firebase.getAllPosts().then(setPosts);
+            setUpdate(false);
+        }
+    }, [firebase.getAllPosts()]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -39,7 +44,10 @@ function Dashboard(props) {
                         <td>{post.title}</td>
                         <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
                         <td>{post.category}</td>
-                        <td>עריכה/מחיקה</td>
+                        <td>
+                            <Button variant="contained">עריכה</Button>
+                            <Button variant="contained" onClick={() => deletePost(post.title)}>מחיקה</Button>
+                        </td>
                     </tr>
                 )}
             </tbody>
@@ -74,7 +82,15 @@ function Dashboard(props) {
         </div>
     )
 
-    async function logout() {
+    async function deletePost(title)
+    {
+        await firebase.deletePost(title);
+        alert(`${title} נמחק בהצלחה`);
+        setUpdate(true);
+    }
+
+    async function logout() 
+    {
 		await firebase.logout();
 		props.history.push('/');
 	}

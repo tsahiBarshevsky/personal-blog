@@ -68,6 +68,11 @@ class Firebase
         const snapshot = await app.firestore().collection('posts').get();
         return snapshot.docs.map(doc => doc.data());
     }
+
+    deletePost(title)
+    {
+        return this.db.collection('posts').doc(`${title}`).delete();
+    }
 }
 
 export default new Firebase();

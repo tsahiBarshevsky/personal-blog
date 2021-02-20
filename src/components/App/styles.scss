@@ -30,6 +30,19 @@ $header-color: #159753;
   justify-content: center;
 }
 
+/* === Homepage === */
+
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background-color: $container-color;
+  padding: 25px;
+  cursor: default;
+}
+
 /* === Hero === */
 
 section {
@@ -38,8 +51,9 @@ section {
   height: 100vh;
   display: flex;
   justify-content: space-between;
+  cursor: default;
   //align-items: center;
-  padding: 100px;
+  padding: 15px;
   box-sizing: border-box;
   background: linear-gradient(180deg, #008aff, #ff137d),
     url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
@@ -47,7 +61,24 @@ section {
   background-blend-mode: screen;
 
   .hero-content {
-    max-width: 700px;
+    //max-width: 700px;
+
+    fieldset {
+      width: 100%;
+      border: 1px solid black;
+      border-radius: 25px;
+    }
+
+    legend {
+      font-size: 25px;
+      font-weight: bold;
+      margin-right: 25px;
+      padding: 5px;
+    }
+
+    .text {
+      padding: 10px 25px 25px; //top sides bottom
+    }
   }
 
   .wave {
@@ -171,6 +202,7 @@ td {
 .root {
   background-color: $container-color;
   cursor: default;
+  user-select: none;
 
   .post-header {
     height: 500px;
