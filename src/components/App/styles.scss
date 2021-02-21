@@ -19,7 +19,7 @@ $header-color: #159753;
   align-items: flex-start;
   width: 100%;
   background-color: $container-color;
-  padding: 25px;
+  padding: 10px 35px 25px; //top sides bottom
   cursor: default;
   border-bottom: 1px solid black;
 }
@@ -197,6 +197,23 @@ td {
   font-size: 15px;
 }
 
+/* === Editor === */
+
+.container > form {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 500px;
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
+
 /* === Post === */
 
 .root {
@@ -267,6 +284,11 @@ td {
       width: 85%;
       padding: 80px 100px 40px; //top sides bottom
       font-size: 1.2rem;
+
+      .paragraphs {
+        display: flex;
+        flex-direction: column;
+      }
     }
   }
 }

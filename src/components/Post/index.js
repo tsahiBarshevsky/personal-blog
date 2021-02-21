@@ -38,7 +38,38 @@ export default function Post(props)
         {
             e.preventDefault();
         });
-    }, [])
+    }, []);
+
+    const renderPost = () =>
+    {
+        var paragraphs = post.text.split("\n");
+        var i = 0;
+        console.log(paragraphs);
+        return (paragraphs.map((paragraph, index) =>
+            <div key={index}>
+                <p>{paragraph}</p>
+                <br />
+                {index % 2 !== 0 ?
+                    <div className="paragraphs">
+                        {`index: ${index} | i: ${i}`}
+                        <img src={post.images[index-1]} style={{ width: 500 }} />
+                        <br />
+                    </div>
+                : null}
+            </div>
+            /*<div>
+                {paragraph !== "" ?
+                    <div index={index} className="paragraphs">
+                        <p>{paragraph}</p>
+                        <br />
+                        {index % 2 !== 0 ?
+                            <img src={post.images[0]} style={{ width: 500 }} />
+                        : null}
+                    </div> 
+                : '\n' }
+            </div>*/
+        ));
+    }
 
     return (
         <div className="root">
@@ -68,7 +99,9 @@ export default function Post(props)
                 </div>
             </div>
             <div className="content">
-                <p className="post">{post.text}</p>
+                <p className="post">
+                    {Object.keys(post).length > 0 ? renderPost() : "null"}
+                </p>
             </div>
         </div>
     )
