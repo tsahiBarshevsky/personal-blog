@@ -47,17 +47,27 @@ export default function Post(props)
         console.log(paragraphs);
         return (paragraphs.map((paragraph, index) =>
             <div key={index}>
+                {paragraph !== "" ? 
+                    <div className="paragraphs">
+                        <p>{paragraph}</p>
+                        <br />    
+                    </div>
+                : 
+                    <div className="paragraphs">
+                        <img src={post.images[0]} style={{ width: 500 }} />
+                        <br />
+                    </div>}
+            </div>
+            /*<div key={index}>
                 <p>{paragraph}</p>
                 <br />
                 {index % 2 !== 0 ?
                     <div className="paragraphs">
-                        {`index: ${index} | i: ${i}`}
-                        <img src={post.images[index-1]} style={{ width: 500 }} />
-                        <br />
+                        {`img\n`}
                     </div>
                 : null}
             </div>
-            /*<div>
+            <div>
                 {paragraph !== "" ?
                     <div index={index} className="paragraphs">
                         <p>{paragraph}</p>
