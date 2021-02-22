@@ -42,9 +42,10 @@ export default function Post(props)
 
     const renderPost = () =>
     {
-        var paragraphs = post.text.split("\n");
+        //var paragraphs = post.text.split("\n");
+        var paragraphs = ["p0", "p1", "p2", "", "p3", "p4", "", "p5", "p6", "", "p7", "p8"];
+        var img = ["img1", "img2", "img3"];
         var i = 0;
-        console.log(paragraphs);
         return (paragraphs.map((paragraph, index) =>
             <div key={index}>
                 {paragraph !== "" ? 
@@ -54,7 +55,8 @@ export default function Post(props)
                     </div>
                 : 
                     <div className="paragraphs">
-                        <img src={post.images[0]} style={{ width: 500 }} />
+                        <p>{img[i++]}</p>
+                        {/*<img src={post.images[i]} style={{ width: 500 }} />*/}
                         <br />
                     </div>}
             </div>
