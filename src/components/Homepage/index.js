@@ -32,7 +32,7 @@ export default function Homepage()
 
     return (
         <>
-            <Hero />
+            {/*<Hero />*/}
             <div className="posts-container">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>

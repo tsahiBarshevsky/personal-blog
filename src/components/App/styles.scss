@@ -2,6 +2,7 @@
 $container-color: #f5f5f5;
 $card-color: #7671bb;
 $header-color: #159753;
+$sm: 600px;
 
 * {
   margin: 0;
@@ -118,15 +119,15 @@ section {
 
   .image-container {
     position: relative;
-  }
 
-  .category-container {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    padding: 3px 10px; //top-bottom right-left
-    background-color: rgba(255, 255, 255, 0.5);
-    border-bottom-right-radius: 5px;
+    .category-container {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      padding: 3px 10px; //top-bottom right-left
+      background-color: rgba(255, 255, 255, 0.5);
+      border-bottom-right-radius: 5px;
+    }
   }
 
   .subtitle {
@@ -229,6 +230,12 @@ td {
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
     display: flex;
     justify-content: center;
+    position: relative;
+
+    @media screen and (max-width: $sm) {
+      -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+    }
 
     .subtitle-container {
       display: flex;
@@ -242,6 +249,22 @@ td {
       background-color: rgba(255, 255, 255, 0.7);
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;
+    }
+
+    .credit-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 10px 10px; //top-bottom right-left
+      background-color: rgba(255, 255, 255, 0.5);
+
+      .caption {
+        transform: rotate(-4deg);
+
+        @media screen and (max-width: $sm) {
+          transform: rotate(-6deg);
+        }
+      }
     }
   }
 
