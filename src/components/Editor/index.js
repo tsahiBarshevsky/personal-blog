@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
-import { Box, Button, FormControl, Input, Snackbar, TextField, Typography } from '@material-ui/core';
+import { Box, Button, Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel, Input, Snackbar, TextField, Typography, FormHelperText } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, ThemeProvider, StylesProvider, jssPreset } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -48,6 +48,17 @@ function Editor(props)
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [editorKey, setEditorKey] = useState(4);
+    const [enableButton, setEnableButton] = useState(true);
+    const [state, setState] = useState({
+        checkTitle: false,
+        checkSubitle: false,
+        checkCategory: false,
+        checkText: false,
+        checkCredit: false
+    });
+
+    const { checkTitle, checkSubitle, checkCategory, checkText, checkCredit } = state;
+    const errorCheck = [checkTitle, checkSubitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -61,6 +72,17 @@ function Editor(props)
 		setProgress(0);
         setProgress2(0);
 	}
+
+    /*const checkBeforeSend = () =>
+    {
+        if (checkTitle && checkSubitle && checkText && checkCategory && checkCredit)
+            setEnableButton(false); //enable
+    }*/
+
+    const handleChange = (event) => 
+    {
+        setState({ ...state, [event.target.name]: event.target.checked });
+    }
 
     const handleEditorChange = (content, editor) => 
     {
@@ -299,7 +321,41 @@ function Editor(props)
                 bgcolor="#ff4040" 
                 labelColor="#000000" 
                 labelAlignment="center" /> : null}
-            <Button variant="contained" onClick={addPost}>הוסף</Button>
+            <FormControl required error={errorCheck} component="fieldset">
+                <FormLabel component="legend">צ'ק ליסט</FormLabel>
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Checkbox checked={checkTitle} onChange={handleChange} name="checkTitle" color="primary" />}
+                        label="כותרת"
+                        className="checkBox"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={checkSubitle} onChange={handleChange} name="checkSubitle" color="primary" />}
+                        label="תקציר"
+                        className="checkBox"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={checkCategory} onChange={handleChange} name="checkCategory" color="primary" />}
+                        label="קטגוריה"
+                        className="checkBox"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={checkText} onChange={handleChange} name="checkText" color="primary" />}
+                        label="טקסט"
+                        className="checkBox"
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={checkCredit} onChange={handleChange} name="checkCredit" color="primary" />}
+                        label="קרדיט תמונה ראשית"
+                        className="checkBox"
+                        color="primary"
+                    />
+                    <FormHelperText className="helper">
+                        {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
+                    </FormHelperText>
+                </FormGroup>
+            </FormControl>
+            {!errorCheck ? <Button variant="contained" onClick={addPost}>הוסף</Button> : null}
             <Button variant="contained" onClick={clearForm}>נקה</Button>
             <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="success">

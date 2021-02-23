@@ -219,6 +219,30 @@ td {
   }
 }
 
+.container > fieldset {
+  width: 230px;
+  border: 1px solid black;
+  border-radius: 25px;
+  margin: 40px 0;
+
+  legend {
+    font-size: 25px;
+    font-weight: bold;
+    margin-right: 25px;
+    padding: 5px;
+  }
+
+  .checkBox {
+    font-family: "Varela Round", sans-serif;
+  }
+
+  .helper {
+    padding-bottom: 10px;
+    text-align: right;
+    margin-right: 29px;
+  }
+}
+
 /* === Post === */
 
 .root {
