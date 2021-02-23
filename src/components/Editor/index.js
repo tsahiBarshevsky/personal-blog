@@ -41,6 +41,7 @@ function Editor(props)
     const [text, setText] = useState('');
     const [date, setDate] = useState(new Date());
     const [progress, setProgress] = useState(0);
+    const [progress2, setProgress2] = useState(0);
     const [credit, setCredit] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
@@ -53,11 +54,12 @@ function Editor(props)
 		return null;
 	}
 
-    if (progress === 100)
+    if (progress === 100 || progress2 === 100)
 	{
 		setOpenSuccess(true);
 		setMessage("התמונה הועלתה בהצלחה");
 		setProgress(0);
+        setProgress2(0);
 	}
 
     const handleEditorChange = (content, editor) => 
@@ -93,7 +95,7 @@ function Editor(props)
         setOpenError(false);
 	}
 
-    const handleImageChange = e =>
+    const handleMainImageChange = e =>
 	{
 		if (e.target.files[0])
 		{
@@ -101,12 +103,11 @@ function Editor(props)
 			{	
 				if (e.target.files[0].size < 1000000) //less then 1mb
 				{
-					/*if (url !== '')
-						deleteImage(false);*/
 					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
 					uploadTask.on(
 						"state_changed", 
-						snapshot => {
+						snapshot => 
+                        {
 							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 							setProgress(progress);
 						}, 
@@ -114,7 +115,7 @@ function Editor(props)
 				}
 				else
 				{
-					setError("התמונה גדולה מ-500 מגה");
+					setError("התמונה גדולה מ-1 מגה");
 					setOpenError(true);
 				}
 			} 
@@ -126,6 +127,42 @@ function Editor(props)
 		}
 	}
 
+    const handleImagesChange = e =>
+	{
+		if (e.target.files)
+        {
+            try 
+            {
+                for (var i=0; i<e.target.files.length; i++)
+                {
+                    if (e.target.files[i].size < 1000000)
+                    {
+                        const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}`).put(e.target.files[i]);
+                        uploadTask.on(
+                            "state_changed", 
+                            snapshot => 
+                            {
+                                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                                setProgress2(progress);
+                            }, 
+                            error => {console.log(error);});
+                        }
+                    else
+                    {
+                        setError("אחת התמונות גדולות מדי");
+					    setOpenError(true);
+                        break;
+                    }
+                }
+            } 
+            catch (error)
+            {
+                setError(error.message);
+				setOpenError(true);
+            }
+        }
+	}
+
     return (
         <div className="container">
             <form>
@@ -134,28 +171,14 @@ function Editor(props)
                 </ThemeProvider>
                 <StylesProvider jss={jss}>
                     <MuiThemeProvider theme={theme}>
-                        <div className="wrapper">
-                            <Box mr={1}>
-                                <FormControl margin="normal" fullWidth>
-                                    <TextField label="כותרת"
-                                        id="title" name="title"
-                                        variant="outlined"
-                                        autoComplete="off" 
-                                        autoFocus value={title} 
-                                        onChange={e => setTitle(e.target.value)} />
-                                </FormControl>
-                            </Box>
-                            <Box ml={1}>
-                                <FormControl margin="normal" fullWidth>
-                                    <TextField label="קטגוריה"
-                                        id="category" name="category"
-                                        variant="outlined"
-                                        autoComplete="off" 
-                                        value={category} 
-                                        onChange={e => setCategory(e.target.value)} />
-                                </FormControl>
-                            </Box>
-                        </div>
+                        <FormControl margin="normal" fullWidth>
+                            <TextField label="כותרת"
+                                id="title" name="title"
+                                variant="outlined"
+                                autoComplete="off" 
+                                autoFocus value={title} 
+                                onChange={e => setTitle(e.target.value)} />
+                        </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <TextField label="תקציר"
                                 id="subtitle" name="subtitle"
@@ -180,29 +203,43 @@ function Editor(props)
                             </Typography>
                         </MuiThemeProvider>	
                         : null)]}
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                            <KeyboardDatePicker
-                                label="תאריך"
-                                disableToolbar
-                                variant="inline"
-                                format="dd/MM/yyyy"
-                                margin="normal"
-                                id="date-picker-inline"
-                                value={date}
-                                onChange={handleDateChange}
-                                KeyboardButtonProps={{'aria-label': 'change date',}}
-                                style={{ width: 150}} />
-                        </MuiPickersUtilsProvider>
+                        <div className="wrapper pb">
+                            <Box mr={2}>
+                                <FormControl margin="normal" fullWidth>
+                                    <TextField label="קטגוריה"
+                                        id="category" name="category"
+                                        variant="outlined"
+                                        autoComplete="off" 
+                                        value={category} 
+                                        onChange={e => setCategory(e.target.value)}
+                                        style={{ width: 300 }} />
+                                </FormControl>
+                            </Box>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker
+                                    label="תאריך"
+                                    disableToolbar
+                                    variant="inline"
+                                    format="dd/MM/yyyy"
+                                    margin="normal"
+                                    id="date-picker-inline"
+                                    value={date}
+                                    onChange={handleDateChange}
+                                    KeyboardButtonProps={{'aria-label': 'change date',}}
+                                    style={{ width: 200}} />
+                            </MuiPickersUtilsProvider>
+                        </div>
                         <ThemeProvider theme={theme}>
                             <Typography variant="h5" gutterBottom>{`תמונה ראשית`}</Typography>
                         </ThemeProvider>
                         <Input
+                            multiple
                             accept="image/*"
                             id="upload-photo"
                             name="upload-photo"
                             type="file"
                             disableUnderline
-                            onChange={handleImageChange} />
+                            onChange={handleMainImageChange} />
                         {progress > 0 ? 
 						<ProgressBar width="250px"
 							completed={progress} 
@@ -210,13 +247,14 @@ function Editor(props)
 							labelColor="#000000" 
 							labelAlignment="center" /> : null}
                         <FormControl margin="normal" fullWidth>
-                            <TextField label="קרדיט תמונה ראשית" 
+                            <TextField label="קרדיט לתמונה ראשית" 
                                 id="main-image-credit" name="main-image-credit"
                                 variant="outlined"
                                 inputProps={{min: 0, style: { marginLeft: '20px' }}} 
                                 autoComplete="off" 
                                 value={credit} 
-                                onChange={e => setCredit(e.target.value)} />
+                                onChange={e => setCredit(e.target.value)}
+                                className="pb" />
                         </FormControl>
                     </MuiThemeProvider>
                 </StylesProvider>
@@ -244,6 +282,23 @@ function Editor(props)
                 }}
                 onEditorChange={handleEditorChange}
             />
+            <ThemeProvider theme={theme}>
+                <Typography variant="h5" gutterBottom>{`תמונות נוספות`}</Typography>
+            </ThemeProvider>
+            <input
+                multiple
+                accept="image/*"
+                id="upload-photo"
+                name="upload-photo"
+                type="file"
+                disableUnderline
+                onChange={handleImagesChange} />
+            {progress2 > 0 ? 
+            <ProgressBar width="250px"
+                completed={progress2} 
+                bgcolor="#ff4040" 
+                labelColor="#000000" 
+                labelAlignment="center" /> : null}
             <Button variant="contained" onClick={addPost}>הוסף</Button>
             <Button variant="contained" onClick={clearForm}>נקה</Button>
             <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
