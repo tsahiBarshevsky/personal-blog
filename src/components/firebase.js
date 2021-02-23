@@ -44,7 +44,7 @@ class Firebase
         return this.auth.currentUser;
     }
 
-    addPost(title, subtitle, date, category, text, mainImageLink)
+    addPost(title, subtitle, date, category, text, credit)
     {
         return this.db.doc(`posts/${title}`).set({
             title: title,
@@ -52,7 +52,7 @@ class Firebase
             date: date,
             category: category,
             text: text,
-            mainImageLink: mainImageLink
+            credit: credit
         });
     }
 

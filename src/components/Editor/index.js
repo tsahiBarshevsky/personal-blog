@@ -10,6 +10,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import rtl from 'jss-rtl';
 import { create } from 'jss';
 import { red } from '@material-ui/core/colors';
+import ProgressBar from '@ramonak/react-progress-bar';
 
 const theme = createMuiTheme({
 	typography:
@@ -18,6 +19,10 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Varela Round", sans-serif`,
 		},
+        h5:
+        {
+            textDecoration: 'underline'
+        },
         subtitle1:
         {
             color: red[900]
@@ -35,15 +40,24 @@ function Editor(props)
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
     const [date, setDate] = useState(new Date());
-    const [mainImageLink, setMainImageLink] = useState('');
+    const [progress, setProgress] = useState(0);
+    const [credit, setCredit] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
+    const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const [editorKey, setEditorKey] = useState(4);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
 		return null;
+	}
+
+    if (progress === 100)
+	{
+		setOpenSuccess(true);
+		setMessage("התמונה הועלתה בהצלחה");
+		setProgress(0);
 	}
 
     const handleEditorChange = (content, editor) => 
@@ -57,7 +71,7 @@ function Editor(props)
         setSubtitle('');
         setCategory('');
         setText('');
-        setMainImageLink('');
+        setCredit('');
         setDate(new Date());
         const newKey = editorKey * 43;
         setEditorKey(newKey);
@@ -79,9 +93,45 @@ function Editor(props)
         setOpenError(false);
 	}
 
+    const handleImageChange = e =>
+	{
+		if (e.target.files[0])
+		{
+			try 
+			{	
+				if (e.target.files[0].size < 1000000) //less then 1mb
+				{
+					/*if (url !== '')
+						deleteImage(false);*/
+					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
+					uploadTask.on(
+						"state_changed", 
+						snapshot => {
+							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+							setProgress(progress);
+						}, 
+						error => {console.log(error);});
+				}
+				else
+				{
+					setError("התמונה גדולה מ-500 מגה");
+					setOpenError(true);
+				}
+			} 
+			catch (error) 
+			{
+				setError(error.message);
+				setOpenError(true);
+			}
+		}
+	}
+
     return (
         <div className="container">
             <form>
+                <ThemeProvider theme={theme}>
+                    <Typography variant="h5" gutterBottom>{`מידע כללי`}</Typography>
+                </ThemeProvider>
                 <StylesProvider jss={jss}>
                     <MuiThemeProvider theme={theme}>
                         <div className="wrapper">
@@ -130,15 +180,6 @@ function Editor(props)
                             </Typography>
                         </MuiThemeProvider>	
                         : null)]}
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="תמונה ראשית" 
-                                id="main-image-link" name="main-image-link"
-                                variant="outlined"
-                                inputProps={{min: 0, style: { marginLeft: '20px' }}} 
-                                autoComplete="off" 
-                                value={mainImageLink} 
-                                onChange={e => setMainImageLink(e.target.value)} />
-                        </FormControl>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <KeyboardDatePicker
                                 label="תאריך"
@@ -152,9 +193,37 @@ function Editor(props)
                                 KeyboardButtonProps={{'aria-label': 'change date',}}
                                 style={{ width: 150}} />
                         </MuiPickersUtilsProvider>
+                        <ThemeProvider theme={theme}>
+                            <Typography variant="h5" gutterBottom>{`תמונה ראשית`}</Typography>
+                        </ThemeProvider>
+                        <Input
+                            accept="image/*"
+                            id="upload-photo"
+                            name="upload-photo"
+                            type="file"
+                            disableUnderline
+                            onChange={handleImageChange} />
+                        {progress > 0 ? 
+						<ProgressBar width="250px"
+							completed={progress} 
+							bgcolor="#ff4040" 
+							labelColor="#000000" 
+							labelAlignment="center" /> : null}
+                        <FormControl margin="normal" fullWidth>
+                            <TextField label="קרדיט תמונה ראשית" 
+                                id="main-image-credit" name="main-image-credit"
+                                variant="outlined"
+                                inputProps={{min: 0, style: { marginLeft: '20px' }}} 
+                                autoComplete="off" 
+                                value={credit} 
+                                onChange={e => setCredit(e.target.value)} />
+                        </FormControl>
                     </MuiThemeProvider>
                 </StylesProvider>
             </form>
+            <ThemeProvider theme={theme}>
+                    <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
+                </ThemeProvider>
             <TinyEditor key={editorKey}
                 apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
                 outputFormat='text'
@@ -181,7 +250,7 @@ function Editor(props)
                 <Alert onClose={closeSnackbar} severity="success">
                     <MuiThemeProvider theme={theme}>
                         <Typography align="center" variant="subtitle2">
-                            {' הפוסט נוסף בהצלחה '}
+                            {message}
                         </Typography>
                     </MuiThemeProvider>
                 </Alert>
@@ -204,7 +273,8 @@ function Editor(props)
         {
             if (date >= new Date().setHours(0, 0, 0, 0))
             {
-                await firebase.addPost(title, subtitle, date, category, text, mainImageLink);
+                await firebase.addPost(title, subtitle, date, category, text, credit);
+                setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);
                 setTimeout(() => 
                 {

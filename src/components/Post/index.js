@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { Typography } from '@material-ui/core';
@@ -22,10 +22,11 @@ export default function Post(props)
 {
     const [post, setPost] = useState({});
     const [images, setImages] = useState([]);
+    const [url, setUrl] = useState('');
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
-    const background = {background: `url(${post.mainImageLink}) fixed center center`};
+    const background = {background: `url(${url}) fixed center center`};
 
     useEffect(() => 
     {
@@ -37,6 +38,11 @@ export default function Post(props)
             else
                 setFault(true);
         });
+
+        // get post main image
+        firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
+            url => {setUrl(url);}
+        );
         
         //get post images' links
         const storageRef = firebase.storage.ref();
@@ -112,7 +118,7 @@ export default function Post(props)
                     </MuiThemeProvider>
                 </div>
                 <div className="credit-container">
-                    <p className="caption">{post.mainImageCredit}</p>
+                    <p className="caption">{post.credit}</p>
                 </div>
             </div>
             <div className="top-line">

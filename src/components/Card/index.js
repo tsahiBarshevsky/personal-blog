@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import firebase from '../firebase';
 
 const theme = createMuiTheme({
 	typography:
@@ -21,27 +22,41 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Card(props) {
+export default function Card(props) 
+{
+    const title = props.title;
+    const subtitle = props.subtitle;
+    const category = props.category;
+    const [url, setUrl] = useState('');
+   
+    useEffect(() => {
+        firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
+            url => {setUrl(url);}
+        );
+    }, [])
 
     return (
-        <Link className="card-container" to={{pathname: `/${props.title}`}}>
-            <img src={props.mainImageLink} alt="Main image" className="image"/>
+        <Link className="card-container" to={{pathname: `/${title}`}}>
+            <img src={url} alt="Main image" className="image"/>
             <div className="image-container">
                 <div className="category-container">
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="caption">
-                            {props.category}
+                            {category}
                         </Typography>
                     </MuiThemeProvider>
                 </div>
             </div>
             <MuiThemeProvider theme={theme}>
                 <Typography variant="h4" gutterBottom>
-                    {props.title}
+                    {title}
                 </Typography>
             </MuiThemeProvider>
-            {props.subtitle ? 
-            <p className="subtitle">{`${props.subtitle.slice(0, 70)}...`}</p> : null }
+            {subtitle ? 
+            <p className="subtitle">
+                {subtitle.length >= 70 ? `${subtitle.slice(0, 70)}...` : subtitle}
+            </p>
+            : null }
         </Link>
     )
 }
