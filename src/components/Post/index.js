@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import firebase from '../firebase';
-import { Typography } from '@material-ui/core';
+import { Grid, Typography, Divider } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 
 const theme = createMuiTheme({
@@ -65,8 +65,9 @@ export default function Post(props)
 
     const renderPost = () =>
     {
-        //var paragraphs = post.text.split("\n");
-        var paragraphs = ["p1", "p2", "", "p3", "p4", "", "p5", "p6"];
+        var paragraphs = post.text.split("\n");
+        console.log(paragraphs);
+        //var paragraphs = ["p1", "p2", "", "p3", "p4", "", "p5", "p6"];
         var img = ["img1", "img2", "img3"];
         var i = 0;
         return (paragraphs.map((paragraph, index) =>
@@ -83,26 +84,6 @@ export default function Post(props)
                         <br />
                     </div>}
             </div>
-            /*<div key={index}>
-                <p>{paragraph}</p>
-                <br />
-                {index % 2 !== 0 ?
-                    <div className="paragraphs">
-                        {`img\n`}
-                    </div>
-                : null}
-            </div>
-            <div>
-                {paragraph !== "" ?
-                    <div index={index} className="paragraphs">
-                        <p>{paragraph}</p>
-                        <br />
-                        {index % 2 !== 0 ?
-                            <img src={post.images[0]} style={{ width: 500 }} />
-                        : null}
-                    </div> 
-                : '\n' }
-            </div>*/
         ));
     }
 
@@ -117,30 +98,49 @@ export default function Post(props)
                         </Typography>
                     </MuiThemeProvider>
                 </div>
-                <div className="credit-container">
+                {/*<div className="credit-container">
                     <p className="caption">{post.credit}</p>
-                </div>
+                </div>*/}
             </div>
-            <div className="top-line">
-                <img src={image} alt="Profile image" className="rounded"/>
-                <div className="information">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h3">
-                            {post.title}
-                        </Typography>
+            <Grid spacing={2}
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="flex-start">
+                    <Grid item lg={8}>
+                        <div className="top-line">
+                            {/*<img src={image} alt="Profile image" className="rounded"/>*/}
+                            <div className="information">
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography variant="h3">
+                                        {post.title}
+                                    </Typography>
+                                    <hr />
+                                    {Object.keys(post).length > 0 ?
+                                    <Typography variant="subtitle1">
+                                        {new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}
+                                    </Typography> : "oops"}
+                                </MuiThemeProvider>
+                            </div>
+                        </div>
+                        <div className="content">
+                            <p className="post">
+                                {Object.keys(post).length > 0 ? renderPost() : null}
+                            </p>
+                        </div>
+                    </Grid>
+                    <Grid item lg={4} className="about">
+                        <img src={image} alt="Profile image" className="rounded"/>
                         <hr />
-                        {Object.keys(post).length > 0 ?
-                        <Typography variant="subtitle1">
-                            {new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}
-                        </Typography> : "oops"}
-                    </MuiThemeProvider>
-                </div>
-            </div>
-            <div className="content">
-                <p className="post">
-                    {Object.keys(post).length > 0 ? renderPost() : "null"}
-                </p>
-            </div>
+                        <div className="about-text">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography align="center" variant="body1">
+                                    צחי "על מה יש לך לכתוב כל הזמן?!" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                </Typography>
+                            </MuiThemeProvider>
+                        </div>
+                    </Grid>
+            </Grid>
         </div>
     )
 }

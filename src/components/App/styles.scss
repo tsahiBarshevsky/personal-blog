@@ -2,7 +2,10 @@
 $container-color: #f5f5f5;
 $card-color: #7671bb;
 $header-color: #159753;
-$sm: 600px;
+$xs: 600px;
+$sm: 960px;
+$md: 1280px;
+$lg: 1920px;
 
 * {
   margin: 0;
@@ -249,10 +252,12 @@ td {
   background-color: $container-color;
   cursor: default;
   user-select: none;
+  overflow: hidden;
 
   .post-header {
     height: 500px;
     padding: 120px 60px 150px; //top sides bottom
+    margin-bottom: 50px;
     background-color: $header-color;
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
@@ -260,7 +265,7 @@ td {
     justify-content: center;
     position: relative;
 
-    @media screen and (max-width: $sm) {
+    @media screen and (max-width: $xs) {
       -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
       clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
     }
@@ -285,11 +290,13 @@ td {
       left: 0;
       padding: 10px 10px; //top-bottom right-left
       background-color: rgba(255, 255, 255, 0.5);
+      -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
+      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
 
       .caption {
         transform: rotate(-4deg);
 
-        @media screen and (max-width: $sm) {
+        @media screen and (max-width: $xs) {
           transform: rotate(-6deg);
         }
       }
@@ -299,15 +306,10 @@ td {
   .top-line {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    padding-right: 100px;
-
-    .rounded {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-    }
+    //justify-content: flex-start;
+    //padding-right: 50px;
 
     .information {
       display: flex;
@@ -332,7 +334,7 @@ td {
       justify-content: center;
       align-items: center;
       white-space: pre-wrap;
-      width: 85%;
+      //width: 85%;
       padding: 80px 100px 40px; //top sides bottom
       font-size: 1.2rem;
 
@@ -340,6 +342,33 @@ td {
         display: flex;
         flex-direction: column;
       }
+    }
+  }
+
+  .about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .rounded {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+    }
+
+    hr {
+      border: 1px solid $header-color;
+      border-radius: 5px;
+      width: 150px;
+      margin: 15px;
+    }
+
+    .about-text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
     }
   }
 }
