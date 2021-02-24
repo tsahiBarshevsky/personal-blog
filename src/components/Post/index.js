@@ -22,14 +22,6 @@ export default function Post(props)
 {
     const [post, setPost] = useState({});
     const [images, setImages] = useState([]);
-    const [stam, setStam] = useState([]);
-    console.log(stam);
-    console.log(Object.keys(stam).length);
-    const [downloadUrl, setDonwloadUrl] = useState('');
-    const [owner, setOwner] = useState('');
-    //console.log(downloadUrl);
-    //console.log(owner);
-    const [credits, setCredits] = useState([]);
     const [url, setUrl] = useState('');
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
@@ -64,7 +56,7 @@ export default function Post(props)
                     itemRef.getMetadata()
                     .then((metadata) =>
                     {
-                        setStam(oldStam => [...oldStam, {link: url, owner: metadata.customMetadata.owner}]);
+                        setImages(oldImages => [...oldImages, {link: url, owner: metadata.customMetadata.owner}]);
                     })
                     .catch((error) => 
                     {
@@ -102,7 +94,7 @@ export default function Post(props)
         //console.log(paragraphs);
         //var paragraphs = ["p1", "p2", "", "p3", "p4", "", "p5", "p6"];
         var img = ["img1", "img2", "img3"];
-        var i = 0;
+        var i = 0, j = 0;
         return (paragraphs.map((paragraph, index) =>
             <div key={index}>
                 {paragraph !== "" ? 
@@ -112,22 +104,16 @@ export default function Post(props)
                     </div>
                 : 
                     <div className="paragraphs">
-                        {Object.keys(stam).length < 2 ?
-                            null
-                        :
-                        [(i<stam.length ?
-                            <>
-                                <img src={stam[i].link} style={{ width: 500 }} />
-                                <MuiThemeProvider theme={theme}>
-                                    <Typography variant="caption">
-                                        {`קרדיט: ${stam[i].owner}`}
-                                    </Typography>
-                                </MuiThemeProvider>
-                                <br />
-                            </>
-                            :
-                            null
-                        )]}
+                        {Object.keys(images).length >= 2 ?
+                        <>
+                            <img src={images[i++].link} style={{ width: 500 }} />
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="caption">
+                                    {`קרדיט: ${images[j++].owner}`}
+                                </Typography>
+                            </MuiThemeProvider>
+                            <br />
+                        </> : null }
                     </div>
                 }
             </div>
