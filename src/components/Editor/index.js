@@ -49,6 +49,7 @@ function Editor(props)
     const [error, setError] = useState('');
     const [editorKey, setEditorKey] = useState(4);
     const [enableButton, setEnableButton] = useState(true);
+    const [numOfImages, setNumOfImages] = useState(0);
     const [state, setState] = useState({
         checkTitle: false,
         checkSubitle: false,
@@ -56,6 +57,8 @@ function Editor(props)
         checkText: false,
         checkCredit: false
     });
+
+    console.log(numOfImages);
 
     const { checkTitle, checkSubitle, checkCategory, checkText, checkCredit } = state;
     const errorCheck = [checkTitle, checkSubitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
@@ -123,7 +126,7 @@ function Editor(props)
 		{
 			try 
 			{	
-				if (e.target.files[0].size < 1000000) //less then 1mb
+				if (e.target.files[0].size < 2000000) //less then 2mb
 				{
 					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
 					uploadTask.on(
@@ -132,12 +135,26 @@ function Editor(props)
                         {
 							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
 							setProgress(progress);
+                            if (progress === 100)
+                            {
+                                const storageRef = firebase.storage.ref();
+                                var metadata = {
+                                    customMetadata : 
+                                    {
+                                        'owner': `${credit}`
+                                    }
+                                }
+                                var forestRef = storageRef.child(`posts/${title}/main/main image`);
+                                forestRef.updateMetadata(metadata)
+                                .then((metadata) => { console.log("ok"); })
+                                .catch((error) => { console.log(error.message); });
+                            }
 						}, 
 						error => {console.log(error);});
 				}
 				else
 				{
-					setError("התמונה גדולה מ-1 מגה");
+					setError("התמונה גדולה מדי");
 					setOpenError(true);
 				}
 			} 
@@ -155,17 +172,33 @@ function Editor(props)
         {
             try 
             {
+                setNumOfImages(e.target.files.length);
                 for (var i=0; i<e.target.files.length; i++)
                 {
                     if (e.target.files[i].size < 1000000)
                     {
-                        const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}`).put(e.target.files[i]);
+                        const name = e.target.files[i].name.replace(/.jpg|.JPG|.jpeg|.JPEG|.png|.PNG/, "");
+                        const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}-${name}`).put(e.target.files[i]);
                         uploadTask.on(
                             "state_changed", 
                             snapshot => 
                             {
                                 const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                                 setProgress2(progress);
+                                /*if (progress === 100)
+                                {
+                                    const storageRef = firebase.storage.ref();
+                                    var metadata = {
+                                        customMetadata : 
+                                        {
+                                            'owner': `${imageCredit}`
+                                        }
+                                    }
+                                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
+                                    forestRef.updateMetadata(metadata)
+                                    .then((metadata) => { console.log("ok"); })
+                                    .catch((error) => { console.log(error.message); });
+                                }*/
                             }, 
                             error => {console.log(error);});
                         }
@@ -255,7 +288,6 @@ function Editor(props)
                             <Typography variant="h5" gutterBottom>{`תמונה ראשית`}</Typography>
                         </ThemeProvider>
                         <Input
-                            multiple
                             accept="image/*"
                             id="upload-photo"
                             name="upload-photo"
@@ -384,6 +416,37 @@ function Editor(props)
         {
             if (date >= new Date().setHours(0, 0, 0, 0))
             {
+                const storageRef = firebase.storage.ref();
+                storageRef.child(`posts/${title}`).listAll()
+                .then((res) => 
+                {
+                    res.items.forEach((itemRef, index) => {
+                        const name = itemRef.name;
+                        var extractCredit = name.replace(`${index+1}-`, "");
+                        var metadata = {
+                            customMetadata : 
+                            {
+                                'owner': `${extractCredit}`
+                            }
+                        }
+                        itemRef.updateMetadata(metadata)
+                        .then((metadata) => { console.log("ok"); })
+                        .catch((error) => { console.log(error.message); });
+                    });
+                });
+                /*for (var i=0; i<numOfImages; i++)
+                {
+                    var metadata = {
+                        customMetadata : 
+                        {
+                            'owner': `bla bla`
+                        }
+                    }
+                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
+                    forestRef.updateMetadata(metadata)
+                    .then((metadata) => { console.log("ok"); })
+                    .catch((error) => { console.log(error.message); });
+                }*/
                 await firebase.addPost(title, subtitle, date, category, text, credit);
                 setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);

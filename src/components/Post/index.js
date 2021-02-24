@@ -22,6 +22,14 @@ export default function Post(props)
 {
     const [post, setPost] = useState({});
     const [images, setImages] = useState([]);
+    const [stam, setStam] = useState([]);
+    console.log(stam);
+    console.log(Object.keys(stam).length);
+    const [downloadUrl, setDonwloadUrl] = useState('');
+    const [owner, setOwner] = useState('');
+    //console.log(downloadUrl);
+    //console.log(owner);
+    const [credits, setCredits] = useState([]);
     const [url, setUrl] = useState('');
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
@@ -46,11 +54,36 @@ export default function Post(props)
         
         //get post images' links
         const storageRef = firebase.storage.ref();
+        var downloadURL = '';
         storageRef.child(`posts/${title}`).listAll()
         .then((res) => {
             res.items.forEach((itemRef) => {
-                itemRef.getDownloadURL()
+                
+                itemRef.getDownloadURL().then(function(url)
+                {
+                    itemRef.getMetadata()
+                    .then((metadata) =>
+                    {
+                        setStam(oldStam => [...oldStam, {link: url, owner: metadata.customMetadata.owner}]);
+                    })
+                    .catch((error) => 
+                    {
+                        console.log(error.message);
+                    })
+                });
+                
+                
+                /*itemRef.getDownloadURL()
                 .then(url => setImages(oldImages => [...oldImages, url]));
+                itemRef.getMetadata()
+                .then((metadata) =>
+                {
+                    setCredits(oldCredits => [...oldCredits, metadata.customMetadata.owner]);
+                })
+                .catch((error) => 
+                {
+                    console.log(error.message);
+                })*/
             });
         }).catch((error) => {
             console.log(error.message);
@@ -66,7 +99,7 @@ export default function Post(props)
     const renderPost = () =>
     {
         var paragraphs = post.text.split("\n");
-        console.log(paragraphs);
+        //console.log(paragraphs);
         //var paragraphs = ["p1", "p2", "", "p3", "p4", "", "p5", "p6"];
         var img = ["img1", "img2", "img3"];
         var i = 0;
@@ -79,10 +112,24 @@ export default function Post(props)
                     </div>
                 : 
                     <div className="paragraphs">
-                        {/*<p>{img[i++]}</p>*/}
-                        <img src={images[i++]} style={{ width: 500 }} />
-                        <br />
-                    </div>}
+                        {Object.keys(stam).length < 2 ?
+                            null
+                        :
+                        [(i<stam.length ?
+                            <>
+                                <img src={stam[i].link} style={{ width: 500 }} />
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography variant="caption">
+                                        {`קרדיט: ${stam[i].owner}`}
+                                    </Typography>
+                                </MuiThemeProvider>
+                                <br />
+                            </>
+                            :
+                            null
+                        )]}
+                    </div>
+                }
             </div>
         ));
     }
