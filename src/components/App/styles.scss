@@ -37,12 +37,6 @@ $lg: 1920px;
   width: 100vw;
 }
 
-.posts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 /* === Homepage === */
 
 .posts-container {
@@ -54,50 +48,11 @@ $lg: 1920px;
   background-color: $container-color;
   padding: 25px;
   cursor: default;
-}
 
-/* === Hero === */
-
-section {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: space-between;
-  cursor: default;
-  //align-items: center;
-  padding: 15px;
-  box-sizing: border-box;
-  background: linear-gradient(180deg, #008aff, #ff137d),
-    url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
-      fixed;
-  background-blend-mode: screen;
-
-  .hero-content {
-    //max-width: 700px;
-
-    fieldset {
-      width: 100%;
-      border: 1px solid black;
-      border-radius: 25px;
-    }
-
-    legend {
-      font-size: 25px;
-      font-weight: bold;
-      margin-right: 25px;
-      padding: 5px;
-    }
-
-    .text {
-      padding: 10px 25px 25px; //top sides bottom
-    }
-  }
-
-  .wave {
-    position: absolute;
-    bottom: 0;
-    left: 0;
+  .posts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
@@ -144,6 +99,86 @@ section {
 
   .subtitle {
     font-size: 15px;
+  }
+}
+
+/* === Hero === */
+
+section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  //align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(
+      0deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 45%,
+      rgba(0, 212, 255, 1) 100%
+    ),
+    url("https://images.pexels.com/photos/64778/pexels-photo-64778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      fixed;
+  background-blend-mode: screen;
+  //credit: https://www.pexels.com/photo/white-and-gray-pen-beside-succulent-flower-and-white-line-paper-near-orange-ceramic-mug-with-black-coffee-64778/
+
+  .hero-content {
+    //max-width: 700px;
+
+    fieldset {
+      width: 100%;
+      border: 1px solid black;
+      border-radius: 25px;
+    }
+
+    legend {
+      font-size: 25px;
+      font-weight: bold;
+      margin-right: 25px;
+      padding: 5px;
+    }
+
+    .text {
+      padding: 10px 25px 25px; //top sides bottom
+    }
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+/* === Footer === */
+
+.footer-container {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: space-between;
+  cursor: default;
+  //align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(
+      180deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 45%,
+      rgba(0, 212, 255, 1) 100%
+    ),
+    url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+      fixed;
+  background-blend-mode: screen;
+
+  .wave {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 

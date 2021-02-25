@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Card from '../Card';
 import firebase from '../firebase';
 import Hero from '../Hero';
+import Footer from '../Footer';
 
 const theme = createMuiTheme({
 	typography:
@@ -32,7 +33,7 @@ export default function Homepage()
 
     return (
         <>
-            {/*<Hero />*/}
+            <Hero />
             <div className="posts-container">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>
@@ -48,6 +49,7 @@ export default function Homepage()
                     )}
                 </div>
             </div>
+            <Footer />
         </>
     )
 }
