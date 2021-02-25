@@ -9,13 +9,6 @@ const theme = createMuiTheme({
         {
 			fontFamily: `"Varela Round", sans-serif`,
 		},
-        h2:
-        {
-            fontFamily: `"Suez One", sans-serif`,
-            fontSize: 80,
-			letterSpacing: 5,
-            textShadow: '3px 3px 4px white',
-        },
         body1:
         {
             fontSize: 18

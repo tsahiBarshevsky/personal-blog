@@ -1,11 +1,25 @@
 //$container-color: #386796;
+
+/* === color === */
+
 $container-color: #f5f5f5;
 $card-color: #7671bb;
 $header-color: #159753;
+
+/* === breakpoints === */
+
 $xs: 600px;
 $sm: 960px;
 $md: 1280px;
 $lg: 1920px;
+
+/* === fonts === */
+
+@font-face {
+  font-family: "Gadi";
+  src: local("Gadi"),
+    url(../../fonts/gadi-almog-regular-aaa.woff) format("truetype");
+}
 
 * {
   margin: 0;
@@ -127,6 +141,13 @@ section {
 
   .hero-content {
     //max-width: 700px;
+
+    h2 {
+      font-family: "Gadi", sans-serif;
+      font-size: 65px;
+      letter-spacing: 5px;
+      text-shadow: 3px 3px 4px white;
+    }
 
     fieldset {
       width: 100%;
