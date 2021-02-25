@@ -58,6 +58,7 @@ class Firebase
 
     async getPost(title)
     {
+        console.log("in");
         const reference = this.db.collection(`posts`).doc(`${title}`);
         const doc = await reference.get();
         return doc.data();

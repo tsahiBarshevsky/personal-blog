@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
@@ -35,10 +35,13 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 function Editor(props) 
 {
+    const [post, setPost] = useState({});
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
+
+    const [firstRun, setFirstRun] = useState(true);
     const [date, setDate] = useState(new Date());
     const [progress, setProgress] = useState(0);
     const [progress2, setProgress2] = useState(0);
@@ -58,20 +61,27 @@ function Editor(props)
         checkCredit: false
     });
 
+    console.log(post);
+    console.log(text);
+
     const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit } = state;
     const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
+
+    useEffect(() => {
+        if (firstRun)
+        {
+            firebase.getPost(props.match.params.title).then(setPost);
+            setFirstRun(false);
+        }
+        setTitle(post.title);
+        setSubtitle(post.subtitle);
+        setCategory(post.category);
+        setText(post.text);
+    }, [post]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
 		return null;
-	}
-
-    if (progress === 100 || progress2 === 100)
-	{
-		setOpenSuccess(true);
-		setMessage("התמונה הועלתה בהצלחה");
-		setProgress(0);
-        setProgress2(0);
 	}
 
     /*const checkBeforeSend = () =>
@@ -118,104 +128,6 @@ function Editor(props)
         setOpenError(false);
 	}
 
-    const handleMainImageChange = e =>
-	{
-		if (e.target.files[0])
-		{
-			try 
-			{	
-				if (e.target.files[0].size < 2000000) //less then 2mb
-				{
-					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
-					uploadTask.on(
-						"state_changed", 
-						snapshot => 
-                        {
-							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-							setProgress(progress);
-                            if (progress === 100)
-                            {
-                                const storageRef = firebase.storage.ref();
-                                var metadata = {
-                                    customMetadata : 
-                                    {
-                                        'owner': `${credit}`
-                                    }
-                                }
-                                var forestRef = storageRef.child(`posts/${title}/main/main image`);
-                                forestRef.updateMetadata(metadata)
-                                .then((metadata) => { console.log("ok"); })
-                                .catch((error) => { console.log(error.message); });
-                            }
-						}, 
-						error => {console.log(error);});
-				}
-				else
-				{
-					setError("התמונה גדולה מדי");
-					setOpenError(true);
-				}
-			} 
-			catch (error) 
-			{
-				setError(error.message);
-				setOpenError(true);
-			}
-		}
-	}
-
-    const handleImagesChange = e =>
-	{
-		if (e.target.files)
-        {
-            try 
-            {
-                setNumOfImages(e.target.files.length);
-                for (var i=0; i<e.target.files.length; i++)
-                {
-                    if (e.target.files[i].size < 1000000)
-                    {
-                        const name = e.target.files[i].name.replace(/.jpg|.JPG|.jpeg|.JPEG|.png|.PNG/, "");
-                        const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}-${name}`).put(e.target.files[i]);
-                        uploadTask.on(
-                            "state_changed", 
-                            snapshot => 
-                            {
-                                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                                setProgress2(progress);
-                                /*if (progress === 100)
-                                {
-                                    const storageRef = firebase.storage.ref();
-                                    var metadata = {
-                                        customMetadata : 
-                                        {
-                                            'owner': `${imageCredit}`
-                                        }
-                                    }
-                                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
-                                    forestRef.updateMetadata(metadata)
-                                    .then((metadata) => { console.log("ok"); })
-                                    .catch((error) => { console.log(error.message); });
-                                }*/
-                            }, 
-                            error => {console.log(error);});
-                        }
-                    else
-                    {
-                        setError("אחת התמונות גדולות מדי");
-					    setOpenError(true);
-                        break;
-                    }
-                }
-            } 
-            catch (error)
-            {
-                setError(error.message);
-				setOpenError(true);
-            }
-        }
-	}
-
     return (
         <div className="container">
             <form>
@@ -242,7 +154,7 @@ function Editor(props)
                                 onChange={e => setSubtitle(e.target.value)}
                                 inputProps={{maxLength: 240}} />
                         </FormControl>
-                        {240 - subtitle.length <= 10 && subtitle.length !== 240 ? 
+                        {/*{240 - subtitle.length <= 10 && subtitle.length !== 240 ? 
                         <MuiThemeProvider theme={theme}>
                             <Typography variant="subtitle1">
                                 {`${240-subtitle.length} תווים נשארו עד מגבלת ה-500`}
@@ -255,7 +167,7 @@ function Editor(props)
                                 {`חרגת ממגבלת התווים המקסימלית`}
                             </Typography>
                         </MuiThemeProvider>	
-                        : null)]}
+                        : null)]}*/}
                         <div className="wrapper pb">
                             <Box mr={2}>
                                 <FormControl margin="normal" fullWidth>
@@ -282,32 +194,6 @@ function Editor(props)
                                     style={{ width: 200}} />
                             </MuiPickersUtilsProvider>
                         </div>
-                        <ThemeProvider theme={theme}>
-                            <Typography variant="h5" gutterBottom>{`תמונה ראשית`}</Typography>
-                        </ThemeProvider>
-                        <Input
-                            accept="image/*"
-                            id="upload-photo"
-                            name="upload-photo"
-                            type="file"
-                            disableUnderline
-                            onChange={handleMainImageChange} />
-                        {progress > 0 ? 
-						<ProgressBar width="250px"
-							completed={progress} 
-							bgcolor="#ff4040" 
-							labelColor="#000000" 
-							labelAlignment="center" /> : null}
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="קרדיט לתמונה ראשית" 
-                                id="main-image-credit" name="main-image-credit"
-                                variant="outlined"
-                                inputProps={{min: 0, style: { marginLeft: '20px' }}} 
-                                autoComplete="off" 
-                                value={credit} 
-                                onChange={e => setCredit(e.target.value)}
-                                className="pb" />
-                        </FormControl>
                     </MuiThemeProvider>
                 </StylesProvider>
             </form>
@@ -317,6 +203,7 @@ function Editor(props)
             <TinyEditor key={editorKey}
                 apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
                 outputFormat='text'
+                initialValue={text}
                 init={{
                 height: 500,
                 width: '80%',
@@ -334,23 +221,6 @@ function Editor(props)
                 }}
                 onEditorChange={handleEditorChange}
             />
-            <ThemeProvider theme={theme}>
-                <Typography variant="h5" gutterBottom>{`תמונות נוספות`}</Typography>
-            </ThemeProvider>
-            <input
-                multiple
-                accept="image/*"
-                id="upload-photo"
-                name="upload-photo"
-                type="file"
-                disableUnderline
-                onChange={handleImagesChange} />
-            {progress2 > 0 ? 
-            <ProgressBar width="250px"
-                completed={progress2} 
-                bgcolor="#ff4040" 
-                labelColor="#000000" 
-                labelAlignment="center" /> : null}
             <FormControl required error={errorCheck} component="fieldset">
                 <FormLabel component="legend">צ'ק ליסט</FormLabel>
                 <FormGroup>
@@ -385,7 +255,6 @@ function Editor(props)
                     </FormHelperText>
                 </FormGroup>
             </FormControl>
-            {!errorCheck ? <Button variant="contained" onClick={addPost}>הוסף</Button> : null}
             <Button variant="contained" onClick={clearForm}>נקה</Button>
             <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="success">
@@ -408,7 +277,19 @@ function Editor(props)
         </div>
     )
 
-    async function addPost()
+    async function getPost()
+    {
+        try 
+		{
+			await firebase.getPost(props.match.params.title).then(setPost);
+		} 
+		catch (error) 
+		{
+			console.log(error.message);
+		}
+    }
+
+    async function editPost()
     {
         try 
         {

@@ -9,6 +9,7 @@ import Admin from '../Admin';
 import Dashboard from '../Dashboard';
 import Editor from '../Editor';
 import Post from '../Post';
+import EditPost from '../Edit Post';
 
 const theme = createMuiTheme();
 
@@ -31,6 +32,7 @@ export default function App()
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/editor" component={Editor} />
+					<Route exact path="/edit/:title" component={EditPost} />
 					<Route exact path="/:title" component={Post} />
 				</Switch>
 			</Router>

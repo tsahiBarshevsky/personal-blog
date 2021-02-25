@@ -35,7 +35,7 @@ function Dashboard(props) {
 
     const renderPosts = () =>
     {
-        var sorted = posts.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0));
+        var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
         return (
             <tbody>
                 {sorted.map((post, index) =>
