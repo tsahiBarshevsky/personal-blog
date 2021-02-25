@@ -456,7 +456,7 @@ function Editor(props)
             else
             {
                 setOpenError(true);
-                setError("תאריך לא טוב")
+                setError("התאריך חלף כבר");
             }
         } 
         catch (error) 

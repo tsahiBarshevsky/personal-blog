@@ -36,7 +36,7 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 function Editor(props) 
 {
     const [post, setPost] = useState({});
-    const [title, setTitle] = useState('');
+    const title = props.match.params.title;
     const [subtitle, setSubtitle] = useState('');
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
@@ -61,8 +61,7 @@ function Editor(props)
         checkCredit: false
     });
 
-    console.log(post);
-    console.log(text);
+    console.log(date);
 
     const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit } = state;
     const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
@@ -70,12 +69,16 @@ function Editor(props)
     useEffect(() => {
         if (firstRun)
         {
-            firebase.getPost(props.match.params.title).then(setPost);
+            firebase.getPost(title).then(setPost);
             setFirstRun(false);
         }
-        setTitle(post.title);
         setSubtitle(post.subtitle);
         setCategory(post.category);
+        if (post.date)
+        {
+            console.log("in");
+            setDate(new Date(post.date.seconds * 1000));
+        }
         setText(post.text);
     }, [post]);
 
@@ -100,18 +103,6 @@ function Editor(props)
         setText(content);
     }
 
-    const clearForm = () =>
-    {
-        setTitle('');
-        setSubtitle('');
-        setCategory('');
-        setText('');
-        setCredit('');
-        setDate(new Date());
-        const newKey = editorKey * 43;
-        setEditorKey(newKey);
-    }
-
     const handleDateChange = (date) => 
     {
         setDate(date);
@@ -129,159 +120,161 @@ function Editor(props)
 	}
 
     return (
-        <div className="container">
-            <form>
-                <ThemeProvider theme={theme}>
-                    <Typography variant="h5" gutterBottom>{`מידע כללי`}</Typography>
-                </ThemeProvider>
-                <StylesProvider jss={jss}>
-                    <MuiThemeProvider theme={theme}>
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="כותרת"
-                                id="title" name="title"
-                                variant="outlined"
-                                autoComplete="off" 
-                                autoFocus value={title} 
-                                onChange={e => setTitle(e.target.value)} />
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="תקציר"
-                                id="subtitle" name="subtitle"
-                                variant="outlined"
-                                multiline
-                                autoComplete="off" 
-                                value={subtitle} 
-                                onChange={e => setSubtitle(e.target.value)}
-                                inputProps={{maxLength: 240}} />
-                        </FormControl>
-                        {/*{240 - subtitle.length <= 10 && subtitle.length !== 240 ? 
+        <>
+            {Object.keys(post).length > 0 && subtitle ?
+            <div className="container">
+                <form>
+                    <ThemeProvider theme={theme}>
+                        <Typography variant="h5" gutterBottom>{`מידע כללי`}</Typography>
+                        <Typography variant="h6" gutterBottom>{`כותרת: ${title}`}</Typography>
+                    </ThemeProvider>
+                    <StylesProvider jss={jss}>
                         <MuiThemeProvider theme={theme}>
-                            <Typography variant="subtitle1">
-                                {`${240-subtitle.length} תווים נשארו עד מגבלת ה-500`}
-                            </Typography>
+                            <FormControl margin="normal" fullWidth>
+                                <TextField label="תקציר"
+                                    id="subtitle" name="subtitle"
+                                    variant="outlined"
+                                    multiline
+                                    autoComplete="off" 
+                                    value={subtitle} 
+                                    onChange={e => setSubtitle(e.target.value)}
+                                    inputProps={{maxLength: 240}} />
+                            </FormControl>
+                            {240 - subtitle.length <= 10 && subtitle.length !== 240 ? 
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="subtitle1">
+                                    {`${240-subtitle.length} תווים נשארו עד מגבלת ה-500`}
+                                </Typography>
+                            </MuiThemeProvider>
+                            :
+                            [(subtitle.length === 240 ? 
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="subtitle1">
+                                    {`חרגת ממגבלת התווים המקסימלית`}
+                                </Typography>
+                            </MuiThemeProvider>	
+                            : null)]}
+                            <div className="wrapper pb">
+                                <Box mr={2}>
+                                    <FormControl margin="normal" fullWidth>
+                                        <TextField label="קטגוריה"
+                                            id="category" name="category"
+                                            variant="outlined"
+                                            autoComplete="off" 
+                                            value={category} 
+                                            onChange={e => setCategory(e.target.value)}
+                                            style={{ width: 300 }} />
+                                    </FormControl>
+                                </Box>
+                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                    <KeyboardDatePicker
+                                        label="תאריך"
+                                        disableToolbar
+                                        variant="inline"
+                                        format="dd/MM/yyyy"
+                                        margin="normal"
+                                        id="date-picker-inline"
+                                        value={date}
+                                        onChange={handleDateChange}
+                                        KeyboardButtonProps={{'aria-label': 'change date',}}
+                                        style={{ width: 200}} />
+                                </MuiPickersUtilsProvider>
+                            </div>
                         </MuiThemeProvider>
-                        :
-                        [(subtitle.length === 240 ? 
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="subtitle1">
-                                {`חרגת ממגבלת התווים המקסימלית`}
-                            </Typography>
-                        </MuiThemeProvider>	
-                        : null)]}*/}
-                        <div className="wrapper pb">
-                            <Box mr={2}>
-                                <FormControl margin="normal" fullWidth>
-                                    <TextField label="קטגוריה"
-                                        id="category" name="category"
-                                        variant="outlined"
-                                        autoComplete="off" 
-                                        value={category} 
-                                        onChange={e => setCategory(e.target.value)}
-                                        style={{ width: 300 }} />
-                                </FormControl>
-                            </Box>
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    label="תאריך"
-                                    disableToolbar
-                                    variant="inline"
-                                    format="dd/MM/yyyy"
-                                    margin="normal"
-                                    id="date-picker-inline"
-                                    value={date}
-                                    onChange={handleDateChange}
-                                    KeyboardButtonProps={{'aria-label': 'change date',}}
-                                    style={{ width: 200}} />
-                            </MuiPickersUtilsProvider>
-                        </div>
-                    </MuiThemeProvider>
-                </StylesProvider>
-            </form>
-            <ThemeProvider theme={theme}>
+                    </StylesProvider>
+                </form>
+                <ThemeProvider theme={theme}>
                     <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
                 </ThemeProvider>
-            <TinyEditor key={editorKey}
-                apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
-                outputFormat='text'
-                initialValue={text}
-                init={{
-                height: 500,
-                width: '80%',
-                menubar: false,
-                directionality: 'rtl',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar:
-                    'undo redo | formatselect | bold italic backcolor | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | removeformat | help'
-                }}
-                onEditorChange={handleEditorChange}
-            />
-            <FormControl required error={errorCheck} component="fieldset">
-                <FormLabel component="legend">צ'ק ליסט</FormLabel>
-                <FormGroup>
-                    <FormControlLabel
-                        control={<Checkbox checked={checkTitle} onChange={handleChange} name="checkTitle" color="primary" />}
-                        label="כותרת"
-                        className="checkBox"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checkSubtitle} onChange={handleChange} name="checkSubtitle" color="primary" />}
-                        label="תקציר"
-                        className="checkBox"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checkCategory} onChange={handleChange} name="checkCategory" color="primary" />}
-                        label="קטגוריה"
-                        className="checkBox"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checkText} onChange={handleChange} name="checkText" color="primary" />}
-                        label="טקסט"
-                        className="checkBox"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox checked={checkCredit} onChange={handleChange} name="checkCredit" color="primary" />}
-                        label="קרדיט תמונה ראשית"
-                        className="checkBox"
-                        color="primary"
-                    />
-                    <FormHelperText className="helper">
-                        {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
-                    </FormHelperText>
-                </FormGroup>
-            </FormControl>
-            <Button variant="contained" onClick={clearForm}>נקה</Button>
-            <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
-                <Alert onClose={closeSnackbar} severity="success">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography align="center" variant="subtitle2">
-                            {message}
-                        </Typography>
-                    </MuiThemeProvider>
-                </Alert>
-            </Snackbar>
-            <Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
-                <Alert onClose={closeSnackbar} severity="error">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography align="center" variant="subtitle2">
-                            {error}
-                        </Typography>
-                    </MuiThemeProvider>
-                </Alert>
-            </Snackbar>
-        </div>
+                <TinyEditor key={editorKey}
+                    apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
+                    outputFormat='text'
+                    initialValue={text}
+                    init={{
+                    height: 500,
+                    width: '80%',
+                    menubar: false,
+                    directionality: 'rtl',
+                    plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                        'undo redo | formatselect | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }}
+                    onEditorChange={handleEditorChange}
+                />
+                <FormControl required error={errorCheck} component="fieldset">
+                    <FormLabel component="legend">צ'ק ליסט</FormLabel>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox checked={checkTitle} onChange={handleChange} name="checkTitle" color="primary" />}
+                            label="כותרת"
+                            className="checkBox"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={checkSubtitle} onChange={handleChange} name="checkSubtitle" color="primary" />}
+                            label="תקציר"
+                            className="checkBox"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={checkCategory} onChange={handleChange} name="checkCategory" color="primary" />}
+                            label="קטגוריה"
+                            className="checkBox"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={checkText} onChange={handleChange} name="checkText" color="primary" />}
+                            label="טקסט"
+                            className="checkBox"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox checked={checkCredit} onChange={handleChange} name="checkCredit" color="primary" />}
+                            label="קרדיט תמונה ראשית"
+                            className="checkBox"
+                            color="primary"
+                        />
+                        <FormHelperText className="helper">
+                            {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
+                        </FormHelperText>
+                    </FormGroup>
+                </FormControl>
+                <Button variant="contained" onClick={editPost}>עדכן</Button>
+                <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+                    <Alert onClose={closeSnackbar} severity="success">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography align="center" variant="subtitle2">
+                                {message}
+                            </Typography>
+                        </MuiThemeProvider>
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
+                    <Alert onClose={closeSnackbar} severity="error">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography align="center" variant="subtitle2">
+                                {error}
+                            </Typography>
+                        </MuiThemeProvider>
+                    </Alert>
+                </Snackbar>
+            </div>
+            :
+            <div className="full-container">
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h3">טוען נתונים...</Typography>
+                </MuiThemeProvider>
+            </div>}
+        </>
     )
 
     async function getPost()
     {
         try 
 		{
-			await firebase.getPost(props.match.params.title).then(setPost);
+			await firebase.getPost(title).then(setPost);
 		} 
 		catch (error) 
 		{
@@ -295,39 +288,8 @@ function Editor(props)
         {
             if (date >= new Date().setHours(0, 0, 0, 0))
             {
-                const storageRef = firebase.storage.ref();
-                storageRef.child(`posts/${title}`).listAll()
-                .then((res) => 
-                {
-                    res.items.forEach((itemRef, index) => {
-                        const name = itemRef.name;
-                        var extractCredit = name.replace(`${index+1}-`, "");
-                        var metadata = {
-                            customMetadata : 
-                            {
-                                'owner': `${extractCredit}`
-                            }
-                        }
-                        itemRef.updateMetadata(metadata)
-                        .then((metadata) => { console.log("ok"); })
-                        .catch((error) => { console.log(error.message); });
-                    });
-                });
-                /*for (var i=0; i<numOfImages; i++)
-                {
-                    var metadata = {
-                        customMetadata : 
-                        {
-                            'owner': `bla bla`
-                        }
-                    }
-                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
-                    forestRef.updateMetadata(metadata)
-                    .then((metadata) => { console.log("ok"); })
-                    .catch((error) => { console.log(error.message); });
-                }*/
-                await firebase.addPost(title, subtitle, date, category, text, credit);
-                setMessage("הפוסט נוסף בהצלחה");
+                await firebase.editPost(title, subtitle, category, date, text);
+                setMessage("הפוסט עודכן בהצלחה");
                 setOpenSuccess(true);
                 setTimeout(() => 
                 {
@@ -337,7 +299,7 @@ function Editor(props)
             else
             {
                 setOpenError(true);
-                setError("תאריך לא טוב")
+                setError("התאריך חלף כבר");
             }
         } 
         catch (error) 

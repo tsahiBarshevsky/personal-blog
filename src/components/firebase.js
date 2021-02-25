@@ -70,6 +70,16 @@ class Firebase
         return snapshot.docs.map(doc => doc.data());
     }
 
+    async editPost(title, subtitle, category, date, text)
+    {
+        this.db.collection('posts').doc(`${title}`).update({
+            subtitle: subtitle,
+            category: category,
+            date: date,
+            text: text
+        });
+    }
+
     deletePost(title)
     {
         return this.db.collection('posts').doc(`${title}`).delete();
