@@ -31,6 +31,21 @@ export default function Homepage()
         firebase.getAllPosts().then(setPosts);
     }, []);
 
+    const renderLastPosts = () =>
+    {
+        var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
+        var ret = [];
+        if (sorted.length > 0)
+        {
+            for (var i=0; i<sorted.length; i++)
+                ret.push(<Card mainImageLink={sorted[i].mainImageLink}
+                        category={sorted[i].category}
+                        title={sorted[i].title}
+                        subtitle={sorted[i].subtitle} />);
+            return <div className="posts">{ret}</div>
+        }
+    }
+
     return (
         <>
             <Hero />
@@ -38,16 +53,7 @@ export default function Homepage()
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>
                 </MuiThemeProvider>
-                <div className="posts">
-                    {posts.map((post, index) =>
-                        <div index={index}>
-                            <Card mainImageLink={post.mainImageLink}
-                                category={post.category}
-                                title={post.title}
-                                subtitle={post.subtitle} />
-                        </div>
-                    )}
-                </div>
+                {renderLastPosts()}
             </div>
             <Footer />
         </>

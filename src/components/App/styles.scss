@@ -8,6 +8,7 @@ $header-color: #159753;
 
 /* === breakpoints === */
 
+$vs: 400px;
 $xs: 600px;
 $sm: 960px;
 $md: 1280px;
@@ -67,6 +68,7 @@ $lg: 1920px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    width: 90%;
   }
 }
 
@@ -77,25 +79,36 @@ $lg: 1920px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  width: 300px;
-  height: 283px;
+  width: 350px;
+  height: 333px;
   padding: 15px;
-  margin: 10px;
+  margin: 15px;
   border-radius: 10px;
   background-color: $card-color;
   text-decoration: none;
   color: black;
+
+  @media screen and (max-width: $vs) {
+    width: 300px;
+    height: 283px;
+    margin: 10px;
+  }
 
   &:hover > .image {
     opacity: 0.7;
   }
 
   .image {
-    width: 270px;
-    height: 150px;
+    width: 320px;
+    height: 200px;
     align-self: center;
     border-radius: 5px;
     transition: opacity 0.3s ease-in-out;
+
+    @media screen and (max-width: $vs) {
+      width: 270px;
+      height: 150px;
+    }
   }
 
   .image-container {
@@ -195,6 +208,12 @@ section {
     url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
       fixed;
   background-blend-mode: screen;
+
+  .footer-content {
+    .text {
+      padding: 10px 25px 25px; //top sides bottom
+    }
+  }
 
   .wave {
     position: absolute;

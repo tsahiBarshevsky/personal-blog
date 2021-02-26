@@ -13,7 +13,8 @@ const theme = createMuiTheme({
 		},
         caption:
         {
-            fontWeight: 600
+            fontWeight: 600,
+            letterSpacing: 1
         },
         h4:
         {
@@ -54,7 +55,7 @@ export default function Card(props)
             </MuiThemeProvider>
             {subtitle ? 
             <p className="subtitle">
-                {subtitle.length >= 70 ? `${subtitle.slice(0, 70)}...` : subtitle}
+                {subtitle.length >= 80 ? `${subtitle.slice(0, 80)}...` : subtitle}
             </p>
             : null }
         </Link>

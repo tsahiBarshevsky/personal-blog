@@ -32,6 +32,18 @@ export default function Hero() {
                             <Typography variant="body1">
                                 היי! אני צחי, בן 27 מהמרכז. מתכנת במקצועי וכותב למעלה מעשור כתחביב.
                                 אז חשבתי לעצמי, למה לא לשלב בין שני העולמות?
+                                אז למה המילה הכתובה? כבר כמה שנים טובות שאני כותב כל יום
+                                והכתיבה הפכה להיות חלק מרכזי בחיי.
+                            </Typography>
+                        </MuiThemeProvider>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>על מה אני כותב? </legend>
+                    <div className="text">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="body1">
+                                אהבה, השראה, מוטיבציה, החיים עצמם
                             </Typography>
                         </MuiThemeProvider>
                     </div>
