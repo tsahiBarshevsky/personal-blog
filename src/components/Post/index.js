@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 import firebase from '../firebase';
 import { Grid, Typography, Divider } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 
+const breakpoints = createBreakpoints({})
 const theme = createMuiTheme({
 	typography:
 	{
@@ -12,6 +14,26 @@ const theme = createMuiTheme({
 			fontFamily: `"Varela Round", sans-serif`,
 		},
         body1:
+        {
+            fontWeight: 600,
+            [breakpoints.down("md")]:
+            {
+                lineHeight: 1.2
+            }
+        },
+        h3:
+        {
+            [breakpoints.down("xs")]:
+            {
+                fontSize: 40
+            }
+        },
+        h6:
+        {
+            letterSpacing: 1.5,
+            textDecoration: 'underline'
+        },
+        caption:
         {
             fontWeight: 600
         }
@@ -46,11 +68,9 @@ export default function Post(props)
         
         //get post images' links
         const storageRef = firebase.storage.ref();
-        var downloadURL = '';
         storageRef.child(`posts/${title}`).listAll()
         .then((res) => {
-            res.items.forEach((itemRef) => {
-                
+            res.items.map((itemRef) => {
                 itemRef.getDownloadURL().then(function(url)
                 {
                     itemRef.getMetadata()
@@ -63,19 +83,6 @@ export default function Post(props)
                         console.log(error.message);
                     })
                 });
-                
-                
-                /*itemRef.getDownloadURL()
-                .then(url => setImages(oldImages => [...oldImages, url]));
-                itemRef.getMetadata()
-                .then((metadata) =>
-                {
-                    setCredits(oldCredits => [...oldCredits, metadata.customMetadata.owner]);
-                })
-                .catch((error) => 
-                {
-                    console.log(error.message);
-                })*/
             });
         }).catch((error) => {
             console.log(error.message);
@@ -91,9 +98,6 @@ export default function Post(props)
     const renderPost = () =>
     {
         var paragraphs = post.text.split("\n");
-        //console.log(paragraphs);
-        //var paragraphs = ["p1", "p2", "", "p3", "p4", "", "p5", "p6"];
-        var img = ["img1", "img2", "img3"];
         var i = 0, j = 0;
         return (paragraphs.map((paragraph, index) =>
             <div key={index}>
@@ -106,7 +110,7 @@ export default function Post(props)
                     <div className="paragraphs">
                         {Object.keys(images).length >= 2 ?
                         <>
-                            <img src={images[i++].link} style={{ width: 500 }} />
+                            <img src={images[i++].link} alt="תמונה" className="image" />
                             <MuiThemeProvider theme={theme}>
                                 <Typography variant="caption">
                                     {`קרדיט: ${images[j++].owner}`}
@@ -118,6 +122,14 @@ export default function Post(props)
                 }
             </div>
         ));
+    }
+
+    const formatDate = (date) =>
+    {
+        var day = date.toLocaleString('he', {day: '2-digit'});
+        var month = date.toLocaleString('he', {month: 'long'});
+        var year = date.toLocaleString('he', {year: 'numeric'});
+        return `${day} ב${month}, ${year}`;
     }
 
     return (
@@ -140,35 +152,39 @@ export default function Post(props)
                 direction="row"
                 justify="flex-start"
                 alignItems="flex-start">
-                    <Grid item lg={8}>
-                        <div className="top-line">
-                            {/*<img src={image} alt="Profile image" className="rounded"/>*/}
+                    <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+                        <div className="content">
                             <div className="information">
                                 <MuiThemeProvider theme={theme}>
-                                    <Typography variant="h3">
+                                    <Typography variant="h3" align="center">
                                         {post.title}
                                     </Typography>
                                     <hr />
                                     {Object.keys(post).length > 0 ?
-                                    <Typography variant="subtitle1">
-                                        {new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}
+                                    <Typography variant="subtitle1" align="center">
+                                        {formatDate(new Date(post.date.seconds * 1000))}
                                     </Typography> : "oops"}
                                 </MuiThemeProvider>
                             </div>
-                        </div>
-                        <div className="content">
                             <p className="post">
                                 {Object.keys(post).length > 0 ? renderPost() : null}
                             </p>
                         </div>
                     </Grid>
-                    <Grid item lg={4} className="about">
-                        <img src={image} alt="Profile image" className="rounded"/>
+                    <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">
+                        <img src={image} alt="Profile image" className="profile-image"/>
                         <hr />
                         <div className="about-text">
                             <MuiThemeProvider theme={theme}>
                                 <Typography align="center" variant="body1">
                                     צחי "על מה יש לך לכתוב כל הזמן?!" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                </Typography>
+                            </MuiThemeProvider>
+                        </div>
+                        <div className="recent-post">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography align="center" variant="h6" gutterBottom>
+                                    פוסטים אחרונים
                                 </Typography>
                             </MuiThemeProvider>
                         </div>

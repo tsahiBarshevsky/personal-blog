@@ -124,7 +124,7 @@ function Editor(props)
 		{
 			try 
 			{	
-				if (e.target.files[0].size < 2000000) //less then 2mb
+				if (e.target.files[0].size < 3000000) //less then 3mb
 				{
 					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
 					uploadTask.on(

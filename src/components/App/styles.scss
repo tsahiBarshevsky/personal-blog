@@ -210,6 +210,11 @@ section {
   background-blend-mode: screen;
 
   .footer-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     .text {
       padding: 10px 25px 25px; //top sides bottom
     }
@@ -339,7 +344,7 @@ td {
   overflow: hidden;
 
   .post-header {
-    height: 500px;
+    height: 650px;
     padding: 120px 60px 150px; //top sides bottom
     margin-bottom: 50px;
     background-color: $header-color;
@@ -366,6 +371,14 @@ td {
       background-color: rgba(255, 255, 255, 0.7);
       border-bottom-right-radius: 5px;
       border-bottom-left-radius: 5px;
+
+      @media screen and (max-width: 850px) {
+        width: 80%;
+      }
+
+      @media screen and (max-width: $xs) {
+        height: 200px;
+      }
     }
 
     .credit-container {
@@ -394,13 +407,6 @@ td {
     align-items: center;
     //justify-content: flex-start;
     //padding-right: 50px;
-
-    .information {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding-right: 20px;
-    }
   }
 
   .content {
@@ -412,6 +418,13 @@ td {
     width: 100%;
     background-color: $container-color;
 
+    .information {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-self: center;
+    }
+
     .post {
       display: flex;
       flex-direction: column;
@@ -419,12 +432,30 @@ td {
       align-items: center;
       white-space: pre-wrap;
       //width: 85%;
-      padding: 80px 100px 40px; //top sides bottom
+      padding: 60px 100px 40px; //top sides bottom
       font-size: 1.2rem;
+
+      @media screen and (max-width: $sm) {
+        padding: 60px 40px 40px; //top sides bottom
+      }
 
       .paragraphs {
         display: flex;
         flex-direction: column;
+
+        .image {
+          width: 500px;
+          padding-bottom: 6px;
+
+          @media screen and (max-width: $xs) {
+            align-self: center;
+            padding: 0 0 6px;
+            display: block;
+            margin: 0 auto;
+            max-height: 100%;
+            max-width: 100%;
+          }
+        }
       }
     }
   }
@@ -435,10 +466,15 @@ td {
     justify-content: center;
     align-items: center;
 
-    .rounded {
+    .profile-image {
       width: 250px;
       height: 250px;
       border-radius: 50%;
+
+      @media screen and (max-width: $md) {
+        width: 200px;
+        height: 200px;
+      }
     }
 
     hr {
@@ -453,6 +489,16 @@ td {
       justify-content: center;
       align-items: center;
       width: 50%;
+      padding-bottom: 20px;
+    }
+
+    .recent-post {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      padding-bottom: 10px;
     }
   }
 }

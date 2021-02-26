@@ -38,7 +38,7 @@ export default function Card(props)
 
     return (
         <Link className="card-container" to={{pathname: `/${title}`}}>
-            <img src={url} alt="Main image" className="image"/>
+            <img src={url} alt="תמונה ראשית" className="image"/>
             <div className="image-container">
                 <div className="category-container">
                     <MuiThemeProvider theme={theme}>
