@@ -45,6 +45,7 @@ function Dashboard(props) {
                         <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
                         <td>{post.category}</td>
                         <td>
+                            <Button component={Link}to={{pathname: `/${post.title}`}} variant="contained">צפייה</Button>
                             <Button component={Link}to={{pathname: `/edit/${post.title}`}} variant="contained">עריכה</Button>
                             <Button variant="contained" onClick={() => deletePost(post.title)}>מחיקה</Button>
                         </td>

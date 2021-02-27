@@ -124,37 +124,45 @@ function Editor(props)
 		{
 			try 
 			{	
-				if (e.target.files[0].size < 3000000) //less then 3mb
-				{
-					const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
-					uploadTask.on(
-						"state_changed", 
-						snapshot => 
-                        {
-							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-							setProgress(progress);
-                            if (progress === 100)
+				if (title !== '')
+                {
+                    if (e.target.files[0].size < 3000000) //less then 3mb
+                    {
+                        const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
+                        uploadTask.on(
+                            "state_changed", 
+                            snapshot => 
                             {
-                                const storageRef = firebase.storage.ref();
-                                var metadata = {
-                                    customMetadata : 
-                                    {
-                                        'owner': `${credit}`
+                                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                                setProgress(progress);
+                                if (progress === 100)
+                                {
+                                    const storageRef = firebase.storage.ref();
+                                    var metadata = {
+                                        customMetadata : 
+                                        {
+                                            'owner': `${credit}`
+                                        }
                                     }
+                                    var forestRef = storageRef.child(`posts/${title}/main/main image`);
+                                    forestRef.updateMetadata(metadata)
+                                    .then((metadata) => { console.log("ok"); })
+                                    .catch((error) => { console.log(error.message); });
                                 }
-                                var forestRef = storageRef.child(`posts/${title}/main/main image`);
-                                forestRef.updateMetadata(metadata)
-                                .then((metadata) => { console.log("ok"); })
-                                .catch((error) => { console.log(error.message); });
-                            }
-						}, 
-						error => {console.log(error);});
-				}
-				else
-				{
-					setError("התמונה גדולה מדי");
-					setOpenError(true);
-				}
+                            }, 
+                            error => {console.log(error);});
+                    }
+                    else
+                    {
+                        setError("התמונה גדולה מדי");
+                        setOpenError(true);
+                    }
+                }
+                else
+                {
+                    setError("הזן קודם את שם הפוסט");
+                    setOpenError(true);
+                }
 			} 
 			catch (error) 
 			{
@@ -170,42 +178,50 @@ function Editor(props)
         {
             try 
             {
-                setNumOfImages(e.target.files.length);
-                for (var i=0; i<e.target.files.length; i++)
+                if (title !== '')
                 {
-                    if (e.target.files[i].size < 1000000)
+                    setNumOfImages(e.target.files.length);
+                    for (var i=0; i<e.target.files.length; i++)
                     {
-                        const name = e.target.files[i].name.replace(/.jpg|.JPG|.jpeg|.JPEG|.png|.PNG/, "");
-                        const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}-${name}`).put(e.target.files[i]);
-                        uploadTask.on(
-                            "state_changed", 
-                            snapshot => 
-                            {
-                                const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                                setProgress2(progress);
-                                /*if (progress === 100)
+                        if (e.target.files[i].size < 1000000)
+                        {
+                            const name = e.target.files[i].name.replace(/.jpg|.JPG|.jpeg|.JPEG|.png|.PNG/, "");
+                            const uploadTask = firebase.storage.ref(`posts/${title}/${i+1}-${name}`).put(e.target.files[i]);
+                            uploadTask.on(
+                                "state_changed", 
+                                snapshot => 
                                 {
-                                    const storageRef = firebase.storage.ref();
-                                    var metadata = {
-                                        customMetadata : 
-                                        {
-                                            'owner': `${imageCredit}`
+                                    const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                                    setProgress2(progress);
+                                    /*if (progress === 100)
+                                    {
+                                        const storageRef = firebase.storage.ref();
+                                        var metadata = {
+                                            customMetadata : 
+                                            {
+                                                'owner': `${imageCredit}`
+                                            }
                                         }
-                                    }
-                                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
-                                    forestRef.updateMetadata(metadata)
-                                    .then((metadata) => { console.log("ok"); })
-                                    .catch((error) => { console.log(error.message); });
-                                }*/
-                            }, 
-                            error => {console.log(error);});
+                                        var forestRef = storageRef.child(`posts/${title}/${i+1}`);
+                                        forestRef.updateMetadata(metadata)
+                                        .then((metadata) => { console.log("ok"); })
+                                        .catch((error) => { console.log(error.message); });
+                                    }*/
+                                }, 
+                                error => {console.log(error);});
+                            }
+                        else
+                        {
+                            setError("אחת התמונות גדולות מדי");
+                            setOpenError(true);
+                            break;
                         }
-                    else
-                    {
-                        setError("אחת התמונות גדולות מדי");
-					    setOpenError(true);
-                        break;
                     }
+                }
+                else
+                {
+                    setError("הזן קודם את שם הפוסט");
+                    setOpenError(true);
                 }
             } 
             catch (error)

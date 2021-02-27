@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 import firebase from '../firebase';
-import { Grid, Typography, Divider } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
+import ScrollToTop from '../scrollToTop';
+import SmallCard from './smallCard';
 
 const breakpoints = createBreakpoints({})
 const theme = createMuiTheme({
@@ -30,7 +32,8 @@ const theme = createMuiTheme({
         },
         h6:
         {
-            letterSpacing: 1.5,
+            letterSpacing: 2,
+            fontWeight: 600,
             textDecoration: 'underline'
         },
         caption:
@@ -45,10 +48,11 @@ export default function Post(props)
     const [post, setPost] = useState({});
     const [images, setImages] = useState([]);
     const [url, setUrl] = useState('');
+    const [recentPosts, setRecentPosts] = useState([]);
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
-    const background = {background: `url(${url}) fixed center center`};
+    const background = {background: `url(${url}) fixed center center no-repeat`};
 
     useEffect(() => 
     {
@@ -87,6 +91,9 @@ export default function Post(props)
         }).catch((error) => {
             console.log(error.message);
         });
+
+        // get 3 recent posts
+        firebase.getRecentPosts(title).then(setRecentPosts);
 
         // disable right click
         document.addEventListener('contextmenu', (e) => 
@@ -134,6 +141,7 @@ export default function Post(props)
 
     return (
         <div className="root">
+            <ScrollToTop />
             <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
             <div className="post-header" style={background}>
                 <div className="subtitle-container">
@@ -187,6 +195,11 @@ export default function Post(props)
                                     פוסטים אחרונים
                                 </Typography>
                             </MuiThemeProvider>
+                            {recentPosts.map((post, index) =>
+                                <div key={index}>
+                                    <SmallCard title={post.title} />
+                                </div>
+                            )}
                         </div>
                     </Grid>
             </Grid>

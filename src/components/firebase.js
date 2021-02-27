@@ -70,6 +70,25 @@ class Firebase
         return snapshot.docs.map(doc => doc.data());
     }
 
+    async getRecentPosts(title)
+    {
+        var recent = [], ret = [], counter = 0;
+        const snapshot = await app.firestore().collection('posts').get();
+        snapshot.docs.map(doc => recent.push(doc.data()));
+        var sorted = recent.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
+        for (var i=0; i<sorted.length; i++)
+        {
+            if (sorted[i].title !== title)
+            {
+                ret.push(sorted[i]);
+                counter++;
+            }
+            if (counter === 3)
+                break;
+        }
+        return ret;
+    }
+
     async editPost(title, subtitle, category, date, text)
     {
         this.db.collection('posts').doc(`${title}`).update({

@@ -34,7 +34,7 @@ export default function Card(props)
         firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
             url => {setUrl(url);}
         );
-    }, [])
+    }, []);
 
     return (
         <Link className="card-container" to={{pathname: `/${title}`}}>
