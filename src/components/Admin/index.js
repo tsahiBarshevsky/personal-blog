@@ -7,7 +7,9 @@ import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
-//import { Helmet } from 'react-helmet';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import { Helmet } from 'react-helmet';
 
 const styles = theme => ({
 	main: 
@@ -44,7 +46,7 @@ const styles = theme => ({
 		backgroundColor: 'rgba(255, 255, 255, 0.65)',
         height: '40px',
         borderRadius: '25px',
-		fontFamily: 'Andika New Basic'
+		fontFamily: '"Varela Round", sans-serif'
 	},
 	submit: 
 	{
@@ -70,7 +72,7 @@ const theme = createMuiTheme({
 	{
 		allVariants:
 		{
-			fontFamily: `"Andika New Basic", sans-serif`,
+			fontFamily: `"Varela Round", sans-serif`,
 			color: 'white'
 		},
 		subtitle1:
@@ -86,11 +88,10 @@ function Admin(props) {
 	const { classes } = props;
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
+	console.log(showPassword);
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
-	console.log('====================================');
-	console.log(firebase.getCurrentUsername());
-	console.log('====================================');
 
 	if (firebase.getCurrentUsername())
 	{
@@ -110,6 +111,7 @@ function Admin(props) {
 
 	return (
 		<main className={classes.main}>
+			<Helmet><title>{`האיש והמילה הכתובה | כניסת מנהל`}</title></Helmet>
 			<Paper className={classes.paper}>
 				<form onSubmit={e => e.preventDefault() && false}>
 					<FormControl margin="normal" required fullWidth>
@@ -133,14 +135,20 @@ function Admin(props) {
 							disableUnderline
 							name="password" id="password"
 							placeholder="סיסמה"
-							type="password" 
+							type={showPassword ? 'text' : 'password'} 
 							autoComplete="off" 
 							value={password} 
 							onChange={e => setPassword(e.target.value)}
-							startAdornment=
-							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<LockOutlinedIcon />
-							</InputAdornment>} />
+							startAdornment={
+								<InputAdornment className="adornment" position="start">
+									<LockOutlinedIcon />
+								</InputAdornment>}
+							endAdornment={
+								<InputAdornment className="visibility" position="end"
+									onClick={() => setShowPassword(!showPassword)}>
+									{showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+								</InputAdornment>
+							} />
 					</FormControl>
 					<Button
 						type="submit"

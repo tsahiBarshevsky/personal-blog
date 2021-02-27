@@ -11,6 +11,7 @@ import rtl from 'jss-rtl';
 import { create } from 'jss';
 import { red } from '@material-ui/core/colors';
 import ProgressBar from '@ramonak/react-progress-bar';
+import { Helmet } from 'react-helmet';
 
 const theme = createMuiTheme({
 	typography:
@@ -234,6 +235,7 @@ function Editor(props)
 
     return (
         <div className="container">
+            <Helmet><title>{`האיש והמילה הכתובה | הוספת פוסט`}</title></Helmet>
             <form>
                 <ThemeProvider theme={theme}>
                     <Typography variant="h5" gutterBottom>{`מידע כללי`}</Typography>

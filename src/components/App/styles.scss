@@ -22,14 +22,14 @@ $lg: 1920px;
     url(../../fonts/gadi-almog-regular-aaa.woff) format("truetype");
 }
 
+/* === General selectors === */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Varela Round", sans-serif;
 }
-
-/* === General selectors === */
 
 .container {
   display: flex;
@@ -266,6 +266,21 @@ form {
   align-items: center;
   width: 100%;
   padding-top: 8px;
+
+  .adornment {
+    margin-left: 13px;
+  }
+
+  .visibility {
+    cursor: pointer;
+    margin-left: 13px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 /* === Dashboard === */

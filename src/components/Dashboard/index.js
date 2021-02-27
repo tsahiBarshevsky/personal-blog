@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Button, Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const theme = createMuiTheme({
 	typography:
@@ -57,6 +58,7 @@ function Dashboard(props) {
 
     return (
         <div className="container">
+            <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
             <div className="header">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים</Typography>
@@ -64,6 +66,9 @@ function Dashboard(props) {
                 <Button to="/editor"
                     component={Link} 
                     variant="contained">פוסט חדש</Button>
+                <Button to="/"
+                    component={Link} 
+                    variant="contained">לדף הבית</Button>
                 <Button variant="contained" onClick={logout}>התנתק</Button>
             </div>
             <div className="table-container">
