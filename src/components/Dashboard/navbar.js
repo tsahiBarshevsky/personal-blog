@@ -13,7 +13,7 @@ function Navbar(props)
                 <div className="links-container">
                     <Link className="links" to='/'>
                         <HomeIcon />
-                        <p className="text">האיש והמילה הכתובה</p>
+                        <p className="text">בחזרה לאתר</p>
                     </Link>
                     <div className="space" />
                     <Link className="links" to='/editor'>

@@ -12,18 +12,34 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import Navbar from './navbar';
+import { green } from '@material-ui/core/colors';
 
 const styles = theme => ({
-    fullToEmpty:
+    button:
+    {
+        color: 'white',
+        width: 120,
+        height: 40,
+        fontSize: 16,
+        backgroundColor: green[500],
+        borderRadius: 15,
+        marginLeft: 10,
+        transition: 'all 0.5s ease-out',
+        '&:hover':
+		{
+			backgroundColor: green[300]
+		}
+    },
+    cancel:
 	{
 		color: '#263238',
-		width: '85px',
-		height: '40px',
-		fontSize: '16px',
+		width: 85,
+		height: 40,
+		fontSize: 16,
+        fontWeight: 600,
 		border: '2px solid #263238',
 		backgroundColor: 'transparent',
-		borderRadius: '25px',
-		textTransform: 'capitalize',
+		borderRadius: 25,
 		transition: 'all 0.2s ease-out',
 		'&:hover':
 		{
@@ -32,16 +48,15 @@ const styles = theme => ({
 			transition: 'all 0.2s ease-in'
 		}
 	},
-	emptyToFull: 
+	delete: 
 	{
-		width: '85px',
+		width: 85,
 		color: 'white',
-		fontSize: '15px',
-		fontWeight: '600',
+		fontSize: 16,
+		fontWeight: 600,
 		border: '2px solid #263238',
 		backgroundColor: '#263238',
-		borderRadius: '25px',
-		textTransform: 'capitalize',
+		borderRadius: 25,
 		margin: theme.spacing(1),
 		'&:hover':
 		{
@@ -54,10 +69,8 @@ const styles = theme => ({
 const theme = createMuiTheme({
 	typography:
 	{
-		allVariants:
-		{
-			fontFamily: `"Varela Round", sans-serif`,
-		}
+		allVariants: { fontFamily: `"Varela Round", sans-serif` },
+        h5: { fontWeight: 600, letterSpacing: 2, paddingBottom: 20 }
 	}
 });
 
@@ -124,9 +137,18 @@ function Dashboard(props) {
                         <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
                         <td>{post.category}</td>
                         <td>
-                            <Button component={Link}to={{pathname: `/${post.title}`}} variant="contained">צפייה</Button>
-                            <Button component={Link}to={{pathname: `/edit/${post.title}`}} variant="contained">עריכה</Button>
-                            <Button variant="contained" onClick={() => {setTitle(post.title); handleOpen();}}>מחיקה</Button>
+                            <Button component={Link}
+                                to={{pathname: `/${post.title}`}} 
+                                variant="contained"
+                                className={classes.button}>צפייה</Button>
+                            <Button component={Link}
+                                to={{pathname: `/edit/${post.title}`}} 
+                                variant="contained"
+                                className={classes.button}>עריכה</Button>
+                            <Button 
+                                variant="contained" 
+                                className={classes.button}
+                                onClick={() => {setTitle(post.title); handleOpen();}}>מחיקה</Button>
                         </td>
                     </tr>
                 )}
@@ -139,18 +161,19 @@ function Dashboard(props) {
             <Navbar />
             <div className="dashboard-container">
                 <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
-                <div className="header">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h4">פוסטים</Typography>
-                    </MuiThemeProvider>
-                    <Button to="/editor"
-                        component={Link} 
-                        variant="contained">פוסט חדש</Button>
-                    <Button to="/"
-                        component={Link} 
-                        variant="contained">לדף הבית</Button>
-                    <Button variant="contained" onClick={logout}>התנתק</Button>
-                </div>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h5">לוח הבקרה</Typography>
+                </MuiThemeProvider>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
+                </MuiThemeProvider>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h6" gutterBottom>פוסטים</Typography>
+                </MuiThemeProvider>
+                <Button to="/editor"
+                    component={Link} 
+                    variant="contained"
+                    className={classes.button}>פוסט חדש</Button>
                 <div className="table-container">
                     <table>
                         <thead>
@@ -164,6 +187,20 @@ function Dashboard(props) {
                         </thead>
                         {renderPosts()}
                     </table>
+                </div>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h6" gutterBottom>פעולות נוספות</Typography>
+                </MuiThemeProvider>
+                <div className="buttons-container">
+                    
+                    <Button to="/"
+                        component={Link} 
+                        variant="contained"
+                        className={classes.button}>לדף הבית</Button>
+                    <Button 
+                        variant="contained"
+                        className={classes.button}
+                        onClick={logout}>התנתק</Button>
                 </div>
                 <Dialog
                     open={open}
@@ -187,8 +224,8 @@ function Dashboard(props) {
                             </MuiThemeProvider>
                         </DialogContent>
                         <DialogActions style={dialogBackground}>
-                            <Button onClick={handleClose} className={classes.emptyToFull}>ביטול</Button>
-                            <Button onClick={deletePost} className={classes.fullToEmpty}>מחיקה</Button>
+                            <Button onClick={handleClose} className={classes.delete}>ביטול</Button>
+                            <Button onClick={deletePost} className={classes.cancel}>מחיקה</Button>
                         </DialogActions>
                 </Dialog>
                 <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
