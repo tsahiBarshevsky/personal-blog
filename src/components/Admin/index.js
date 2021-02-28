@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
+import { Typography, Paper, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import { Helmet } from 'react-helmet';
+import Background from '../../images/pexels-dana-tentis-370799.jpg';
 
 const styles = theme => ({
 	main: 
 	{
 		width: 'auto',
+		height: 320,
 		display: 'block',
-		borderRadius: '20px',
+		borderRadius: 20,
 		marginLeft: theme.spacing(3),
 		marginRight: theme.spacing(3),
-		//backgroundImage: `url(${Background})`,
+		backgroundImage: `url(${Background})`,
 		backgroundPosition: 'center', 
 		backgroundRepeat: 'no-repeat',
 		[theme.breakpoints.up(400 + theme.spacing(6))]: {
@@ -30,9 +30,8 @@ const styles = theme => ({
 	},
 	paper: 
 	{
-		borderRadius: '20px',
-		marginTop: theme.spacing(8),
-		marginBottom: theme.spacing(8),
+		height: 320,
+		borderRadius: 20,
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
@@ -44,17 +43,17 @@ const styles = theme => ({
 	input:
 	{
 		backgroundColor: 'rgba(255, 255, 255, 0.65)',
-        height: '40px',
-        borderRadius: '25px',
-		fontFamily: '"Varela Round", sans-serif'
+        height: 40,
+        borderRadius: 20,
+		fontFamily: '"Oswald", sans-serif'
 	},
 	submit: 
 	{
 		color: 'white',
-		fontSize: '17px',
+		fontSize: 17,
 		textTransform: 'capitalize',
-		width: '130px',
-		height: '40px',
+		width: 130,
+		height: 40,
 		border: '2px solid white',
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
@@ -74,11 +73,6 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Varela Round", sans-serif`,
 			color: 'white'
-		},
-		subtitle1:
-		{
-			marginTop: '10px',
-			lineHeight: 1.2
 		}
 	}
 });
@@ -89,7 +83,6 @@ function Admin(props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
-	console.log(showPassword);
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
 
@@ -110,39 +103,33 @@ function Admin(props) {
 	}
 
 	return (
-		<main className={classes.main}>
+		<div className="full-container">
+			<main className={classes.main}>
 			<Helmet><title>{`האיש והמילה הכתובה | כניסת מנהל`}</title></Helmet>
 			<Paper className={classes.paper}>
 				<form onSubmit={e => e.preventDefault() && false}>
+					<h3>כתובת אימייל:</h3>
 					<FormControl margin="normal" required fullWidth>
 						<Input 
 							className={classes.input}
 							disableUnderline
 							id="email" name="email" 
-							placeholder="כתובת אימייל"
-							autoComplete="off" 
 							autoFocus 
 							value={email} 
 							onChange={e => setEmail(e.target.value)}
-							startAdornment=
-							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<AlternateEmailIcon />
-							</InputAdornment>} />
+							startAdornment={<InputAdornment className="adornment" position="start" />} />
 					</FormControl>
+					<h3>סיסמה:</h3>
 					<FormControl margin="normal" required fullWidth>
 						<Input 
 							className={classes.input}
 							disableUnderline
 							name="password" id="password"
-							placeholder="סיסמה"
 							type={showPassword ? 'text' : 'password'} 
 							autoComplete="off" 
 							value={password} 
 							onChange={e => setPassword(e.target.value)}
-							startAdornment={
-								<InputAdornment className="adornment" position="start">
-									<LockOutlinedIcon />
-								</InputAdornment>}
+							startAdornment={<InputAdornment className="adornment" position="start" />}
 							endAdornment={
 								<InputAdornment className="visibility" position="end"
 									onClick={() => setShowPassword(!showPassword)}>
@@ -168,6 +155,7 @@ function Admin(props) {
                 </Alert>
             </Snackbar>
 		</main>
+		</div>
 	)
 
     async function login() 
