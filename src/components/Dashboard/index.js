@@ -11,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
+import Navbar from './navbar';
 
 const styles = theme => ({
     fullToEmpty:
@@ -134,70 +135,73 @@ function Dashboard(props) {
     }
 
     return (
-        <div className="dashboard-container">
-            <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
-            <div className="header">
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h4">פוסטים</Typography>
-                </MuiThemeProvider>
-                <Button to="/editor"
-                    component={Link} 
-                    variant="contained">פוסט חדש</Button>
-                <Button to="/"
-                    component={Link} 
-                    variant="contained">לדף הבית</Button>
-                <Button variant="contained" onClick={logout}>התנתק</Button>
-            </div>
-            <div className="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>שם הפוסט</th>
-                            <th>תאריך</th>
-                            <th>קטגוריה</th>
-                            <th>אפשרויות</th>
-                        </tr>
-                    </thead>
-                    {renderPosts()}
-                </table>
-            </div>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                style={{cursor: "default", borderRadius: '25px'}}>
-                    <DialogTitle style={dialogBackground}>
-                        <div style={{display: 'flex', flexDirection: 'row'}}>
-                            <WarningIcon style={warningStyle} />
+        <>
+            <Navbar />
+            <div className="dashboard-container">
+                <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
+                <div className="header">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h4">פוסטים</Typography>
+                    </MuiThemeProvider>
+                    <Button to="/editor"
+                        component={Link} 
+                        variant="contained">פוסט חדש</Button>
+                    <Button to="/"
+                        component={Link} 
+                        variant="contained">לדף הבית</Button>
+                    <Button variant="contained" onClick={logout}>התנתק</Button>
+                </div>
+                <div className="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>שם הפוסט</th>
+                                <th>תאריך</th>
+                                <th>קטגוריה</th>
+                                <th>אפשרויות</th>
+                            </tr>
+                        </thead>
+                        {renderPosts()}
+                    </table>
+                </div>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    style={{cursor: "default", borderRadius: '25px'}}>
+                        <DialogTitle style={dialogBackground}>
+                            <div style={{display: 'flex', flexDirection: 'row'}}>
+                                <WarningIcon style={warningStyle} />
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography component="h1" variant="h5">
+                                        {`מחיקת פוסט`}
+                                    </Typography>
+                                </MuiThemeProvider>
+                            </div>
+                        </DialogTitle>
+                        <DialogContent style={dialogBackground}>
                             <MuiThemeProvider theme={theme}>
-                                <Typography component="h1" variant="h5">
-                                    {`מחיקת פוסט`}
+                                <Typography variant="h6" gutterBottom>
+                                    {`רגע, בטוח שאתה רוצה למחוק את הפוסט ${title}?`}
                                 </Typography>
                             </MuiThemeProvider>
-                        </div>
-                    </DialogTitle>
-                    <DialogContent style={dialogBackground}>
+                        </DialogContent>
+                        <DialogActions style={dialogBackground}>
+                            <Button onClick={handleClose} className={classes.emptyToFull}>ביטול</Button>
+                            <Button onClick={deletePost} className={classes.fullToEmpty}>מחיקה</Button>
+                        </DialogActions>
+                </Dialog>
+                <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+                    <Alert onClose={closeSnackbar} severity="success">
                         <MuiThemeProvider theme={theme}>
-                            <Typography variant="h6" gutterBottom>
-                                {`רגע, בטוח שאתה רוצה למחוק את הפוסט ${title}?`}
+                            <Typography align="center" variant="subtitle2">
+                                {success}
                             </Typography>
                         </MuiThemeProvider>
-                    </DialogContent>
-                    <DialogActions style={dialogBackground}>
-                        <Button onClick={handleClose} className={classes.emptyToFull}>ביטול</Button>
-                        <Button onClick={deletePost} className={classes.fullToEmpty}>מחיקה</Button>
-                    </DialogActions>
-            </Dialog>
-            <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
-				<Alert onClose={closeSnackbar} severity="success">
-					<MuiThemeProvider theme={theme}>
-						<Typography align="center" variant="subtitle2">
-							{success}
-						</Typography>
-					</MuiThemeProvider>
-				</Alert>
-			</Snackbar>
-        </div>
+                    </Alert>
+                </Snackbar>
+            </div>
+        </>
     )
 
     async function deletePost()

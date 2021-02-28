@@ -309,7 +309,7 @@ form {
   align-items: flex-start;
   width: 100%;
   background-color: $container-color;
-  padding: 10px 35px 25px; //top sides bottom
+  padding: 25px 55px 35px; //top sides bottom
   cursor: default;
 
   .header {
@@ -360,6 +360,62 @@ form {
   td {
     padding: 15px;
     font-size: 15px;
+  }
+}
+
+/* === Dashboard navbar === */
+
+.dasboard-navbar {
+  background: #121212;
+  border-bottom: 1px solid white;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+
+  .dashboard-navbar-container {
+    z-index: 1;
+    width: 100%;
+    max-width: 1300px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 50px;
+    padding-left: 50px;
+    display: flex;
+    justify-content: space-between;
+    height: 35px;
+
+    .links-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-content: center;
+
+      .space {
+        width: 20px;
+      }
+    }
+
+    .links {
+      color: white;
+      text-decoration: none;
+      justify-self: flex-start;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+
+      .text {
+        font-size: 18px;
+        margin: 0 5px 0;
+        transform: translateY(6%);
+      }
+    }
   }
 }
 
