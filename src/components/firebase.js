@@ -101,6 +101,31 @@ class Firebase
 
     deletePost(title)
     {
+        var _this = this;
+        const storageRef = this.storage.ref();
+
+        // delete main image
+        var mainImageRef = storageRef.child(`posts/${title}/main/main image`);
+        mainImageRef.delete().then(() => {
+            console.log("Main image deleted");
+        }).catch((error) => {
+            console.log(error.message);
+        });
+        
+        // delete other images
+        storageRef.child(`posts/${title}`).listAll()
+        .then((res) => {
+            res.items.forEach((itemRef) => {
+                itemRef.getDownloadURL().then(function(url)
+                {
+                    _this.storage.refFromURL(url).delete().then(() => {
+                        console.log("Deleted");
+                    }).catch(err => console.log(err));
+                });
+            });
+        }).catch((error) => {
+            console.log(error.message);
+        });
         return this.db.collection('posts').doc(`${title}`).delete();
     }
 }

@@ -21,33 +21,35 @@ export default function Hero() {
         <section>
             <div className="hero-content">
                 <MuiThemeProvider theme={theme}>
-                    <Typography variant="h2">
+                    <Typography variant="h2" align="center">
                         האיש והמילה הכתובה
                     </Typography>
                 </MuiThemeProvider>
-                <fieldset>
-                    <legend>אז מי אני? </legend>
-                    <div className="text">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="body1">
-                                היי! אני צחי, בן 27 מהמרכז. מתכנת במקצועי וכותב למעלה מעשור כתחביב.
-                                אז חשבתי לעצמי, למה לא לשלב בין שני העולמות?
-                                אז למה המילה הכתובה? כבר כמה שנים טובות שאני כותב כל יום
-                                והכתיבה הפכה להיות חלק מרכזי בחיי.
-                            </Typography>
-                        </MuiThemeProvider>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>על מה אני כותב? </legend>
-                    <div className="text">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="body1">
-                                אהבה, השראה, מוטיבציה, החיים עצמם
-                            </Typography>
-                        </MuiThemeProvider>
-                    </div>
-                </fieldset>
+                <div className="fieldtests">
+                    <fieldset>
+                        <legend>אז מי אני? </legend>
+                        <div className="text">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="body1">
+                                    היי! אני צחי, בן 27 מהמרכז. מתכנת במקצועי וכותב למעלה מעשור כתחביב.
+                                    אז חשבתי לעצמי, למה לא לשלב בין שני העולמות?
+                                    אז למה המילה הכתובה? כבר כמה שנים טובות שאני כותב כל יום
+                                    והכתיבה הפכה להיות חלק מרכזי בחיי.
+                                </Typography>
+                            </MuiThemeProvider>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>על מה אני כותב? </legend>
+                        <div className="text">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="body1">
+                                    אהבה, השראה, מוטיבציה, החיים עצמם
+                                </Typography>
+                            </MuiThemeProvider>
+                        </div>
+                    </fieldset>
+                </div>
             </div>
             <svg className="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
                 <path fill="#f5f5f5" fillOpacity="1" d="M0,256L48,218.7C96,181,192,107,288,80C384,53,480,75,576,122.7C672,171,768,245,864,250.7C960,256,1056,192,1152,165.3C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>

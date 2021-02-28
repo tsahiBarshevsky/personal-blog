@@ -37,5 +37,5 @@ export default function App()
 				</Switch>
 			</Router>
 		</MuiThemeProvider>
-	) : <div id="loader"><CircularProgress /></div>
+	) : <div className="full-container"><CircularProgress /></div>
 }
