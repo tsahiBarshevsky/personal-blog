@@ -12,7 +12,9 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import Navbar from './navbar';
+import Statistics from './statistics';
 import { green } from '@material-ui/core/colors';
+import { set } from 'date-fns/esm';
 
 const styles = theme => ({
     button:
@@ -82,6 +84,7 @@ function Dashboard(props) {
     const [open, setOpen] = useState(false);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [success, setSuccess] = useState('');
+    const [topCategory, setTopCategory] = useState({});
 
     const { classes } = props;
     const dialogBackground = {backgroundColor: '#f5f5f5'};
@@ -123,6 +126,38 @@ function Dashboard(props) {
     const closeSnackbar = () =>
 	{
 		setOpenSuccess(false);
+    }
+
+    const countCategories = (iterable) => 
+    {
+        return new Set(iterable.map(a => a.category)).size;
+	}
+
+    const findTopCategory = (array) =>
+    {
+        var categories = [];
+        array.map((element) =>
+        {
+            categories.push(element.category);
+        })
+        if (categories.length === 0)
+            return null;
+        var modeMap = {};
+        var maxEl = categories[0], maxCount = 1;
+        for (var i = 0; i < categories.length; i++)
+        {
+            var el = categories[i];
+            if (modeMap[el] == null)
+                modeMap[el] = 1;
+            else
+                modeMap[el]++;  
+            if (modeMap[el] > maxCount)
+            {
+                maxEl = el;
+                maxCount = modeMap[el];
+            }
+        }
+        return ({category: maxEl, occurrences: maxCount});
     }
 
     const renderPosts = () =>
@@ -167,6 +202,9 @@ function Dashboard(props) {
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
                 </MuiThemeProvider>
+                <Statistics title="כמות פוסטים" value={posts.length} />
+                <Statistics title="כמות קטגוריות" value={countCategories(posts)} />
+                {/*<Statistics title="קטגוריה מובילה" value={findTopCategory(posts)} />*/}
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h6" gutterBottom>פוסטים</Typography>
                 </MuiThemeProvider>
@@ -192,7 +230,6 @@ function Dashboard(props) {
                     <Typography variant="h6" gutterBottom>פעולות נוספות</Typography>
                 </MuiThemeProvider>
                 <div className="buttons-container">
-                    
                     <Button to="/"
                         component={Link} 
                         variant="contained"
