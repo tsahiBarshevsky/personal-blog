@@ -322,6 +322,57 @@ form {
   padding: 25px 55px 35px; //top sides bottom
   cursor: default;
 
+  .statistics-holder {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    .statistics-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+      border-radius: 25px;
+      width: 300px;
+      height: 170px;
+      margin: 5px 0 30px 40px; //top right bottom left
+      background-color: snow;
+
+      .title {
+        color: white;
+        align-self: center;
+        height: 60px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top-right-radius: 25px;
+        border-top-left-radius: 25px;
+        background: linear-gradient(
+          90deg,
+          rgba(76, 175, 80, 1) 0%,
+          rgba(27, 94, 32, 1) 100%
+        );
+      }
+
+      .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(125%);
+      }
+
+      .top-category {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform: translateY(65%);
+      }
+    }
+  }
+
   .buttons-container {
     display: flex;
     flex-direction: row;
@@ -427,48 +478,6 @@ form {
         transform: translateY(6%);
       }
     }
-  }
-}
-
-/* === Dashboard statistics === */
-
-.statistics-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  //justify-content: center;
-  //align-content: center;
-  //align-items: flex-start;
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
-  margin-bottom: 20px;
-  border-radius: 25px;
-  width: 300px;
-  height: 150px;
-  background-color: white;
-
-  .title {
-    align-self: center;
-    height: 60px;
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    border-top-right-radius: 25px;
-    border-top-left-radius: 25px;
-    background: rgb(59, 56, 105);
-    background: linear-gradient(
-      90deg,
-      rgba(59, 56, 105, 1) 0%,
-      rgba(9, 9, 121, 1) 38%,
-      rgba(0, 212, 255, 1) 100%
-    );
-  }
-
-  .content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateY(170%);
   }
 }
 
