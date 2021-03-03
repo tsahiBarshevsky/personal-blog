@@ -542,7 +542,6 @@ form {
     display: flex;
     justify-content: center;
     position: relative;
-    background-repeat: no-repeat;
 
     @media screen and (max-width: $xs) {
       -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
@@ -657,6 +656,17 @@ form {
             max-height: 100%;
             max-width: 100%;
           }
+        }
+      }
+
+      .credit-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .credit {
+          font-weight: bold;
         }
       }
     }

@@ -52,7 +52,12 @@ export default function Post(props)
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
-    const background = {background: `url(${url}) fixed center center no-repeat`};
+    const background = {
+        backgroundImage: `url(${url})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover',
+        backgroundAttachment: 'fixed'};
 
     useEffect(() => 
     {
@@ -176,6 +181,11 @@ export default function Post(props)
                             </div>
                             <p className="post">
                                 {Object.keys(post).length > 0 ? renderPost() : null}
+                                <br />
+                                <div className="credit-container">
+                                    <p className="credit">קרדיט תמונה ראשית: </p>
+                                    <p dir="ltr" className="credit">{post.credit}</p>
+                                </div>
                             </p>
                         </div>
                     </Grid>
