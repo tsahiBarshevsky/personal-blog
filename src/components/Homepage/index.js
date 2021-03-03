@@ -5,6 +5,7 @@ import Card from '../Card';
 import firebase from '../firebase';
 import Hero from '../Hero';
 import Footer from '../Footer';
+import { Helmet } from 'react-helmet';
 
 const theme = createMuiTheme({
 	typography:
@@ -48,6 +49,7 @@ export default function Homepage()
 
     return (
         <>
+            <Helmet><title>האיש והמילה הכתובה</title></Helmet>
             <Hero />
             <div className="posts-container">
                 <MuiThemeProvider theme={theme}>

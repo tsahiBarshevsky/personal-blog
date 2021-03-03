@@ -16,9 +16,14 @@ const theme = createMuiTheme({
             fontWeight: 600,
             letterSpacing: 1
         },
-        h4:
+        h5:
         {
-            paddingTop: 8
+            paddingTop: 8,
+            '@media (max-width: 400px)':
+			{
+				fontSize: 20,
+                fontWeight: 600
+			}
         }
 	}
 });
@@ -49,13 +54,13 @@ export default function Card(props)
                 </div>
             </div>
             <MuiThemeProvider theme={theme}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h5" gutterBottom>
                     {title}
                 </Typography>
             </MuiThemeProvider>
             {subtitle ? 
             <p className="subtitle">
-                {subtitle.length >= 80 ? `${subtitle.slice(0, 80)}...` : subtitle}
+                {subtitle.length >= 75 ? `${subtitle.slice(0, 75)}...` : subtitle}
             </p>
             : null }
         </Link>

@@ -12,7 +12,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import Navbar from './navbar';
-import { green } from '@material-ui/core/colors';
+import { blueGrey, green } from '@material-ui/core/colors';
 import Chart from "react-google-charts";
 
 const styles = theme => ({
@@ -29,6 +29,21 @@ const styles = theme => ({
         '&:hover':
 		{
 			backgroundColor: green[300]
+		}
+    },
+    tableButton:
+    {
+        color: 'white',
+        width: 120,
+        height: 40,
+        fontSize: 16,
+        backgroundColor: blueGrey[600],
+        borderRadius: 15,
+        marginLeft: 10,
+        transition: 'all 0.5s ease-out',
+        '&:hover':
+		{
+			backgroundColor: blueGrey[400]
 		}
     },
     cancel:
@@ -71,7 +86,9 @@ const theme = createMuiTheme({
 	typography:
 	{
 		allVariants: { fontFamily: `"Varela Round", sans-serif` },
-        h5: { fontWeight: 600, letterSpacing: 2, paddingBottom: 20 }
+        h4: { textAlign: 'center' },
+        h5: { fontWeight: 600, letterSpacing: 2, paddingBottom: 20 },
+        subtitle1: { fontWeight: 'bold' }
 	}
 });
 
@@ -166,7 +183,7 @@ function Dashboard(props) {
             categories.push(element.category);
         })
         if (categories.length === 0)
-            return "עדיין לא הוספת פוסטים";
+            return "אין";
         var modeMap = {};
         var maxCategory = categories[0], maxOccurrences = 1;
         for (var i = 0; i < categories.length; i++)
@@ -185,8 +202,6 @@ function Dashboard(props) {
         return (
             <div style={{lineHeight: 1.2}}>
                 {`${maxCategory}`}
-                <br />
-                {`ב-${maxOccurrences} פוסטים שונים`}
             </div>
         )
     }
@@ -206,14 +221,14 @@ function Dashboard(props) {
                             <Button component={Link}
                                 to={{pathname: `/${post.title}`}} 
                                 variant="contained"
-                                className={classes.button}>צפייה</Button>
+                                className={classes.tableButton}>צפייה</Button>
                             <Button component={Link}
                                 to={{pathname: `/edit/${post.title}`}} 
                                 variant="contained"
-                                className={classes.button}>עריכה</Button>
+                                className={classes.tableButton}>עריכה</Button>
                             <Button 
                                 variant="contained" 
-                                className={classes.button}
+                                className={classes.tableButton}
                                 onClick={() => {setTitle(post.title); handleOpen();}}>מחיקה</Button>
                         </td>
                     </tr>
@@ -258,48 +273,39 @@ function Dashboard(props) {
                         <Grid item lg={4}>
                             <div className="statistics-holder">
                                 <div className="statistics-container">
-                                    <div className="title">
-                                    <MuiThemeProvider theme={theme}>
-                                        <Typography variant="h6">כמות פוסטים</Typography>
-                                    </MuiThemeProvider>
-                                    </div>
                                     <div className="content">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h6">{posts.length}</Typography>
+                                            <Typography variant="h4">{posts.length}</Typography>
+                                        </MuiThemeProvider>
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="subtitle1">כמות פוסטים</Typography>
                                         </MuiThemeProvider>
                                     </div>
                                 </div>
                                 <div className="statistics-container">
-                                    <div className="title">
-                                    <MuiThemeProvider theme={theme}>
-                                        <Typography variant="h6">כמות קטגוריות</Typography>
-                                    </MuiThemeProvider>
-                                    </div>
                                     <div className="content">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h6">{countCategories(posts)}</Typography>
+                                            <Typography variant="h4">{countCategories(posts)}</Typography>
+                                        </MuiThemeProvider>
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="subtitle1">כמות קטגוריות</Typography>
                                         </MuiThemeProvider>
                                     </div>
                                 </div>
                                 <div className="statistics-container">
-                                    <div className="title">
-                                    <MuiThemeProvider theme={theme}>
-                                        <Typography variant="h6">הקטגוריה המובילה</Typography>
-                                    </MuiThemeProvider>
-                                    </div>
-                                    <div className="top-category">
+                                    <div className="content">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h6" align="center">
-                                                {findTopCategory(posts)}
-                                            </Typography>
+                                            <Typography variant="h4">{findTopCategory(posts)}</Typography>
+                                        </MuiThemeProvider>
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="subtitle1">הקטגוריה המובילה</Typography>
                                         </MuiThemeProvider>
                                     </div>
                                 </div>
                             </div>
                         </Grid>
                 </Grid>
-                
-                
+                <hr />
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h6" gutterBottom>פוסטים</Typography>
                 </MuiThemeProvider>
