@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
-import { Button, Typography, DialogActions, Snackbar } from '@material-ui/core';
+import { Button, Typography, DialogActions, Snackbar, Grid } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -83,21 +83,23 @@ function Dashboard(props) {
     const [open, setOpen] = useState(false);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [success, setSuccess] = useState('');
+    const [months, setMonths] = useState([
+        ['םישדוח', 'םיטסופ'],
+        ['ראוני', 0],
+        ['ראורבפ', 0],
+        ['ץרמ', 0],
+        ['לירפא', 0],
+        ['יאמ', 0],
+        ['ינוי', 0],
+        ['ילוי', 0],
+        ['טסוגוא', 0],
+        ['רבמטפס', 0],
+        ['רבוטקוא', 0],
+        ['רבמבונ', 0],
+        ['רבמצד', 0]
+    ]);
 
-    var months = [
-        ['Months', 'Number of posts: '],
-        ['January', 0],
-        ['February', 0],
-        ['March', 0],
-        ['April', 0],
-        ['May', 0],
-        ['June', 0],
-        ['July', 0],
-        ['August', 0],
-        ['September', 0],
-        ['October', 0],
-        ['November', 0],
-        ['December', 0]];
+    console.log(months);
     const { classes } = props;
     const dialogBackground = {backgroundColor: '#f5f5f5'};
     const warningStyle = {
@@ -110,7 +112,6 @@ function Dashboard(props) {
     {
         array.map((item) =>
         {
-            console.log("hey");
             var casting = new Date(item.date.seconds * 1000);
             if (casting.getFullYear() === new Date().getFullYear())
                 months[casting.getMonth() + 1][1]++;
@@ -190,8 +191,6 @@ function Dashboard(props) {
         )
     }
 
-    
-
     const renderPosts = () =>
     {
         var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
@@ -232,66 +231,75 @@ function Dashboard(props) {
                     <Typography variant="h5">לוח הבקרה</Typography>
                     <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
                 </MuiThemeProvider>
-                <div style={{ display: 'flex', width: '100%' }}>
-                    <Chart
-                        width={'100%'}
-                        height={500}
-                        chartType="ColumnChart"
-                        loader={<div>Loading Chart</div>}
-                        data={months}
-                        options={{
-                            chartArea: { width: '100%' },
-                            hAxis: {
-                                title: 'Months',
-                                minValue: 0,
-                            },
-                            vAxis: {
-                                title: 'Amount',
-                            },
-                        }}
-                        legendToggle
-                    />
-                </div>
-                <div className="statistics-holder">
-                    <div className="statistics-container">
-                        <div className="title">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h6">כמות פוסטים</Typography>
-                        </MuiThemeProvider>
-                        </div>
-                        <div className="content">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="h6">{posts.length}</Typography>
-                            </MuiThemeProvider>
-                        </div>
-                    </div>
-                    <div className="statistics-container">
-                        <div className="title">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h6">כמות קטגוריות</Typography>
-                        </MuiThemeProvider>
-                        </div>
-                        <div className="content">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="h6">{countCategories(posts)}</Typography>
-                            </MuiThemeProvider>
-                        </div>
-                    </div>
-                    <div className="statistics-container">
-                        <div className="title">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h6">הקטגוריה המובילה</Typography>
-                        </MuiThemeProvider>
-                        </div>
-                        <div className="top-category">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="h6" align="center">
-                                    {findTopCategory(posts)}
-                                </Typography>
-                            </MuiThemeProvider>
-                        </div>
-                    </div>
-                </div>
+                <Grid spacing={2}
+                    container
+                    direction="row"
+                    justify="flex-start"
+                    alignItems="flex-start">
+                        <Grid item lg={8}>
+                            <div className="chart-container">
+                                <Chart
+                                    width={'100%'}
+                                    height={500}
+                                    chartType="ColumnChart"
+                                    loader={<div>טוען נתונים</div>}
+                                    data={months}
+                                    options={{
+                                        chartArea: { width: '100%' },
+                                        hAxis: {
+                                            title: 'םישדוח',
+                                            minValue: 0,
+                                        }
+                                    }}
+                                    legendToggle
+                                />
+                            </div>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <div className="statistics-holder">
+                                <div className="statistics-container">
+                                    <div className="title">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h6">כמות פוסטים</Typography>
+                                    </MuiThemeProvider>
+                                    </div>
+                                    <div className="content">
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="h6">{posts.length}</Typography>
+                                        </MuiThemeProvider>
+                                    </div>
+                                </div>
+                                <div className="statistics-container">
+                                    <div className="title">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h6">כמות קטגוריות</Typography>
+                                    </MuiThemeProvider>
+                                    </div>
+                                    <div className="content">
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="h6">{countCategories(posts)}</Typography>
+                                        </MuiThemeProvider>
+                                    </div>
+                                </div>
+                                <div className="statistics-container">
+                                    <div className="title">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h6">הקטגוריה המובילה</Typography>
+                                    </MuiThemeProvider>
+                                    </div>
+                                    <div className="top-category">
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="h6" align="center">
+                                                {findTopCategory(posts)}
+                                            </Typography>
+                                        </MuiThemeProvider>
+                                    </div>
+                                </div>
+                            </div>
+                        </Grid>
+                </Grid>
+                
+                
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h6" gutterBottom>פוסטים</Typography>
                 </MuiThemeProvider>

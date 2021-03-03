@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
@@ -12,6 +12,26 @@ import { create } from 'jss';
 import { red } from '@material-ui/core/colors';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { Helmet } from 'react-helmet';
+import { green } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = () => ({
+    button:
+    {
+        color: 'white',
+        width: 120,
+        height: 40,
+        fontSize: 16,
+        backgroundColor: green[500],
+        borderRadius: 15,
+        marginLeft: 10,
+        transition: 'all 0.5s ease-out',
+        '&:hover':
+		{
+			backgroundColor: green[300]
+		}
+    }
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -48,19 +68,68 @@ function Editor(props)
     const [openError, setOpenError] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [disableSending, setDisableSending] = useState(true);
     const [editorKey, setEditorKey] = useState(4);
-    const [disableCheckbox, setDisableCheckbox] = useState(true);
-    const [numOfImages, setNumOfImages] = useState(0);
     const [state, setState] = useState({
-        checkTitle: false,
-        checkSubtitle: false,
+        title: false,
+        subtitle: false,
         checkCategory: false,
         checkText: false,
         checkCredit: false
     });
-
+    const [disableTitle, setDisableTitle] = useState(true);
+    const [disableSubtitle, setDisableSubtitle] = useState(true);
+    const [disableCategory, setDisableCategory] = useState(true);
+    const [disableText, setDisableText] = useState(true);
+    const [disableCredit, setDisableCredit] = useState(true);
+    
     const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit } = state;
     const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
+    const { classes } = props;
+
+    useEffect(() => {
+        if (!errorCheck) 
+            setDisableSending(false);
+        else
+            setDisableSending(true)
+        switch (title)
+        {
+            case '': 
+                setDisableTitle(true)
+                break;
+            default: 
+                setDisableTitle(false);
+        }
+        switch(subtitle)
+        {
+            case '':
+                setDisableSubtitle(true);
+                break;
+            default: setDisableSubtitle(false);
+        }
+        switch(category)
+        {
+            case '':
+                setDisableCategory(true);
+                break;
+            default: setDisableCategory(false);
+        }
+        switch(text)
+        {
+            case '':
+                setDisableText(true);
+                break;
+            default: setDisableText(false);
+        }
+        switch(credit)
+        {
+            case '':
+                setDisableCredit(true);
+                break;
+            default: setDisableCredit(false);
+        }
+    }, [setDisableTitle, setDisableSubtitle, setDisableCategory, setDisableText, setDisableCredit,
+        title, subtitle, category, text, credit, errorCheck, setDisableSending]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -74,12 +143,6 @@ function Editor(props)
 		setProgress(0);
         setProgress2(0);
 	}
-
-    /*const checkBeforeSend = () =>
-    {
-        if (checkTitle && checkSubtitle && checkText && checkCategory && checkCredit)
-            setEnableButton(false); //enable
-    }*/
 
     const handleChange = (event) => 
     {
@@ -123,11 +186,12 @@ function Editor(props)
 	{
 		if (e.target.files[0])
 		{
+            console.log(e.target.files[0].size);
 			try 
 			{	
 				if (title !== '')
                 {
-                    if (e.target.files[0].size < 3000000) //less then 3mb
+                    if (e.target.files[0].size < 3500000) //less then 3mb
                     {
                         const uploadTask = firebase.storage.ref(`posts/${title}/main/main image`).put(e.target.files[0]);
                         uploadTask.on(
@@ -181,7 +245,6 @@ function Editor(props)
             {
                 if (title !== '')
                 {
-                    setNumOfImages(e.target.files.length);
                     for (var i=0; i<e.target.files.length; i++)
                     {
                         if (e.target.files[i].size < 1000000)
@@ -194,20 +257,6 @@ function Editor(props)
                                 {
                                     const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
                                     setProgress2(progress);
-                                    /*if (progress === 100)
-                                    {
-                                        const storageRef = firebase.storage.ref();
-                                        var metadata = {
-                                            customMetadata : 
-                                            {
-                                                'owner': `${imageCredit}`
-                                            }
-                                        }
-                                        var forestRef = storageRef.child(`posts/${title}/${i+1}`);
-                                        forestRef.updateMetadata(metadata)
-                                        .then((metadata) => { console.log("ok"); })
-                                        .catch((error) => { console.log(error.message); });
-                                    }*/
                                 }, 
                                 error => {console.log(error);});
                             }
@@ -246,6 +295,7 @@ function Editor(props)
                             <TextField label="כותרת"
                                 id="title" name="title"
                                 variant="outlined"
+                                color='black'
                                 autoComplete="off" 
                                 autoFocus value={title} 
                                 onChange={e => setTitle(e.target.value)} />
@@ -332,26 +382,28 @@ function Editor(props)
             <ThemeProvider theme={theme}>
                     <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
                 </ThemeProvider>
-            <TinyEditor key={editorKey}
-                apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
-                outputFormat='text'
-                init={{
-                height: 500,
-                width: '80%',
-                menubar: false,
-                directionality: 'rtl',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview anchor',
-                    'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar:
-                    'undo redo | formatselect | bold italic backcolor | \
-                    alignleft aligncenter alignright alignjustify | \
-                    bullist numlist outdent indent | removeformat | help'
-                }}
-                onEditorChange={handleEditorChange}
-            />
+            <div className="editor-container">
+                <TinyEditor key={editorKey}
+                    apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
+                    outputFormat='text'
+                    init={{
+                    height: 500,
+                    width: '80%',
+                    menubar: false,
+                    directionality: 'rtl',
+                    plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                        'undo redo | formatselect | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }}
+                    onEditorChange={handleEditorChange}
+                />
+            </div>
             <ThemeProvider theme={theme}>
                 <Typography variant="h5" gutterBottom>{`תמונות נוספות`}</Typography>
             </ThemeProvider>
@@ -373,38 +425,48 @@ function Editor(props)
                 <FormLabel component="legend">צ'ק ליסט</FormLabel>
                 <FormGroup>
                     <FormControlLabel
-                        control={<Checkbox checked={checkTitle} onChange={handleChange} name="checkTitle" color="primary" />}
+                        control={<Checkbox checked={checkTitle}  onChange={handleChange} name="checkTitle" color="primary" />}
                         label="כותרת"
                         className="checkBox"
+                        disabled={disableTitle}
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={checkSubtitle} onChange={handleChange} name="checkSubtitle" color="primary" />}
+                        control={<Checkbox checked={checkSubtitle}  onChange={handleChange} name="checkSubtitle" color="primary" />}
                         label="תקציר"
                         className="checkBox"
+                        disabled={disableSubtitle}
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={checkCategory} onChange={handleChange} name="checkCategory" color="primary" />}
+                        control={<Checkbox checked={checkCategory}  onChange={handleChange} name="checkCategory" color="primary" />}
                         label="קטגוריה"
                         className="checkBox"
+                        disabled={disableCategory}
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={checkText} onChange={handleChange} name="checkText" color="primary" />}
+                        control={<Checkbox checked={checkText}  onChange={handleChange} name="checkText" color="primary" />}
                         label="טקסט"
                         className="checkBox"
+                        disabled={disableText}
                     />
                     <FormControlLabel
-                        control={<Checkbox checked={checkCredit} onChange={handleChange} name="checkCredit" color="primary" />}
+                        control={<Checkbox checked={checkCredit}  onChange={handleChange} name="checkCredit" color="primary" />}
                         label="קרדיט תמונה ראשית"
                         className="checkBox"
                         color="primary"
+                        disabled={disableCredit}
                     />
                     <FormHelperText className="helper">
                         {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
                     </FormHelperText>
                 </FormGroup>
             </FormControl>
-            {!errorCheck ? <Button variant="contained" onClick={addPost}>הוסף</Button> : null}
-            <Button variant="contained" onClick={clearForm}>נקה</Button>
+            <div className="buttons">
+                <Button className={classes.button}
+                variant="contained" 
+                onClick={addPost} 
+                disabled={disableSending}>הוסף</Button>
+                <Button className={classes.button} variant="contained" onClick={clearForm}>נקה</Button>
+            </div>
             <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="success">
                     <MuiThemeProvider theme={theme}>
@@ -450,19 +512,6 @@ function Editor(props)
                         .catch((error) => { console.log(error.message); });
                     });
                 });
-                /*for (var i=0; i<numOfImages; i++)
-                {
-                    var metadata = {
-                        customMetadata : 
-                        {
-                            'owner': `bla bla`
-                        }
-                    }
-                    var forestRef = storageRef.child(`posts/${title}/${i+1}`);
-                    forestRef.updateMetadata(metadata)
-                    .then((metadata) => { console.log("ok"); })
-                    .catch((error) => { console.log(error.message); });
-                }*/
                 await firebase.addPost(title, subtitle, date, category, text, credit);
                 setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);
@@ -484,4 +533,4 @@ function Editor(props)
     }
 }
 
-export default withRouter(Editor);
+export default withRouter(withStyles(styles)(Editor));

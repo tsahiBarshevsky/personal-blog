@@ -38,7 +38,6 @@ $lg: 1920px;
   background-color: $container-color;
   padding: 10px 35px 25px; //top sides bottom
   cursor: default;
-  border-bottom: 1px solid black;
 }
 
 .full-container {
@@ -322,9 +321,15 @@ form {
   padding: 25px 55px 35px; //top sides bottom
   cursor: default;
 
+  .chart-container {
+    display: flex;
+    padding: 10px 0;
+    width: 100%;
+  }
+
   .statistics-holder {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -500,6 +505,13 @@ form {
   .pb {
     padding-bottom: 40px;
   }
+
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .container > fieldset {
@@ -524,6 +536,12 @@ form {
     text-align: right;
     margin-right: 29px;
   }
+}
+
+.editor-container {
+  display: flex;
+  width: 100%;
+  padding-bottom: 40px;
 }
 
 /* === Post === */
