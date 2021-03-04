@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { CssBaseline, CircularProgress  } from '@material-ui/core';
+import { CssBaseline } from '@material-ui/core';
+import { Bars, useLoading } from '@agney/react-loading';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from '../firebase';
 import Homepage from '../Homepage';
@@ -16,6 +17,10 @@ const theme = createMuiTheme();
 export default function App() 
 {
     const [firebaseInitialized, setFirebaseInitialized] = useState(false);
+	const { indicatorEl } = useLoading({
+        loading: true,
+        indicator: <Bars width="50" className="loading" />,
+    });
 
 	useEffect(() => {
 		firebase.isInitialized().then(val => {
@@ -37,5 +42,5 @@ export default function App()
 				</Switch>
 			</Router>
 		</MuiThemeProvider>
-	) : <div className="full-container"><CircularProgress /></div>
+	) : <div className="full-container">{indicatorEl}</div>
 }

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
+import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
-import { Grid, Typography, CircularProgress } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../scrollToTop';
 import SmallCard from './smallCard';
@@ -46,6 +47,13 @@ const theme = createMuiTheme({
         caption:
         {
             fontWeight: 600
+        },
+        subtitle2:
+        {   
+            fontSize: 18,
+            color: '#159753',
+            fontWeight: 600,
+            paddingTop: 10
         }
 	}
 });
@@ -66,6 +74,10 @@ export default function Post(props)
         backgroundPosition: 'center center',
         backgroundSize: 'cover',
         backgroundAttachment: 'fixed'};
+    const { indicatorEl } = useLoading({
+        loading: true,
+        indicator: <Bars width="50" className="loading" />,
+    });
 
     useEffect(() => 
     {
@@ -229,7 +241,14 @@ export default function Post(props)
                 </>
             :
             [(!fault ?
-                <div className="full-container"><CircularProgress /></div>
+                <div className="full-container">
+                    {indicatorEl}
+                    <MuiThemeProvider theme={theme}>
+                        <Typography align="center" variant="subtitle2">
+                            רק רגע...
+                        </Typography>
+                    </MuiThemeProvider>
+                </div>
                 :
                 <div className="full-overflow-container">
                     <Helmet><title>{`האיש והמילה הכתובה | שגיאה`}</title></Helmet>
