@@ -50,6 +50,28 @@ $lg: 1920px;
   width: 100vw;
 }
 
+.full-overflow-container {
+  padding: 30px;
+  background-color: $container-color;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+
+  .recent-posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+
+    .space {
+      height: 15px;
+    }
+  }
+}
+
 /* === Homepage === */
 
 .posts-container {
@@ -142,21 +164,24 @@ $lg: 1920px;
   align-items: center;
   width: 260px;
   height: 100%;
-  padding: 5px 15px 5px; //top sides bottom
+  padding: 0 15px 5px; //top sides bottom
   margin-bottom: 15px;
   border-radius: 10px;
   text-decoration: none;
   color: black;
+  background-color: snow;
+  box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.25);
 
   &:hover > .image {
     opacity: 0.7;
   }
 
   .image {
-    width: 250px;
+    width: 260px;
     height: 100%;
     align-self: center;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     transition: opacity 0.3s ease-in-out;
   }
 }
@@ -568,23 +593,26 @@ form {
       @media screen and (max-width: $xs) {
         height: 200px;
       }
-    }
 
-    .credit-container {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      padding: 10px 10px; //top-bottom right-left
-      background-color: rgba(255, 255, 255, 0.5);
-      -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
-      clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+      .right-quotation-marks-container {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        padding: 5px;
+      }
 
-      .caption {
-        transform: rotate(-4deg);
+      .left-quotation-marks-container {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        padding: 5px;
+      }
 
-        @media screen and (max-width: $xs) {
-          transform: rotate(-6deg);
-        }
+      .quotation-marks {
+        width: 45px;
+        height: 40px;
+        opacity: 0.25;
+        z-index: 1;
       }
     }
   }
@@ -665,6 +693,10 @@ form {
         justify-content: center;
         align-items: center;
 
+        @media screen and (max-width: $xs) {
+          flex-direction: column;
+        }
+
         .credit {
           font-weight: bold;
         }
@@ -704,13 +736,13 @@ form {
       padding-bottom: 20px;
     }
 
-    .recent-post {
+    .recent-posts {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       width: 50%;
-      //padding-bottom: 10px;
+      padding-bottom: 10px;
     }
   }
 }
