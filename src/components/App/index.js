@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, Typography } from '@material-ui/core';
 import { Bars, useLoading } from '@agney/react-loading';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from '../firebase';
@@ -11,8 +11,25 @@ import Dashboard from '../Dashboard';
 import Editor from '../Editor';
 import Post from '../Post';
 import EditPost from '../Edit Post';
+import Page404 from '../Page 404';
 
 const theme = createMuiTheme();
+const typographyTheme = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Varela Round", sans-serif`,
+		},
+        subtitle2:
+        {   
+            fontSize: 18,
+            color: '#159753',
+            fontWeight: 600,
+            paddingTop: 10
+        }
+	}
+});
 
 export default function App() 
 {
@@ -39,8 +56,18 @@ export default function App()
 					<Route exact path="/editor" component={Editor} />
 					<Route exact path="/edit/:title" component={EditPost} />
 					<Route exact path="/:title" component={Post} />
+					<Route exact path="*" component={Page404} />
 				</Switch>
 			</Router>
 		</MuiThemeProvider>
-	) : <div className="full-container">{indicatorEl}</div>
+	) 
+	: 
+	<div className="full-container">
+		{indicatorEl}
+		<MuiThemeProvider theme={typographyTheme}>
+			<Typography align="center" variant="subtitle2">
+				רק רגע...
+			</Typography>
+		</MuiThemeProvider>
+	</div>
 }

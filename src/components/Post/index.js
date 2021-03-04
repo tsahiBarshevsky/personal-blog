@@ -3,8 +3,11 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Box, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 import ScrollToTop from '../scrollToTop';
 import SmallCard from './smallCard';
 import q1 from '../../images/q1.png';
@@ -58,7 +61,27 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Post(props) 
+const styles = () => ({
+    button:
+    {
+        color: '#4caf50',
+        width: 165,
+        height: 45,
+        fontSize: 17,
+        backgroundColor: 'transparent',
+        border: '2px solid #4caf50',
+        borderRadius: 25,
+        transition: 'all 0.4s ease-out',
+        marginTop: 30,
+        '&:hover':
+		{
+            color: 'white',
+			backgroundColor: green[500]
+		}
+    }
+});
+
+function Post(props) 
 {
     const [post, setPost] = useState('');
     const [images, setImages] = useState([]);
@@ -68,6 +91,7 @@ export default function Post(props)
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
+    const { classes } = props;
     const background = {
         backgroundImage: `url(${url})`,
         backgroundRepeat: 'no-repeat',
@@ -263,12 +287,17 @@ export default function Post(props)
                                 <div key={index}>
                                     <SmallCard title={post.title} />
                                 </div>
-                                <div className="space" />
+                                <Box component="span" display="block" pb={2} />
                             </>
                         )}
+                        <Button component={Link}
+                            to="/" variant="contained"
+                            className={classes.button}>חזרה לדף הבית</Button>
                     </div>
                 </div>
             )]}
         </div>
     )
 }
+
+export default withStyles(styles)(Post);
