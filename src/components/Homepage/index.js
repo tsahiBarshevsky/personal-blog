@@ -7,6 +7,7 @@ import Hero from '../Hero';
 import About from '../About';
 import Footer from '../Footer';
 import { Helmet } from 'react-helmet';
+import Navbar from '../Navbar';
 
 const theme = createMuiTheme({
 	typography:
@@ -51,9 +52,10 @@ export default function Homepage()
     return (
         <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
+            <Navbar />
             <Hero />
             <About />
-            <div className="posts-container">
+            <div className="posts-container" id="posts">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>
                 </MuiThemeProvider>
