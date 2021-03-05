@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-scroll';
 import MenuToggle from './menuToggle';
-import Accessibility from "./accessibility";
+import Socials from "./socials";
 
 export default function MobileNavLinks() 
 {
@@ -13,18 +13,21 @@ export default function MobileNavLinks()
             {isOpen ? 
                 <ul className="links-wrapper">
                     <li className="link-item">
+                        <Link className="link" to='about'
+                            smooth={true} duration={1000} spy={true}
+                            exact='true' offset={-55}
+                            onClick={() => setOpen(!isOpen)}>אודות</Link>
+                    </li>
+                    <li className="link-item">
                         <Link className="link" to='posts'
                             smooth={true} duration={1000} spy={true}
                             exact='true' offset={-20}
-                            onClick={() => setOpen(!isOpen)}>לינק 1</Link>
-                    </li>
-                    <li className="link-item">
-                        <Link className="link" to='/'>לינק 2</Link>
+                            onClick={() => setOpen(!isOpen)}>אחרונים</Link>
                     </li>
                     <li className="link-item">
                         <Link className="link" to='/'>לינק 3</Link>
                     </li>
-                    <Accessibility />
+                    <Socials />
                 </ul>  
             : null}  
         </div>

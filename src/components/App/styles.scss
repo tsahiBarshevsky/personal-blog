@@ -79,8 +79,9 @@ $lg: 1920px;
   width: 100%;
   height: 45px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 10px;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -94,19 +95,15 @@ $lg: 1920px;
       display: flex;
       align-items: center;
 
-      .logo-text {
-        font-size: 17px;
-        margin: 0;
-        margin-left: 4px;
-        font-weight: 500;
-        color: #222;
+      img {
+        cursor: pointer;
       }
     }
   }
 
   .middle-section {
     display: flex;
-    flex: 2;
+    align-items: center;
     justify-content: center;
 
     .navlinks-container {
@@ -124,23 +121,24 @@ $lg: 1920px;
         .link-item {
           height: 100%;
           padding: 0 1.1em;
-          color: #222;
+          color: #aaa;
           font-weight: 500;
-          font-size: 14px;
+          font-size: 15px;
           align-items: center;
           justify-content: center;
           display: flex;
-          border-top: 2px solid transparent;
-          transition: all 220ms ease-in-out;
+          transition: all 0.4s ease-in-out;
 
           &:hover {
-            border-top: 2px solid #2ecc71;
+            color: #555;
+            transform: scale(1.1);
           }
 
           .link {
             text-decoration: none;
             color: inherit;
             font-size: inherit;
+            cursor: pointer;
           }
         }
       }
@@ -154,6 +152,14 @@ $lg: 1920px;
       height: 100%;
       display: flex;
       align-items: center;
+
+      .button {
+        background-color: transparent;
+
+        svg {
+          transform: translate(-5%, 10%);
+        }
+      }
 
       .links-wrapper {
         margin: 0;
@@ -198,9 +204,26 @@ $lg: 1920px;
       }
     }
 
-    .accessibility-container {
+    .socials-container {
       display: flex;
-      margin-left: 10px;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        height: 100%;
+        padding: 0 1.1em;
+        color: #aaa;
+        font-weight: 500;
+        font-size: 15px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        transition: all 0.4s ease-in-out;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
     }
   }
 }

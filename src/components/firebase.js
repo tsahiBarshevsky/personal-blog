@@ -79,7 +79,7 @@ class Firebase
         var sorted = recent.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
         for (var i=0; i<sorted.length; i++)
         {
-            if (sorted[i].title !== title)
+            if (sorted[i].title !== title && new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(0, 0, 0, 0))
             {
                 ret.push(sorted[i]);
                 counter++;

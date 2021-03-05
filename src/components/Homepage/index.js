@@ -40,11 +40,12 @@ export default function Homepage()
         var ret = [];
         if (sorted.length > 0)
         {
-            for (var i=0; i<sorted.length; i++)
-                ret.push(<Card mainImageLink={sorted[i].mainImageLink}
-                        category={sorted[i].category}
-                        title={sorted[i].title}
-                        subtitle={sorted[i].subtitle} />);
+            for (var i=0; i<sorted.length; i++) //sorted.length should be 9 when done!
+                if (new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(0, 0, 0, 0))
+                    ret.push(<Card mainImageLink={sorted[i].mainImageLink}
+                            category={sorted[i].category}
+                            title={sorted[i].title}
+                            subtitle={sorted[i].subtitle} />);
             return <div className="posts">{ret}</div>
         }
     }

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useMediaQuery } from "react-responsive";
-import Accessibility from "./accessibility";
+import Socials from "./socials";
 import NavLinks from "./navLinks";
 import { DeviceSize } from "../Responsive";
 import MobileNavLinks from "./mobileNavLinks";
 import { animateScroll as scroll} from 'react-scroll';
+import logo from '../../images/logo.png'
 
 const toggleHome = () => 
 {
@@ -19,14 +20,14 @@ export default function Navbar()
         <div className="navbar-container">
             <div className="left-section">
                 <div className="logo-wrapper">
-                    <p onClick={toggleHome} className="logo-text">האיש והמילה הכתובה</p>
+                    <img src={logo} alt="לוגו" onClick={toggleHome} aria-lable="flaticon" />
                 </div>
             </div>
             <div className="middle-section">
                 {!isMobile && <NavLinks />}
             </div>
             <div className="right-section">
-                {!isMobile && <Accessibility />}
+                {!isMobile && <Socials />}
                 {isMobile && <MobileNavLinks />}
             </div>
         </div>
