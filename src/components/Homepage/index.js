@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Card from '../Card';
 import firebase from '../firebase';
 import Hero from '../Hero';
+import About from '../About';
 import Footer from '../Footer';
 import { Helmet } from 'react-helmet';
 
@@ -48,9 +49,10 @@ export default function Homepage()
     }
 
     return (
-        <>
+        <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
             <Hero />
+            <About />
             <div className="posts-container">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>
@@ -58,6 +60,6 @@ export default function Homepage()
                 {renderLastPosts()}
             </div>
             <Footer />
-        </>
+        </div>
     )
 }

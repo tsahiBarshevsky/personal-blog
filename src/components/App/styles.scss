@@ -75,21 +75,64 @@ $lg: 1920px;
 
 /* === Homepage === */
 
-.posts-container {
+.home-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   background-color: $container-color;
-  padding: 25px;
+
+  .posts-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: $container-color;
+    padding: 40px 25px 25px; //top sides bottom
+    cursor: default;
+
+    .posts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 90%;
+    }
+  }
+}
+
+/* === About (short version) === */
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  background-color: $container-color;
+  padding: 0 35px 25px; //top sides bottom
   cursor: default;
 
-  .posts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 90%;
+  p {
+    font-size: 20px;
+
+    @media screen and (max-width: $sm) {
+      text-align: center;
+    }
+
+    .image {
+      width: 165px;
+      height: 165px;
+      border-radius: 50%;
+      float: right;
+      margin: 0 0 20px 60px; //top right bottom left
+
+      @media screen and (max-width: $sm) {
+        float: none;
+        margin: 0;
+      }
+    }
   }
 }
 

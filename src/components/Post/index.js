@@ -182,10 +182,12 @@ function Post(props)
 
     const formatDate = (date) =>
     {
+        var days = ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
+        var week = days[date.getDay()];
         var day = date.toLocaleString('he', {day: '2-digit'});
         var month = date.toLocaleString('he', {month: 'long'});
         var year = date.toLocaleString('he', {year: 'numeric'});
-        return `${day} ב${month}, ${year}`;
+        return `יום ${week} ${day} ב${month}, ${year}`;
     }
 
     return (
@@ -244,7 +246,7 @@ function Post(props)
                                 <div className="about-text">
                                     <MuiThemeProvider theme={theme}>
                                         <Typography align="center" variant="body1">
-                                            צחי "על מה יש לך לכתוב כל הזמן?!" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                            צחי "האיש והמילה הכתובה" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
                                         </Typography>
                                     </MuiThemeProvider>
                                 </div>
