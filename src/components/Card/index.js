@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
@@ -13,8 +14,9 @@ const theme = createMuiTheme({
 		},
         caption:
         {
-            fontWeight: 600,
-            letterSpacing: 1
+            transform: 'translateY(4%)'
+            // fontWeight: 600,
+            // letterSpacing: 1
         },
         h5:
         {
@@ -24,6 +26,10 @@ const theme = createMuiTheme({
 				fontSize: 20,
                 fontWeight: 600
 			}
+        },
+        h6:
+        {
+            paddingBottom: 20
         }
 	}
 });
@@ -32,8 +38,10 @@ export default function Card(props)
 {
     const title = props.title;
     const subtitle = props.subtitle;
-    const category = props.category;
+    const date = props.date;
+    //const category = props.category;
     const [url, setUrl] = useState('');
+    const background = {backgroundImage: `url(${url})`};
    
     useEffect(() => {
         firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
@@ -41,28 +49,58 @@ export default function Card(props)
         );
     }, []);
 
+    const formatDate = (date) =>
+    {
+        var day = date.toLocaleString('he', {day: '2-digit'});
+        var month = date.toLocaleString('he', {month: 'long'});
+        var year = date.toLocaleString('he', {year: 'numeric'});
+        return `${day} ב${month}, ${year}`;
+    }
+
     return (
-        <Link className="card-container" to={{pathname: `/${title}`}}>
-            <img src={url} alt="תמונה ראשית" className="image"/>
-            <div className="image-container">
-                <div className="category-container">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="caption">
-                            {category}
-                        </Typography>
-                    </MuiThemeProvider>
-                </div>
-            </div>
-            <MuiThemeProvider theme={theme}>
-                <Typography variant="h5" gutterBottom>
-                    {title}
-                </Typography>
-            </MuiThemeProvider>
+        <div className="card-container" style={background}>
+            <Link className="link" to={{pathname: `/${title}`}}>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h6">
+                        {title}
+                    </Typography>
+                </MuiThemeProvider>
+            </Link>
             {subtitle ? 
             <p className="subtitle">
-                {subtitle.length >= 75 ? `${subtitle.slice(0, 75)}...` : subtitle}
+                {subtitle.length >= 110 ? `${subtitle.slice(0, 110)}...` : subtitle}
             </p>
-            : null }
-        </Link>
+            : null}
+            <div className="date">
+                <EventOutlinedIcon className="icon" />
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="caption">
+                        {formatDate(new Date(date.seconds * 1000))}
+                    </Typography>
+                </MuiThemeProvider>
+            </div>
+        </div>
+        // <Link className="card-container" to={{pathname: `/${title}`}}>
+        //     <img src={url} alt="תמונה ראשית" className="image"/>
+        //     <div className="image-container">
+        //         <div className="category-container">
+        //             <MuiThemeProvider theme={theme}>
+        //                 <Typography variant="caption">
+        //                     {category}
+        //                 </Typography>
+        //             </MuiThemeProvider>
+        //         </div>
+        //     </div>
+        //     <MuiThemeProvider theme={theme}>
+        //         <Typography variant="h5" gutterBottom>
+        //             {title}
+        //         </Typography>
+        //     </MuiThemeProvider>
+        //     {subtitle ? 
+        //     <p className="subtitle">
+        //         {subtitle.length >= 75 ? `${subtitle.slice(0, 75)}...` : subtitle}
+        //     </p>
+        //     : null }
+        // </Link>
     )
 }
