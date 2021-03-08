@@ -90,6 +90,17 @@ class Firebase
         return ret;
     }
 
+    async getAllCategories()
+    {
+        var posts = [], ret = [];
+        const snapshot = await app.firestore().collection('posts').get();
+        snapshot.docs.map(doc => posts.push(doc.data().category));
+        for (var i = 0; i < posts.length; i++)
+            if (ret.indexOf(posts[i]) == -1)
+                ret.push(posts[i]);
+        return ret;
+    }
+
     async editPost(title, subtitle, category, date, text)
     {
         this.db.collection('posts').doc(`${title}`).update({

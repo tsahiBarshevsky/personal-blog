@@ -12,6 +12,7 @@ import Editor from '../Editor';
 import Post from '../Post';
 import EditPost from '../Edit Post';
 import Page404 from '../Page 404';
+import Categories from '../Categories';
 
 const theme = createMuiTheme();
 const typographyTheme = createMuiTheme({
@@ -51,6 +52,7 @@ export default function App()
 			<Router>
 				<Switch>
                     <Route exact path="/" component={Homepage} />
+					<Route exact path="/categories" component={Categories} />
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/editor" component={Editor} />
