@@ -26,10 +26,6 @@ const theme = createMuiTheme({
 				fontSize: 20,
                 fontWeight: 600
 			}
-        },
-        h6:
-        {
-            paddingBottom: 20
         }
 	}
 });
@@ -41,7 +37,13 @@ export default function Card(props)
     const date = props.date;
     //const category = props.category;
     const [url, setUrl] = useState('');
-    const background = {backgroundImage: `url(${url})`};
+    const background = {
+        backgroundImage: `linear-gradient(
+            0deg,
+            rgb(0, 0, 0) 0%,
+            rgb(107, 107, 107) 100%),
+            url(${url})`
+    };
    
     useEffect(() => {
         firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
