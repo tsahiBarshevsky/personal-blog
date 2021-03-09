@@ -14,7 +14,7 @@ const theme = createMuiTheme({
 		},
         caption:
         {
-            transform: 'translateY(4%)'
+            transform: 'translateY(10%)'
             // fontWeight: 600,
             // letterSpacing: 1
         },
@@ -35,14 +35,14 @@ export default function Card(props)
     const title = props.title;
     const subtitle = props.subtitle;
     const date = props.date;
-    //const category = props.category;
+    const category = props.category;
     const [url, setUrl] = useState('');
     const background = {
         backgroundImage: `linear-gradient(
-            0deg,
+            180deg,
             rgb(0, 0, 0) 0%,
-            rgb(107, 107, 107) 100%),
-            url(${url})`
+            rgba(0, 0, 0, 1) 100%),
+            url(${url})`,
     };
    
     useEffect(() => {
@@ -61,6 +61,13 @@ export default function Card(props)
 
     return (
         <div className="card-container" style={background}>
+            <div className="category">
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="overline">
+                        {category}
+                    </Typography>
+                </MuiThemeProvider>
+            </div>
             <Link className="link" to={{pathname: `/${title}`}}>
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h6">

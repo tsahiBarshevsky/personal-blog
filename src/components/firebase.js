@@ -79,7 +79,7 @@ class Firebase
         var sorted = recent.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
         for (var i=0; i<sorted.length; i++)
         {
-            if (sorted[i].title !== title && new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(0, 0, 0, 0))
+            if (sorted[i].title !== title && new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
             {
                 ret.push(sorted[i]);
                 counter++;
@@ -97,6 +97,7 @@ class Firebase
         snapshot.docs.map(doc => recent.push(doc.data()));
         var sorted = recent.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
         for (var i=0; i<sorted.length; i++)
+            if (new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
                 ret.push(sorted[i]);
         return ret;
     }
@@ -110,6 +111,32 @@ class Firebase
             if (ret.indexOf(posts[i]) == -1)
                 ret.push(posts[i]);
         return ret;
+    }
+
+    async categoriesDistribution()
+    {
+        var categories = [], a = [], b = [], ret = [], prev;
+        const snapshot = await app.firestore().collection('posts').get();
+        snapshot.docs.map(doc => 
+        {
+            if (new Date(doc.data().date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
+                categories.push(doc.data().category)
+        });
+        categories.sort();
+        for (var i = 0; i<categories.length; i++) 
+        {
+            if (categories[i] !== prev) 
+            {
+                a.push(categories[i]);
+                b.push(1);
+            } 
+            else
+                b[b.length-1]++;
+            prev = categories[i];
+        }
+        for (var i=0; i<a.length; i++)
+            ret.push({category: a[i], occurrences: b[i]});
+        return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
     }
 
     async editPost(title, subtitle, category, date, text)

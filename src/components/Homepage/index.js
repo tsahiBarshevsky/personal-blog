@@ -29,10 +29,12 @@ const theme = createMuiTheme({
 export default function Homepage() 
 {
     const [posts, setPosts] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() =>
     {
         firebase.getNineRecentPosts().then(setPosts);
+        firebase.categoriesDistribution().then(setCategories);
     }, []);
 
     // const renderLastPosts = () =>
@@ -56,8 +58,8 @@ export default function Homepage()
         <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
             {/* <Navbar />
-            <Hero />
             <About /> */}
+            <Hero />
             <div className="posts-container" id="posts">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h4">פוסטים אחרונים</Typography>
@@ -73,6 +75,18 @@ export default function Homepage()
                         </div>
                     )}
                 </ScrollContainer>
+                <table>
+                    <tr>
+                        <th>קטגוריה</th>
+                        <th>מופעים</th>
+                    </tr>
+                    {categories.map((category, index) =>
+                        <tr key={index}>
+                            <td>{category.category}</td>
+                            <td>{category.occurrences}</td>
+                        </tr>
+                    )}
+                </table>
             </div>
             {/* <Footer /> */}
         </div>
