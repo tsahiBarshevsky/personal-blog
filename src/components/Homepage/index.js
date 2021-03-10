@@ -22,6 +22,11 @@ const theme = createMuiTheme({
             textDecoration: 'underline',
             letterSpacing: 3,
             paddingBottom: 25
+        },
+        body1:
+        {
+            marginRight: 10,
+            fontSize: 18
         }
 	}
 });
@@ -67,6 +72,7 @@ export default function Homepage()
                 <ScrollContainer className="posts">
                     {posts.map((post, index) =>
                         <div key={index}>
+                            {index}
                             <Card mainImageLink={post.mainImageLink}
                                 category={post.category}
                                 title={post.title}
@@ -75,18 +81,21 @@ export default function Homepage()
                         </div>
                     )}
                 </ScrollContainer>
-                <table>
-                    <tr>
-                        <th>קטגוריה</th>
-                        <th>מופעים</th>
-                    </tr>
-                    {categories.map((category, index) =>
-                        <tr key={index}>
-                            <td>{category.category}</td>
-                            <td>{category.occurrences}</td>
-                        </tr>
-                    )}
-                </table>
+            </div>
+            <div className="top-categories-container">
+                <div className="title">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="body1">קטגוריות מובילות</Typography>
+                    </MuiThemeProvider>
+                </div>
+                {categories.map((category, index) =>
+                    <div className="category-container" key={index}>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="subtitle1">{category.category}</Typography>
+                            <Typography variant="subtitle1">{category.occurrences}</Typography>
+                        </MuiThemeProvider>
+                    </div>
+                )}
             </div>
             {/* <Footer /> */}
         </div>
