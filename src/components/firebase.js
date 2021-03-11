@@ -90,17 +90,34 @@ class Firebase
         return ret;
     }
 
-    async getNineRecentPosts()
+    async getSixRecentPosts()
     {
         var recent = [], ret = [];
         const snapshot = await app.firestore().collection('posts').get();
         snapshot.docs.map(doc => recent.push(doc.data()));
         var sorted = recent.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
-        for (var i=0; i<sorted.length; i++)
+        for (var i=0; i<6; i++)
             if (new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
                 ret.push(sorted[i]);
         return ret;
     }
+
+    async getAllPostsByCategory()
+    {
+        const snapshot = await app.firestore().collection('posts').where("category", "==", "אהבה").get();
+        return snapshot.docs.map(doc => doc.data());
+    }
+
+    // async getPostsByCategories(category)
+    // {
+    //     var posts = [], ret = [];
+    //     const snapshot = await app.firestore().collection('posts').get();
+    //     snapshot.docs.map(doc => 
+    //     {
+    //         if (doc.data().category === category)
+    //             posts.push(doc.data())
+    //     });
+    // }
 
     async getAllCategories()
     {

@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Card(props) 
+export default function MediumCard(props) 
 {
     const title = props.title;
     const subtitle = props.subtitle;
@@ -77,7 +77,7 @@ export default function Card(props)
             </Link>
             {subtitle ? 
             <p className="subtitle">
-                {subtitle.length >= 110 ? `${subtitle.slice(0, 110)}...` : subtitle}
+                {subtitle.length >= 105 ? `${subtitle.slice(0, 105)}...` : subtitle}
             </p>
             : null}
             <div className="date">

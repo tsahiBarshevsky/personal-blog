@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -20,6 +20,18 @@ export default function Hero()
 {
     return (
         <div className="hero-container">
+            {/* <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="flex-start">
+                    <Grid item lg={6}>
+                        בלה בלה בלה
+                    </Grid>
+                    <Grid item lg={6} className="image-container">
+                        <img src="https://images.pexels.com/photos/1955134/pexels-photo-1955134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""/>
+                    </Grid>
+            </Grid> */}
         </div>
         // <section>
         //     <div className="hero-content">
