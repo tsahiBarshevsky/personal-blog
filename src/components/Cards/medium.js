@@ -37,9 +37,7 @@ export default function MediumCard(props)
     const date = props.date;
     const category = props.category;
     const [url, setUrl] = useState('');
-    const background = {
-        backgroundImage: `url(${url})`,
-    };
+    const background = { backgroundImage: `url(${url})` };
    
     useEffect(() => {
         firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
@@ -57,32 +55,34 @@ export default function MediumCard(props)
 
     return (
         <div className="card-container" style={background}>
-            <div className="category">
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="overline">
-                        {category}
-                    </Typography>
-                </MuiThemeProvider>
-            </div>
-            <Link className="link" to={{pathname: `/${title}`}}>
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h6">
-                        {title}
-                    </Typography>
-                </MuiThemeProvider>
-            </Link>
-            {subtitle ? 
-            <p className="subtitle">
-                {subtitle.length >= 105 ? `${subtitle.slice(0, 105)}...` : subtitle}
-            </p>
-            : null}
-            <div className="date">
-                <EventOutlinedIcon className="icon" />
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="caption">
-                        {formatDate(new Date(date.seconds * 1000))}
-                    </Typography>
-                </MuiThemeProvider>
+            <div className="black">
+                <div className="category">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="overline">
+                            {category}
+                        </Typography>
+                    </MuiThemeProvider>
+                </div>
+                <Link className="link" to={{pathname: `/${title}`}}>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6">
+                            {title}
+                        </Typography>
+                    </MuiThemeProvider>
+                </Link>
+                {subtitle ? 
+                <p className="subtitle">
+                    {subtitle.length >= 105 ? `${subtitle.slice(0, 105)}...` : subtitle}
+                </p>
+                : null}
+                <div className="date">
+                    <EventOutlinedIcon className="icon" />
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="caption">
+                            {formatDate(new Date(date.seconds * 1000))}
+                        </Typography>
+                    </MuiThemeProvider>
+                </div>
             </div>
         </div>
         // <Link className="card-container" to={{pathname: `/${title}`}}>

@@ -48,37 +48,21 @@ export default function Homepage()
         //firebase.getAllPostsByCategory("אהבה").then(setPostsByCategories);
     }, []);
 
-    // const renderLastPosts = () =>
-    // {
-    //     var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
-    //     var ret = [];
-    //     if (sorted.length > 0)
-    //     {
-    //         for (var i=0; i<sorted.length; i++) //sorted.length should be 9 when done!
-    //             if (new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(0, 0, 0, 0))
-    //                 ret.push(<Card mainImageLink={sorted[i].mainImageLink}
-    //                         category={sorted[i].category}
-    //                         title={sorted[i].title}
-    //                         subtitle={sorted[i].subtitle}
-    //                         date={sorted[i].date} />);
-    //         return <ScrollContainer vertical className="posts">{ret}</ScrollContainer>
-    //     }
-    // }
-
     function renderPostsByCategory(category)
     {
-      var arr = [], counter = 0;;
-      for (var i=0; i<posts.length; i++) 
-      {
-        if (posts[i].category === category)
+        var arr = [], counter = 0;
+        var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
+        for (var i=0; i<posts.length; i++) 
         {
-          arr.push(<LargeCard key={i} title={posts[i].title} subtitle={posts[i].subtitle} date={posts[i].date} />);
-          counter++;
+            if (sorted[i].category === category)
+            {
+                arr.push(<LargeCard key={i} title={sorted[i].title} subtitle={sorted[i].subtitle} date={sorted[i].date} />);
+                counter++;
+            }
+            if (counter === 3)
+                break;
         }
-        if (counter === 3)
-          break;
-      }
-      return <div style={{paddingBottom: 25}}>{arr}</div>
+        return <div style={{paddingBottom: 25}}>{arr}</div>
     }
 
     return (
