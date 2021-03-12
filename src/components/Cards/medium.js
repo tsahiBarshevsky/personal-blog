@@ -38,11 +38,7 @@ export default function MediumCard(props)
     const category = props.category;
     const [url, setUrl] = useState('');
     const background = {
-        backgroundImage: `linear-gradient(
-            180deg,
-            rgb(0, 0, 0) 0%,
-            rgba(0, 0, 0, 1) 100%),
-            url(${url})`,
+        backgroundImage: `url(${url})`,
     };
    
     useEffect(() => {
