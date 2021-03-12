@@ -4,9 +4,7 @@ $container-color: #f5f5f5; //354463;
 $card-color: #b0bec5;
 $card-text: whitesmoke;
 $hr-color: #159753;
-$color_white: #fff;
-$color_grey: #e2e2e2;
-$color_grey_dark: #a2a2a2;
+$color-white: white;
 
 /* === breakpoints === */
 
@@ -422,6 +420,7 @@ $lg: 1920px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  z-index: 2;
   // transition: transform 0.2s ease-in-out;
   // filter: blur(1.5px);
   // -webkit-filter: blur(1.5px);
@@ -539,7 +538,7 @@ $lg: 1920px;
   flex-direction: column;
   margin: 0 0 20px; //top sides bottom
   box-shadow: 0 3px 7px -1px rgba(black, 0.1);
-  background: $color_white;
+  background: $color-white;
   line-height: 1.4;
   border-radius: 5px;
   overflow: hidden;
@@ -566,6 +565,10 @@ $lg: 1920px;
     z-index: 0;
     height: 200px;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%);
+
+    @media screen and (max-width: 640px) {
+      clip-path: none;
+    }
   }
 
   .photo {
@@ -588,7 +591,7 @@ $lg: 1920px;
     margin: auto;
     transition: left 0.3s;
     background: rgba(black, 0.6);
-    color: $color_white;
+    color: $color-white;
     padding: 10px;
     width: 100%;
 
@@ -600,7 +603,7 @@ $lg: 1920px;
 
   .description {
     padding: 1rem;
-    background: $color_white;
+    background: $color-white;
     position: relative;
     z-index: 1;
 

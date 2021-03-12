@@ -35,17 +35,17 @@ const theme = createMuiTheme({
 
 export default function Homepage() 
 {
-    //const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState([]);
     const [sixRecentPosts, setSixRecentPosts] = useState([])
     const [categories, setCategories] = useState([]);
     const [postsByCategories, setPostsByCategories] = useState([]);
 
     useEffect(() =>
     {
-        //firebase.getAllPosts().then(setPosts);
+        firebase.getAllPosts().then(setPosts);
         firebase.getSixRecentPosts().then(setSixRecentPosts);
         firebase.categoriesDistribution().then(setCategories);
-        firebase.getAllPostsByCategory().then(setPostsByCategories);
+        //firebase.getAllPostsByCategory("אהבה").then(setPostsByCategories);
     }, []);
 
     // const renderLastPosts = () =>
@@ -64,6 +64,22 @@ export default function Homepage()
     //         return <ScrollContainer vertical className="posts">{ret}</ScrollContainer>
     //     }
     // }
+
+    function renderPostsByCategory(category)
+    {
+      var arr = [], counter = 0;;
+      for (var i=0; i<posts.length; i++) 
+      {
+        if (posts[i].category === category)
+        {
+          arr.push(<LargeCard key={i} title={posts[i].title} subtitle={posts[i].subtitle} date={posts[i].date} />);
+          counter++;
+        }
+        if (counter === 3)
+          break;
+      }
+      return <div style={{paddingBottom: 25}}>{arr}</div>
+    }
 
     return (
         <div className="home-container">
@@ -91,21 +107,28 @@ export default function Homepage()
             </div>
             <Grid container direction="row" justify="center" alignItems="baseline">
                 <Grid item lg={10} xl={10} className="posts-by-categories">
-                    <div className="title">
+                  {categories.map((category, index) =>
+                    <div key={index}>
+                      <div className="title">
                         <MuiThemeProvider theme={theme}>
-                            <Typography variant="body1">אהבה</Typography>
+                            <Typography variant="body1">{category.category}</Typography>
                         </MuiThemeProvider>
+                      </div>
+                      {renderPostsByCategory(category.category)}
                     </div>
-                    {postsByCategories.map((post, index) =>
-                        <div key={index}>
-                            <LargeCard
-                                title={post.title}
-                                subtitle={post.subtitle}
-                                date={post.date} />
-                        </div>
-                    )}
+                  )}
+
+                    
+                    {/* {postsByCategories.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0)).map((post, index) =>
+                      <div key={index}>
+                        <LargeCard
+                            title={post.title}
+                            subtitle={post.subtitle}
+                            date={post.date} />
+                      </div>
+                    )} */}
                 </Grid>
-                <Grid item lg={2} xl={10}>
+                <Grid item lg={2} xl={2}>
                     <div className="top-categories-container">
                         <div className="title">
                             <MuiThemeProvider theme={theme}>

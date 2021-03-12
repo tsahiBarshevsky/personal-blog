@@ -12,19 +12,15 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Varela Round", sans-serif`,
 		},
-        caption:
-        {
-            transform: 'translateY(-210%)',
-        },
-        h5:
-        {
-            paddingTop: 8,
-            '@media (max-width: 400px)':
-			{
-				fontSize: 20,
+    h5:
+    {
+      paddingTop: 8,
+      '@media (max-width: 400px)':
+      {
+        fontSize: 20,
                 fontWeight: 600
-			}
-        }
+      }
+    }
 	}
 });
 
@@ -33,7 +29,6 @@ export default function LargeCard(props)
     const title = props.title;
     const subtitle = props.subtitle;
     const date = props.date;
-    //const category = props.category;
     const [url, setUrl] = useState('');
     const background = { backgroundImage: `url(${url})` };
 
@@ -75,26 +70,5 @@ export default function LargeCard(props)
           <p>{subtitle}</p>
         </div>
       </div>
-        // <div classNameNameName="large-card-container">
-        //     <div classNameNameName="background" style={background} />
-        //     <div classNameNameName="content">
-        //         <Link classNameNameName="link" to={{pathname: `/${title}`}}>
-        //             <MuiThemeProvider theme={theme}>
-        //                 <Typography variant="h6">
-        //                     {title}
-        //                 </Typography>
-        //             </MuiThemeProvider>
-        //         </Link>
-        //         <p classNameNameName="subtitle">{subtitle}</p>
-        //         <div classNameNameName="date">
-        //             <EventOutlinedIcon classNameNameName="icon" />
-        //             <MuiThemeProvider theme={theme}>
-        //                 <Typography variant="caption">
-        //                     {formatDate(new Date(date.seconds * 1000))}
-        //                 </Typography>
-        //             </MuiThemeProvider>
-        //         </div>
-        //     </div>
-        // </div>
     )
 }
