@@ -4,6 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
+import Image from '../../images/coding.png';
 
 const styles = () => ({
     button:
@@ -31,14 +32,12 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Varela Round", sans-serif`,
 		},
-        h4:
-        {
-            fontWeight: 600
-        },
         h6:
         {
             textAlign: 'center',
-            paddingBottom: 25
+            paddingBottom: 15,
+            fontWeight: 600,
+            lineHeight: 1.2
         }
 	}
 });
@@ -49,16 +48,25 @@ function Page404(props)
 
     return (
         <div className="full-container">
-            <MuiThemeProvider theme={theme}>
-                <Typography variant="h4">נראה שמשהו השתבש...</Typography>
-                <Typography variant="h6" display="block">
-                    כנראה שהדף שחיפשת לא קיים.
-                    לא נורא, את/ה בידיים בטוחות.
-                </Typography>
-            </MuiThemeProvider>
-            <Button component={Link}
-                to="/" variant="contained"
-                className={classes.button}>חזרה לדף הבית</Button>
+            <div className="page-container">
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h3">404</Typography>
+                </MuiThemeProvider>
+                <hr />
+                <div className="content-container">
+                    <div className="image-container">
+                        <img src={Image} alt="404" />
+                    </div>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6" display="block">
+                            מצטער, העמוד שחיפשת לא קיים.
+                        </Typography>
+                    </MuiThemeProvider>
+                    <Button component={Link}
+                        to="/" variant="contained"
+                        className={classes.button}>חזרה לדף הבית</Button>
+                </div>
+            </div>
         </div>
     )
 }

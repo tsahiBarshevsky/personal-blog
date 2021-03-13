@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography, Grid } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ScrollContainer from 'react-indiana-drag-scroll';
+import { Link } from 'react-router-dom';
 import MediumCard from '../Cards/medium';
 import firebase from '../firebase';
 import Hero from '../Hero';
@@ -62,7 +63,20 @@ export default function Homepage()
             if (counter === 3)
                 break;
         }
-        return <div style={{paddingBottom: 25}}>{arr}</div>
+        return (
+            <div>
+                <div className="title">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="body1">{category}</Typography>
+                        {counter === 3 ?
+                        <Link className="link" to={{pathname: `/categories/${category}`}}>
+                            <Typography variant="body1">עוד ב{category}</Typography>
+                        </Link> : null}
+                    </MuiThemeProvider>
+                </div>
+                <div style={{paddingBottom: 25}}>{arr}</div>
+            </div>
+        )
     }
 
     return (
@@ -90,27 +104,14 @@ export default function Homepage()
                 </ScrollContainer>
             </div>
             <Grid container direction="row" justify="center" alignItems="baseline">
-                <Grid item lg={10} xl={10} className="posts-by-categories">
-                  {categories.map((category, index) =>
-                    <div key={index}>
-                      <div className="title">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="body1">{category.category}</Typography>
-                        </MuiThemeProvider>
-                      </div>
-                      {renderPostsByCategory(category.category)}
+                <Grid item lg={10} xl={10}>
+                    <div className="posts-by-categories">
+                        {categories.map((category, index) =>
+                            <div key={index}>
+                                {renderPostsByCategory(category.category)}
+                            </div>
+                        )}
                     </div>
-                  )}
-
-                    
-                    {/* {postsByCategories.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0)).map((post, index) =>
-                      <div key={index}>
-                        <LargeCard
-                            title={post.title}
-                            subtitle={post.subtitle}
-                            date={post.date} />
-                      </div>
-                    )} */}
                 </Grid>
                 <Grid item lg={2} xl={2}>
                     <div className="top-categories-container">

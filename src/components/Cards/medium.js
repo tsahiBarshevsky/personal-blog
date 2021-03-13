@@ -54,7 +54,7 @@ export default function MediumCard(props)
     }
 
     return (
-        <div className="card-container" style={background}>
+        <div className="medium-card-container" style={background}>
             <div className="black">
                 <div className="category">
                     <MuiThemeProvider theme={theme}>
