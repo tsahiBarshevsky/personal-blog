@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid, Chip } from '@material-ui/core';
+import { Typography, Chip } from '@material-ui/core';
 import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { Link } from 'react-router-dom';
@@ -81,7 +81,7 @@ function Homepage(props)
                         <Typography variant="body1">{category}</Typography>
                         {counter === 3 ?
                         <Link className="link" to={{pathname: `/categories/${category}`}}>
-                            <Typography variant="body1">עוד ב{category}</Typography>
+                            <Typography variant="body2">עוד ב{category}</Typography>
                         </Link> : null}
                     </MuiThemeProvider>
                 </div>
@@ -121,17 +121,15 @@ function Homepage(props)
                     )}
                 </ScrollContainer>
             </div>
-            <Grid container direction="row" justify="center" alignItems="baseline">
-                <Grid item lg={10} xl={10}>
-                    <div className="posts-by-categories">
-                        {categories.map((category, index) =>
-                            <div key={index}>
-                                {renderPostsByCategory(category.category)}
-                            </div>
-                        )}
-                    </div>
-                </Grid>
-                <Grid item lg={2} xl={2}>
+            <div className="categories-and-tags">
+                <div className="posts-by-categories">
+                    {categories.map((category, index) =>
+                        <div key={index}>
+                            {renderPostsByCategory(category.category)}
+                        </div>
+                    )}
+                </div>
+                <div className="distributions">
                     <div className="top-categories-container">
                         <div className="title">
                             <MuiThemeProvider theme={theme}>
@@ -155,8 +153,8 @@ function Homepage(props)
                         </div>
                         {renderTags()}
                     </div>
-                </Grid>
-            </Grid>
+                </div>
+            </div>
             {/* <Footer /> */}
         </div>
     )
