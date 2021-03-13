@@ -26,6 +26,7 @@
     "react-google-charts": "^3.0.15",
     "react-helmet": "^6.1.0",
     "react-indiana-drag-scroll": "^1.8.1",
+    "react-input-tags-hooks": "^0.0.2",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",

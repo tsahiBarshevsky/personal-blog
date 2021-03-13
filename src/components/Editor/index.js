@@ -14,6 +14,8 @@ import ProgressBar from '@ramonak/react-progress-bar';
 import { Helmet } from 'react-helmet';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
+import InputTags from "react-input-tags-hooks";
+import 'react-input-tags-hooks/build/index.css';
 
 const styles = () => ({
     button:
@@ -64,6 +66,7 @@ function Editor(props)
     const [progress, setProgress] = useState(0);
     const [progress2, setProgress2] = useState(0);
     const [credit, setCredit] = useState('');
+    const [tags, setTags] = useState([]);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [message, setMessage] = useState('');
@@ -282,6 +285,11 @@ function Editor(props)
         }
 	}
 
+    const getTags = (tags) => 
+    {
+        setTags(tags);
+    }
+
     return (
         <div className="container">
             <Helmet><title>{`האיש והמילה הכתובה | הוספת פוסט`}</title></Helmet>
@@ -421,6 +429,16 @@ function Editor(props)
                 bgcolor="#ff4040" 
                 labelColor="#000000" 
                 labelAlignment="center" /> : null}
+            <div className="tags-container">
+                <ThemeProvider theme={theme}>
+                    <Typography variant="h5" gutterBottom>{`תגיות`}</Typography>
+                </ThemeProvider>
+                <InputTags
+                    onTag={getTags}
+                    tagColor={green[300]}
+                    placeHolder="הוסף תגית..."
+                />
+            </div>
             <FormControl required error={errorCheck} component="fieldset">
                 <FormLabel component="legend">צ'ק ליסט</FormLabel>
                 <FormGroup>
@@ -512,7 +530,7 @@ function Editor(props)
                         .catch((error) => { console.log(error.message); });
                     });
                 });
-                await firebase.addPost(title, subtitle, date, category, text, credit);
+                await firebase.addPost(title, subtitle, date, category, text, credit, tags);
                 setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);
                 setTimeout(() => 

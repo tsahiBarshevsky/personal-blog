@@ -44,7 +44,7 @@ class Firebase
         return this.auth.currentUser;
     }
 
-    addPost(title, subtitle, date, category, text, credit)
+    addPost(title, subtitle, date, category, text, credit, tags)
     {
         return this.db.doc(`posts/${title}`).set({
             title: title,
@@ -52,7 +52,8 @@ class Firebase
             date: date,
             category: category,
             text: text,
-            credit: credit
+            credit: credit,
+            tags: tags
         });
     }
 
@@ -174,6 +175,32 @@ class Firebase
         }
         for (var i=0; i<a.length; i++)
             ret.push({category: a[i], occurrences: b[i]});
+        return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
+    }
+
+    async tagsDistribution()
+    {
+        var tags = [], a = [], b = [], ret = [], prev;
+        const snapshot = await app.firestore().collection('posts').get();
+        snapshot.docs.map(doc => 
+        {
+            if (new Date(doc.data().date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
+            doc.data().tags.map(tag => tags.push(tag));
+        });
+        tags.sort();
+        for (var i = 0; i<tags.length; i++) 
+        {
+            if (tags[i] !== prev) 
+            {
+                a.push(tags[i]);
+                b.push(1);
+            } 
+            else
+                b[b.length-1]++;
+            prev = tags[i];
+        }
+        for (var i=0; i<a.length; i++)
+            ret.push({tag: a[i], occurrences: b[i]});
         return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
     }
 

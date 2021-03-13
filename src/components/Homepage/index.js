@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Grid } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { Typography, Grid, Chip } from '@material-ui/core';
+import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { Link } from 'react-router-dom';
 import MediumCard from '../Cards/medium';
@@ -12,6 +12,14 @@ import { Helmet } from 'react-helmet';
 import Navbar from '../Navbar';
 import LargeCard from '../Cards/large';
 import SmallCard from '../Cards/small';
+
+const styles = (theme) => ({
+    chip:
+    {
+        marginLeft: theme.spacing(1),
+        marginBottom: theme.spacing(1)
+    }
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -34,18 +42,21 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Homepage() 
+function Homepage(props) 
 {
     const [posts, setPosts] = useState([]);
     const [sixRecentPosts, setSixRecentPosts] = useState([])
     const [categories, setCategories] = useState([]);
+    const [tags, setTags] = useState([]);
     const [postsByCategories, setPostsByCategories] = useState([]);
+    const { classes } = props;
 
     useEffect(() =>
     {
         firebase.getAllPosts().then(setPosts);
         firebase.getSixRecentPosts().then(setSixRecentPosts);
         firebase.categoriesDistribution().then(setCategories);
+        firebase.tagsDistribution().then(setTags);
         //firebase.getAllPostsByCategory("אהבה").then(setPostsByCategories);
     }, []);
 
@@ -77,6 +88,13 @@ export default function Homepage()
                 <div style={{paddingBottom: 25}}>{arr}</div>
             </div>
         )
+    }
+
+    const renderTags = () =>
+    {
+        var ret = [];
+        tags.map((tag) => ret.push(<Chip className={classes.chip} label={tag.tag} />));
+        return (<div className="tags-container">{ret}</div>);
     }
 
     return (
@@ -129,9 +147,19 @@ export default function Homepage()
                             </div>
                         )}
                     </div>
+                    <div className="top-tags-container">
+                        <div className="title">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="body1">תגיות מובילות</Typography>
+                            </MuiThemeProvider>
+                        </div>
+                        {renderTags()}
+                    </div>
                 </Grid>
             </Grid>
             {/* <Footer /> */}
         </div>
     )
 }
+
+export default withStyles(styles)(Homepage);

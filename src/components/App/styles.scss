@@ -303,7 +303,7 @@ $lg: 1920px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px 0;
+    padding: 5px 0 25px; //top sides bottom
 
     .category-container {
       width: 200px;
@@ -319,6 +319,24 @@ $lg: 1920px;
       &:hover {
         border-bottom: 2px dotted $hr-color;
       }
+    }
+  }
+
+  .top-tags-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 5px 0 25px; //top sides bottom
+
+    .tags-container {
+      width: 250px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      align-items: center;
+      margin: 5px 0 5px; //top sides bottom
+      cursor: default;
     }
   }
 }
@@ -1156,6 +1174,11 @@ form {
   display: flex;
   width: 100%;
   padding-bottom: 40px;
+}
+
+.container > .tags-container {
+  width: 500px;
+  padding-top: 30px;
 }
 
 /* === Post === */
