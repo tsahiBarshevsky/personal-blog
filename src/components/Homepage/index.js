@@ -17,7 +17,8 @@ const styles = (theme) => ({
     chip:
     {
         marginLeft: theme.spacing(1),
-        marginBottom: theme.spacing(1)
+        marginBottom: theme.spacing(1),
+        border: '1px solid #159753'
     }
 });
 
@@ -90,10 +91,17 @@ function Homepage(props)
         )
     }
 
+    const handleClick = (tagName) =>
+    {
+        console.log(`clicked on ${tagName}`);
+    }
+
     const renderTags = () =>
     {
         var ret = [];
-        tags.map((tag) => ret.push(<Chip className={classes.chip} label={tag.tag} />));
+        tags.map((tag) => 
+            ret.push(<Chip variant="outlined" onClick={() => handleClick(tag.tag)} 
+                           className={classes.chip} size="small" label={tag.tag} />));
         return (<div className="tags-container">{ret}</div>);
     }
 
@@ -139,7 +147,9 @@ function Homepage(props)
                         {categories.map((category, index) =>
                             <div className="category-container" key={index}>
                                 <MuiThemeProvider theme={theme}>
-                                    <Typography variant="subtitle1">{category.category}</Typography>
+                                    <Link style={{textDecoration: 'none', color: 'black'}} to={{pathname: `/categories/${category.category}`}}>
+                                        <Typography variant="subtitle1">{category.category}</Typography>
+                                    </Link>
                                     <Typography variant="subtitle1">{category.occurrences}</Typography>
                                 </MuiThemeProvider>
                             </div>

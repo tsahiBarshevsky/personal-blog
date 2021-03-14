@@ -103,31 +103,13 @@ class Firebase
         return ret;
     }
 
-    // async getAllPostsByCategory(category)
-    // {
-    //     console.log('====================================');
-    //     console.log('in');
-    //     console.log('====================================');
-    //     var ret = [];
-    //     const snapshot = await app.firestore().collection('posts').where("category", "==", category).get();
-    //     snapshot.docs.map(doc => 
-    //         ret.push({title: doc.data().title, subtitle: doc.data(), date: doc.data().date}));
-    //     return ret;
-    // }
-
     async getAllPostsByCategory(category)
     {
-        return new Promise((resolve, reject) => {
-            let posts = [];
-            app.firestore().collection('posts').where("category", "==", category).get()
-            .then((snapshot) => {
-                snapshot.forEach((doc) => posts.push(doc.data()));
-                resolve(posts);
-            })
-            .catch(error => {
-                reject(error);
-            });
-        });
+        var ret = [];
+        const snapshot = await app.firestore().collection('posts').where("category", "==", category).get();
+        snapshot.docs.map(doc => 
+            ret.push({title: doc.data().title, subtitle: doc.data().subtitle, date: doc.data().date}));
+        return ret;
     }
 
     // async getPostsByCategories(category)

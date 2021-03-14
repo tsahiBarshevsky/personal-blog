@@ -56,13 +56,14 @@ export default function MediumCard(props)
     return (
         <div className="medium-card-container" style={background}>
             <div className="black">
+                {category !== undefined ?
                 <div className="category">
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="overline">
                             {category}
                         </Typography>
                     </MuiThemeProvider>
-                </div>
+                </div> : null}
                 <Link className="link" to={{pathname: `/${title}`}}>
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h6">
