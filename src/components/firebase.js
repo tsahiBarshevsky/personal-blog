@@ -108,7 +108,10 @@ class Firebase
         var ret = [];
         const snapshot = await app.firestore().collection('posts').where("category", "==", category).get();
         snapshot.docs.map(doc => 
-            ret.push({title: doc.data().title, subtitle: doc.data().subtitle, date: doc.data().date}));
+            ret.push({title: doc.data().title, 
+                      subtitle: doc.data().subtitle, 
+                      date: doc.data().date,
+                      comments: doc.data().comments}));
         return ret;
     }
 
@@ -193,6 +196,14 @@ class Firebase
             category: category,
             date: date,
             text: text
+        });
+    }
+
+    async addComment(title, comment)
+    {
+        var reference = this.db.collection("posts").doc(`${title}`);
+        reference.update({
+            comments: app.firestore.FieldValue.arrayUnion(comment)
         });
     }
 

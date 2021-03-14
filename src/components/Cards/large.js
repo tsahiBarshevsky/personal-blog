@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
+import { AiOutlineComment } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase';
 
@@ -29,6 +30,7 @@ export default function LargeCard(props)
     const title = props.title;
     const subtitle = props.subtitle;
     const date = props.date;
+    const comments = props.comments;
     const [url, setUrl] = useState('');
     const background = { backgroundImage: `url(${url})` };
 
@@ -46,17 +48,42 @@ export default function LargeCard(props)
       return `${day} ב${month}, ${year}`;
     }
 
+    const formatComments = (amount) =>
+    {
+        switch(amount)
+        {
+            case 0: 
+                return "אין תגובות";
+            case 1:
+                return "תגובה אחת";
+            default:
+                return `${amount} תגובות`;
+        }
+    }
+
     return (
       <div className="large-card-container">
         <div className="meta">
           <div className="photo" style={background} />
           <div className="details">
-            <EventOutlinedIcon className="icon" />
-            <MuiThemeProvider theme={theme}>
-                <Typography variant="subtitle1">
-                    {formatDate(new Date(date.seconds * 1000))}
-                </Typography>
-            </MuiThemeProvider>
+            <div className="date-and-comments">
+              <div className="date">
+              <EventOutlinedIcon className="icon" />
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="subtitle1">
+                        {formatDate(new Date(date.seconds * 1000))}
+                    </Typography>
+                </MuiThemeProvider>
+              </div>
+              <div className="comments">
+                <AiOutlineComment className="icon" />
+                <MuiThemeProvider theme={theme}>
+                  <Typography variant="subtitle1">
+                      {formatComments(comments.length)}
+                  </Typography>
+                </MuiThemeProvider>
+              </div>
+            </div>
           </div>
         </div>
         <div className="description">

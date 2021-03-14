@@ -69,7 +69,7 @@ function Homepage(props)
         {
             if (sorted[i].category === category)
             {
-                arr.push(<LargeCard key={i} title={sorted[i].title} subtitle={sorted[i].subtitle} date={sorted[i].date} />);
+                arr.push(<LargeCard key={i} title={sorted[i].title} subtitle={sorted[i].subtitle} date={sorted[i].date} comments={sorted[i].comments} />);
                 counter++;
             }
             if (counter === 3)
@@ -124,7 +124,8 @@ function Homepage(props)
                                 category={post.category}
                                 title={post.title}
                                 subtitle={post.subtitle}
-                                date={post.date} />
+                                date={post.date}
+                                comments={post.comments} />
                         </div>
                     )}
                 </ScrollContainer>

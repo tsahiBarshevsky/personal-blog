@@ -35,7 +35,7 @@ export default function Category(props)
                 {posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0))
                 .map((post, index) => 
                     <div className="cards" key={index}>
-                        <MediumCard title={post.title} subtitle={post.subtitle} date={post.date} />
+                        <MediumCard title={post.title} subtitle={post.subtitle} date={post.date} comments={post.comments} />
                     </div>
                 )}
             </div>

@@ -524,12 +524,26 @@ $lg: 1920px;
       padding: 20px 0;
     }
 
-    .date {
+    .date-and-comments {
       display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      padding-bottom: 20px;
+      justify-content: flex-start;
+
+      .date {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+        margin-left: 15px;
+      }
+
+      .comments {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+      }
 
       .icon {
         font-size: 20px;
@@ -666,12 +680,23 @@ $lg: 1920px;
     transition: left 0.3s;
     background: rgba(black, 0.6);
     color: $color-white;
-    padding: 10px;
+    padding: 15px 10px;
     width: 100%;
 
-    .icon {
-      font-size: 25px;
-      margin-left: 10px;
+    .date-and-comments {
+      display: flex;
+      flex-direction: column;
+
+      .date,
+      .comments {
+        display: flex;
+        margin-bottom: 5px;
+      }
+
+      .icon {
+        font-size: 25px;
+        margin-left: 10px;
+      }
     }
   }
 
@@ -1364,6 +1389,33 @@ form {
 
         .credit {
           font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .comments {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .comment-root {
+      .comment-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 10px;
+        width: 500px; //responsive handle!
+        //background-color: chocolate;
+
+        .comment {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding: 0 10px 5px; //top sides bottom
+          //background-color: green;
         }
       }
     }

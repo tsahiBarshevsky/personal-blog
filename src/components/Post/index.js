@@ -3,7 +3,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
 import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
-import { Grid, Typography, Box, Button } from '@material-ui/core';
+import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
@@ -29,6 +29,12 @@ const theme = createMuiTheme({
             {
                 lineHeight: 1.2
             }
+        },
+        body2:
+        {
+            fontSize: 16,
+            lineHeight: 1.2,
+            marginTop: 10
         },
         h3:
         {
@@ -61,7 +67,7 @@ const theme = createMuiTheme({
 	}
 });
 
-const styles = () => ({
+const styles = (theme) => ({
     button:
     {
         color: '#4caf50',
@@ -78,6 +84,17 @@ const styles = () => ({
             color: 'white',
 			backgroundColor: green[500]
 		}
+    },
+    avatar:
+    {
+        width: theme.spacing(6),
+        height: theme.spacing(6),
+        marginLeft: theme.spacing(1.5)
+    },
+    divider:
+    {
+        marginBottom: 5,
+        borderRadius: 5
     }
 });
 
@@ -87,6 +104,8 @@ function Post(props)
     const [images, setImages] = useState([]);
     const [url, setUrl] = useState('');
     const [recentPosts, setRecentPosts] = useState([]);
+    const [name, setName] = useState('');
+    const [comment, setComment] = useState('');
     const [loaded, setLoaded] = useState(false);
     const [fault, setFault] = useState(false);
     const title = props.match.params.title;
@@ -190,12 +209,75 @@ function Post(props)
         return `יום ${week} ${day} ב${month}, ${year}`;
     }
 
+    const formatComments = (amount) =>
+    {
+        switch(amount)
+        {
+            case 0: 
+                return "אין תגובות";
+            case 1:
+                return "תגובה אחת";
+            default:
+                return `${amount} תגובות`;
+        }
+    }
+
     return (
         <div className="root">
             {loaded ? 
                 <>
                     <ScrollToTop />
                     <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
+                    <div className="comments">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h5">
+                                {formatComments(post.comments.length)}
+                            </Typography>
+                        </MuiThemeProvider>
+                        {post.comments.map((comment, index) =>
+                            <div key={index} className="comment-root">
+                                <div className="comment-container">
+                                    <Avatar className={classes.avatar} />
+                                    <div className="comment">
+                                        <div>
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="body1" gutterBottom>
+                                                    {comment.name}
+                                                </Typography>
+                                                <Typography variant="body2" gutterBottom>
+                                                    {comment.comment}
+                                                </Typography>
+                                            </MuiThemeProvider>
+                                        </div>
+                                    </div>
+                                </div>
+                                <Divider className={classes.divider} />
+                            </div>
+                        )}
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h5">הוספת תגובה</Typography>
+                        </MuiThemeProvider>
+                        <FormControl margin="normal" fullWidth>
+                            <TextField label="שם"
+                                id="name" name="name"
+                                variant="outlined"
+                                color='black'
+                                autoComplete="off" 
+                                autoFocus value={name}
+                                onChange={e => setName(e.target.value)} />
+                        </FormControl>
+                        <FormControl margin="normal" fullWidth>
+                            <TextField label="התגובה שלך"
+                                id="comment" name="comment"
+                                variant="outlined"
+                                multiline
+                                autoComplete="off" 
+                                value={comment} 
+                                onChange={e => setComment(e.target.value)}
+                                inputProps={{maxLength: 500}} />
+                        </FormControl>
+                        <Button variant="contained" onClick={addComment}>הוסף תגובה</Button>
+                    </div>
                     <div className="post-header" style={background}>
                         <div className="subtitle-container">
                             <div className="right-quotation-marks-container">
@@ -300,6 +382,20 @@ function Post(props)
             )]}
         </div>
     )
+
+    async function addComment()
+    {
+        const commentObject = {name: name, comment: comment};
+        try 
+        {
+            await firebase.addComment(title, commentObject);
+            alert("נוסף בהצלחה");
+        } 
+        catch (error) 
+        {
+            alert(error.message);
+        }
+    }
 }
 
 export default withStyles(styles)(Post);
