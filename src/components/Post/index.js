@@ -3,10 +3,11 @@ import { withStyles, createMuiTheme, MuiThemeProvider, StylesProvider, jssPreset
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
-import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField } from '@material-ui/core';
+import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField, Snackbar } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import MuiAlert from '@material-ui/lab/Alert';
 import rtl from 'jss-rtl';
 import { create } from 'jss';
 import ScrollToTop from '../scrollToTop';
@@ -43,6 +44,10 @@ const theme = createMuiTheme({
             {
                 fontSize: 40
             }
+        },
+        h4:
+        {
+            fontSize: 15
         },
         h5:
         {
@@ -130,6 +135,10 @@ const styles = (theme) => ({
             width: 250
         }
     },
+    snackbar:
+    {
+        textAlign: 'center'
+    }
 });
 
 function Post(props) 
@@ -142,6 +151,8 @@ function Post(props)
     const [comment, setComment] = useState('');
     const [loaded, setLoaded] = useState(false);
     const [fault, setFault] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [openError, setOpenError] = useState(false);
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
     const { classes } = props;
@@ -204,6 +215,11 @@ function Post(props)
     if (post && !loaded)
         setTimeout(() => { setLoaded(true); }, 1000);
 
+    const Alert = (props) =>
+    {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+
     const renderPost = () =>
     {
         var paragraphs = post.text.split("\n");
@@ -217,7 +233,7 @@ function Post(props)
                     </div>
                 : 
                     <div className="paragraphs">
-                        {Object.keys(images).length >= 2 ?
+                        {Object.keys(images).length >= 1 ?
                         <>
                             <img src={images[i++].link} alt="תמונה" className="image" />
                             <MuiThemeProvider theme={theme}>
@@ -254,6 +270,37 @@ function Post(props)
             default:
                 return `לפוסט זה יש ${amount} תגובות`;
         }
+    }
+
+    const renderTags = () =>
+    {
+        var arr = [], length = post.tags.length;
+        for (var i=0; i<length; i++)
+        {
+            if (i !== length-1)
+                arr.push(`${post.tags[i]}, `);
+            else
+                arr.push(post.tags[i]);
+        }
+        return (
+            <>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="body1">
+                        {`תגיות:`}
+                    </Typography>
+                </MuiThemeProvider>
+                {arr}
+            </>
+        )
+    }
+
+    const handleOpen = () => {
+        setOpen(true);
+    }
+    
+    const handleClose = () => {
+        setOpen(false);
+        setOpenError(false);
     }
 
     return (
@@ -298,12 +345,19 @@ function Post(props)
                                     </div>
                                     <p className="post">
                                         {Object.keys(post).length > 0 ? renderPost() : null}
-                                        <br />
-                                        <div className="credit-container">
-                                            <p className="credit">קרדיט תמונה ראשית: </p>
-                                            <p dir="ltr" className="credit">{post.credit}</p>
-                                        </div>
                                     </p>
+                                    <div className="main-credit-and-tags">
+                                        <div className="credit-container">
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="body1">
+                                                    {`קרדיט לתמונה ראשית: ${post.credit}`}
+                                                </Typography>
+                                            </MuiThemeProvider>
+                                        </div>
+                                        <div className="tags-container">
+                                            {renderTags()}
+                                        </div>
+                                    </div>
                                     <div className="comments">
                                         <MuiThemeProvider theme={theme}>
                                             <Typography variant="h5">
@@ -399,6 +453,28 @@ function Post(props)
                                 </div>
                             </Grid>
                     </Grid>
+                    <Snackbar onClick={handleClose}
+                        anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                        }}
+                        open={open}
+                        autoHideDuration={4000}
+                        onClose={handleClose}
+                        message={
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="h4" align="center">התגובה נוספה ובקרוב תוצג בפוסט</Typography>
+                            </MuiThemeProvider>}
+                    />
+                    <Snackbar open={openError} autoHideDuration={3500} onClose={handleClose}>
+                        <Alert onClose={handleClose} severity="error">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography align="center" variant="h4">
+                                    קרתה שגיאה, נסה שנית
+                                </Typography>
+                            </MuiThemeProvider>
+                        </Alert>
+                    </Snackbar>
                 </>
             :
             [(!fault ?
@@ -442,11 +518,16 @@ function Post(props)
         try 
         {
             await firebase.addComment(title, commentObject);
-            alert("נוסף בהצלחה");
+            handleOpen();
+            setName('');
+            setComment('');
         } 
         catch (error) 
         {
-            alert(error.message);
+            console.log(error.message);
+            setOpenError(true);
+            setName('');
+            setComment('');
         }
     }
 }

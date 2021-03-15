@@ -53,7 +53,8 @@ class Firebase
             category: category,
             text: text,
             credit: credit,
-            tags: tags
+            tags: tags,
+            comments: []
         });
     }
 

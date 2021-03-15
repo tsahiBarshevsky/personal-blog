@@ -12,20 +12,9 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Varela Round", sans-serif`,
 		},
-        caption:
+        body1:
         {
-            transform: 'translateY(10%)'
-            // fontWeight: 600,
-            // letterSpacing: 1
-        },
-        h5:
-        {
-            paddingTop: 8,
-            '@media (max-width: 400px)':
-			{
-				fontSize: 20,
-                fontWeight: 600
-			}
+            marginTop: 5
         }
 	}
 });
@@ -33,25 +22,13 @@ const theme = createMuiTheme({
 export default function SmallCard(props) 
 {
     const title = props.title;
-    const subtitle = props.subtitle;
-    const date = props.date;
-    //const category = props.category;
     const [url, setUrl] = useState('');
-    const background = { background: `url(${url})` };
 
     useEffect(() => {
         firebase.storage.ref(`posts/${title}/main/main image`).getDownloadURL().then(
             url => {setUrl(url);}
         );
     }, []);
-
-    const formatDate = (date) =>
-    {
-        var day = date.toLocaleString('he', {day: '2-digit'});
-        var month = date.toLocaleString('he', {month: 'long'});
-        var year = date.toLocaleString('he', {year: 'numeric'});
-        return `${day} ב${month}, ${year}`;
-    }
 
     return (
         <Link className="small-card-container" 
