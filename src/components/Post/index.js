@@ -3,11 +3,12 @@ import { withStyles, createMuiTheme, MuiThemeProvider, StylesProvider, jssPreset
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
-import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField, Snackbar } from '@material-ui/core';
+import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField, Snackbar, IconButton } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import MuiAlert from '@material-ui/lab/Alert';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import rtl from 'jss-rtl';
 import { create } from 'jss';
 import ScrollToTop from '../scrollToTop';
@@ -153,6 +154,7 @@ function Post(props)
     const [fault, setFault] = useState(false);
     const [open, setOpen] = useState(false);
     const [openError, setOpenError] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const title = props.match.params.title;
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
     const { classes } = props;
@@ -294,11 +296,13 @@ function Post(props)
         )
     }
 
-    const handleOpen = () => {
+    const handleOpen = () => 
+    {
         setOpen(true);
     }
     
-    const handleClose = () => {
+    const handleClose = () => 
+    {
         setOpen(false);
         setOpenError(false);
     }
@@ -380,6 +384,10 @@ function Post(props)
                                                             </MuiThemeProvider>
                                                         </div>
                                                     </div>
+                                                    {firebase.getCurrentUsername() ? 
+                                                    <IconButton aria-label="delete" size="small" onClick={() => deleteComment(index)}>
+                                                        <DeleteForeverRoundedIcon className="delete-icon" />
+                                                    </IconButton> : null}
                                                 </div>
                                                 <Divider className={classes.divider} />
                                             </div>
@@ -463,14 +471,14 @@ function Post(props)
                         onClose={handleClose}
                         message={
                             <MuiThemeProvider theme={theme}>
-                                <Typography variant="h4" align="center">התגובה נוספה ובקרוב תוצג בפוסט</Typography>
+                                <Typography variant="h4" align="center">{snackbarMessage}</Typography>
                             </MuiThemeProvider>}
                     />
                     <Snackbar open={openError} autoHideDuration={3500} onClose={handleClose}>
                         <Alert onClose={handleClose} severity="error">
                             <MuiThemeProvider theme={theme}>
                                 <Typography align="center" variant="h4">
-                                    קרתה שגיאה, נסה שנית
+                                    {snackbarMessage}
                                 </Typography>
                             </MuiThemeProvider>
                         </Alert>
@@ -518,6 +526,7 @@ function Post(props)
         try 
         {
             await firebase.addComment(title, commentObject);
+            setSnackbarMessage('התגובה נוספה ובקרוב תוצג בפוסט!');
             handleOpen();
             setName('');
             setComment('');
@@ -525,9 +534,27 @@ function Post(props)
         catch (error) 
         {
             console.log(error.message);
+            setSnackbarMessage('קרתה שגיאה, נסה שנית');
             setOpenError(true);
             setName('');
             setComment('');
+        }
+    }
+
+    function deleteComment(index)
+    {
+        var commentObject = post.comments[index];
+        try
+        {
+            firebase.deleteComment(title, commentObject);
+            setSnackbarMessage('התגובה נמחקה בהצלחה');
+            handleOpen();
+        }
+        catch (error)
+        {
+            console.log(error.message);
+            setSnackbarMessage('קרתה שגיאה, נסה שנית');
+            setOpenError(true);
         }
     }
 }

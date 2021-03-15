@@ -208,6 +208,14 @@ class Firebase
         });
     }
 
+    deleteComment(title, comment)
+    {
+        var reference = this.db.collection("posts").doc(`${title}`);
+        reference.update({
+            comments: app.firestore.FieldValue.arrayRemove(comment)
+        });
+    }
+
     deletePost(title)
     {
         var _this = this;

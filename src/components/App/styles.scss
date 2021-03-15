@@ -1310,7 +1310,7 @@ form {
       .comment-container {
         display: flex;
         flex-direction: row;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: flex-start;
         padding: 10px;
 
@@ -1319,6 +1319,17 @@ form {
           flex-direction: column;
           width: 100%;
           padding: 0 10px 5px; //top sides bottom
+        }
+      }
+
+      .delete-icon
+      {
+        color: rgba(black, 0.65);
+        transition: color 0.3s ease-in-out;
+
+        &:hover
+        {
+          color: rgba(black, 1);
         }
       }
     }
