@@ -54,26 +54,15 @@ export default function SmallCard(props)
     }
 
     return (
-        <div className="homepage-card-container">
-            <img src={url} alt="תמונה ראשית"/>
-            <div className="content">
-                <Link className="link" to={{pathname: `/${title}`}}>
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h6">
-                            {title}
-                        </Typography>
-                    </MuiThemeProvider>
-                </Link>
-                <p className="subtitle">{subtitle}</p>
-                <div className="date">
-                    <EventOutlinedIcon className="icon" />
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="caption">
-                            {formatDate(new Date(date.seconds * 1000))}
-                        </Typography>
-                    </MuiThemeProvider>
-                </div>
-            </div>
-        </div>
+        <Link className="small-card-container" 
+            to={{pathname: `/${title}`}}
+            target="_blank">
+            <img src={url} alt="תמונה ראשית" className="image"/>
+            <MuiThemeProvider theme={theme}>
+                <Typography variant="body1">
+                    {title}
+                </Typography>
+            </MuiThemeProvider>
+        </Link>
     )
 }

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import createBreakpoints from '@material-ui/core/styles/createBreakpoints'
+import { withStyles, createMuiTheme, MuiThemeProvider, StylesProvider, jssPreset } from '@material-ui/core/styles';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import { Bars, useLoading } from '@agney/react-loading';
 import firebase from '../firebase';
 import { Grid, Typography, Box, Button, Avatar, Divider, FormControl, TextField } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
+import { green, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
+import rtl from 'jss-rtl';
+import { create } from 'jss';
 import ScrollToTop from '../scrollToTop';
-import SmallCard from './smallCard';
+import SmallCard from '../Cards/small';
 import q1 from '../../images/q1.png';
 import q2 from '../../images/q2.png';
 
@@ -50,12 +51,16 @@ const theme = createMuiTheme({
         h6:
         {
             letterSpacing: 2,
-            fontWeight: 600,
-            textDecoration: 'underline'
+            fontWeight: 600
         },
         caption:
         {
             fontWeight: 600
+        },
+        overline:
+        {
+            color: red[900],
+            transform: 'translateY(-15%)'
         },
         subtitle2:
         {   
@@ -64,18 +69,22 @@ const theme = createMuiTheme({
             fontWeight: 600,
             paddingTop: 10
         }
-	}
+	},
+    direction: "rtl",
+    palette: { primary: green}
 });
+
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 const styles = (theme) => ({
     button:
     {
-        color: '#4caf50',
+        color: '#159753',
         width: 165,
         height: 45,
         fontSize: 17,
         backgroundColor: 'transparent',
-        border: '2px solid #4caf50',
+        border: '2px solid #159753',
         borderRadius: 25,
         transition: 'all 0.4s ease-out',
         marginTop: 30,
@@ -83,6 +92,23 @@ const styles = (theme) => ({
 		{
             color: 'white',
 			backgroundColor: green[500]
+		}
+    },
+    commentButton:
+    {
+        color: '#159753',
+        width: 140,
+        height: 40,
+        fontSize: 17,
+        backgroundColor: 'transparent',
+        border: '2px solid #159753',
+        borderRadius: 25,
+        transition: 'all 0.4s ease-out',
+        marginTop: 10,
+        '&:hover':
+		{
+            color: 'white',
+			backgroundColor: '#159753'
 		}
     },
     avatar:
@@ -95,7 +121,15 @@ const styles = (theme) => ({
     {
         marginBottom: 5,
         borderRadius: 5
-    }
+    },
+    input:
+    {
+        width: 500,
+        [theme.breakpoints.down("xs")]:
+        {
+            width: 250
+        }
+    },
 });
 
 function Post(props) 
@@ -214,11 +248,11 @@ function Post(props)
         switch(amount)
         {
             case 0: 
-                return "אין תגובות";
+                return "לפוסט זה אין תגובות";
             case 1:
-                return "תגובה אחת";
+                return "לפוסט זה יש תגובה אחת";
             default:
-                return `${amount} תגובות`;
+                return `לפוסט זה יש ${amount} תגובות`;
         }
     }
 
@@ -228,56 +262,6 @@ function Post(props)
                 <>
                     <ScrollToTop />
                     <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
-                    <div className="comments">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h5">
-                                {formatComments(post.comments.length)}
-                            </Typography>
-                        </MuiThemeProvider>
-                        {post.comments.map((comment, index) =>
-                            <div key={index} className="comment-root">
-                                <div className="comment-container">
-                                    <Avatar className={classes.avatar} />
-                                    <div className="comment">
-                                        <div>
-                                            <MuiThemeProvider theme={theme}>
-                                                <Typography variant="body1" gutterBottom>
-                                                    {comment.name}
-                                                </Typography>
-                                                <Typography variant="body2" gutterBottom>
-                                                    {comment.comment}
-                                                </Typography>
-                                            </MuiThemeProvider>
-                                        </div>
-                                    </div>
-                                </div>
-                                <Divider className={classes.divider} />
-                            </div>
-                        )}
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h5">הוספת תגובה</Typography>
-                        </MuiThemeProvider>
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="שם"
-                                id="name" name="name"
-                                variant="outlined"
-                                color='black'
-                                autoComplete="off" 
-                                autoFocus value={name}
-                                onChange={e => setName(e.target.value)} />
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="התגובה שלך"
-                                id="comment" name="comment"
-                                variant="outlined"
-                                multiline
-                                autoComplete="off" 
-                                value={comment} 
-                                onChange={e => setComment(e.target.value)}
-                                inputProps={{maxLength: 500}} />
-                        </FormControl>
-                        <Button variant="contained" onClick={addComment}>הוסף תגובה</Button>
-                    </div>
                     <div className="post-header" style={background}>
                         <div className="subtitle-container">
                             <div className="right-quotation-marks-container">
@@ -320,6 +304,75 @@ function Post(props)
                                             <p dir="ltr" className="credit">{post.credit}</p>
                                         </div>
                                     </p>
+                                    <div className="comments">
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="h5">
+                                                {formatComments(post.comments.length)}
+                                            </Typography>
+                                        </MuiThemeProvider>
+                                        {post.comments.map((comment, index) =>
+                                            <div key={index} className="comment-root">
+                                                <div className="comment-container">
+                                                    <Avatar className={classes.avatar} />
+                                                    <div className="comment">
+                                                        <div>
+                                                            <MuiThemeProvider theme={theme}>
+                                                                <Typography variant="body1" gutterBottom>
+                                                                    {comment.name}
+                                                                </Typography>
+                                                                <Typography variant="body2" gutterBottom>
+                                                                    {comment.comment}
+                                                                </Typography>
+                                                            </MuiThemeProvider>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <Divider className={classes.divider} />
+                                            </div>
+                                        )}
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="h5">הוספת תגובה</Typography>
+                                        </MuiThemeProvider>
+                                        <StylesProvider jss={jss}>
+                                            <MuiThemeProvider theme={theme}>
+                                                <FormControl margin="normal" fullWidth>
+                                                    <TextField label="שם"
+                                                        id="name" name="name"
+                                                        variant="outlined"
+                                                        autoComplete="off" 
+                                                        value={name}
+                                                        onChange={e => setName(e.target.value)}
+                                                        className={classes.input} />
+                                                </FormControl>
+                                                <FormControl margin="normal" fullWidth>
+                                                    <TextField label="התגובה שלך"
+                                                        id="comment" name="comment"
+                                                        variant="outlined"
+                                                        multiline
+                                                        autoComplete="off" 
+                                                        value={comment} 
+                                                        onChange={e => setComment(e.target.value)}
+                                                        inputProps={{maxLength: 500}}
+                                                        className={classes.input} />
+                                                </FormControl>
+                                            </MuiThemeProvider>
+                                            {500 - comment.length <= 10 && comment.length !== 500 ? 
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="overline">
+                                                    {`${500-comment.length} תווים נשארו עד ל-500`}
+                                                </Typography>
+                                            </MuiThemeProvider>
+                                            :
+                                            [(comment.length === 500 ? 
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="overline">
+                                                    {`הגעת לכמות התווים המקסימלית`}
+                                                </Typography>
+                                            </MuiThemeProvider>	
+                                            : null)]}
+                                        </StylesProvider>
+                                        <Button className={classes.commentButton} onClick={addComment}>הוסף תגובה</Button>
+                                    </div>
                                 </div>
                             </Grid>
                             <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">

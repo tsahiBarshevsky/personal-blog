@@ -321,7 +321,7 @@ function Editor(props)
                         {240 - subtitle.length <= 10 && subtitle.length !== 240 ? 
                         <MuiThemeProvider theme={theme}>
                             <Typography variant="subtitle1">
-                                {`${240-subtitle.length} תווים נשארו עד מגבלת ה-500`}
+                                {`${240-subtitle.length} תווים נשארו עד מגבלת ה-240`}
                             </Typography>
                         </MuiThemeProvider>
                         :
