@@ -9,6 +9,8 @@ import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import MuiAlert from '@material-ui/lab/Alert';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import CommentIcon from '@material-ui/icons/Comment';
+import SubdirectoryArrowLeftRoundedIcon from '@material-ui/icons/SubdirectoryArrowLeftRounded';
 import rtl from 'jss-rtl';
 import { create } from 'jss';
 import ScrollToTop from '../scrollToTop';
@@ -225,30 +227,57 @@ function Post(props)
     const renderPost = () =>
     {
         var paragraphs = post.text.split("\n");
-        var i = 0, j = 0;
-        return (paragraphs.map((paragraph, index) =>
-            <div key={index}>
-                {paragraph !== "" ? 
-                    <div className="paragraphs">
-                        <p>{paragraph}</p>
-                        <br />    
-                    </div>
-                : 
-                    <div className="paragraphs">
-                        {Object.keys(images).length >= 1 ?
-                        <>
-                            <img src={images[i++].link} alt="תמונה" className="image" />
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="caption">
-                                    {`קרדיט: ${images[j++].owner}`}
-                                </Typography>
-                            </MuiThemeProvider>
+        if (post.category === 'שירים')
+        {
+            const songStyle = {
+                justifyContent: 'flex-stat', 
+                alignItems: 'flex-start',
+                
+            };
+            return (
+                <p className="post" style={songStyle}>
+                    {paragraphs.map((paragraph, index) =>
+                    <div key={index}>
+                        {paragraph !== '' ?
+                            <div className="song-paragraphs">
+                                <p>{paragraph}</p>
+                            </div>
+                        :
                             <br />
-                        </> : null }
+                        }
                     </div>
-                }
-            </div>
-        ));
+                    )}
+                </p>
+            );
+        }
+        var i = 0, j = 0;
+        return (
+            <p className="post">
+                {paragraphs.map((paragraph, index) =>
+                <div key={index}>
+                    {paragraph !== "" ? 
+                        <div className="paragraphs">
+                            <p>{paragraph}</p>
+                            <br />    
+                        </div>
+                    : 
+                        <div className="paragraphs">
+                            {Object.keys(images).length >= 1 ?
+                            <>
+                                <img src={images[i++].link} alt="תמונה" className="image" />
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography variant="caption">
+                                        {`קרדיט: ${images[j++].owner}`}
+                                    </Typography>
+                                </MuiThemeProvider>
+                                <br />
+                            </> : null }
+                        </div>
+                    }
+                </div>
+                )}
+            </p>
+        );
     }
 
     const formatDate = (date) =>
@@ -263,37 +292,16 @@ function Post(props)
 
     const formatComments = (amount) =>
     {
+        var kind = post.category === 'שירים' ? 'שיר' : 'פוסט';
         switch(amount)
         {
             case 0: 
-                return "לפוסט זה אין תגובות";
+                return `ל${kind} זה אין תגובות`;
             case 1:
-                return "לפוסט זה יש תגובה אחת";
+                return `ל${kind} זה יש תגובה אחת`;
             default:
-                return `לפוסט זה יש ${amount} תגובות`;
+                return `ל${kind} זה יש ${amount} תגובות`;
         }
-    }
-
-    const renderTags = () =>
-    {
-        var arr = [], length = post.tags.length;
-        for (var i=0; i<length; i++)
-        {
-            if (i !== length-1)
-                arr.push(`${post.tags[i]}, `);
-            else
-                arr.push(post.tags[i]);
-        }
-        return (
-            <>
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="body1">
-                        {`תגיות:`}
-                    </Typography>
-                </MuiThemeProvider>
-                {arr}
-            </>
-        )
     }
 
     const handleOpen = () => 
@@ -347,9 +355,10 @@ function Post(props)
                                             </Typography> : "oops"}
                                         </MuiThemeProvider>
                                     </div>
-                                    <p className="post">
+                                    {Object.keys(post).length > 0 ? renderPost() : null}
+                                    {/* <p className="post">
                                         {Object.keys(post).length > 0 ? renderPost() : null}
-                                    </p>
+                                    </p> */}
                                     <div className="main-credit-and-tags">
                                         <div className="credit-container">
                                             <MuiThemeProvider theme={theme}>
@@ -359,7 +368,12 @@ function Post(props)
                                             </MuiThemeProvider>
                                         </div>
                                         <div className="tags-container">
-                                            {renderTags()}
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="body1">
+                                                    {`תגיות: `}
+                                                </Typography>
+                                            </MuiThemeProvider>
+                                            {post.tags.map((tag) => <Link className="tag-link" to={`/tags/${tag}`}>{tag}</Link>)}
                                         </div>
                                     </div>
                                     <div className="comments">
@@ -371,7 +385,13 @@ function Post(props)
                                         {post.comments.map((comment, index) =>
                                             <div key={index} className="comment-root">
                                                 <div className="comment-container">
-                                                    <Avatar className={classes.avatar} />
+                                                    {comment.name === 'צחי - האיש והמילה הכתובה' && comment.admin ? 
+                                                        <div className="avatars">
+                                                            <SubdirectoryArrowLeftRoundedIcon style={{color: 'gray'}} />
+                                                            <Avatar className={classes.avatar} src={image} />
+                                                        </div>
+                                                    :
+                                                        <Avatar className={classes.avatar} /> }
                                                     <div className="comment">
                                                         <div>
                                                             <MuiThemeProvider theme={theme}>
@@ -385,20 +405,26 @@ function Post(props)
                                                         </div>
                                                     </div>
                                                     {firebase.getCurrentUsername() ? 
-                                                    <IconButton aria-label="delete" size="small" onClick={() => deleteComment(index)}>
-                                                        <DeleteForeverRoundedIcon className="delete-icon" />
-                                                    </IconButton> : null}
+                                                    <div className="buttons">
+                                                        <IconButton aria-label="delete" size="small" onClick={() => deleteComment(index)}>
+                                                            <DeleteForeverRoundedIcon className="delete-icon" />
+                                                        </IconButton>
+                                                        <IconButton aria-label="comment" size="small" onClick={() => addAdminComment(index)}>
+                                                            <CommentIcon className="comment-icon" />
+                                                        </IconButton>  
+                                                    </div>
+                                                    : null}
                                                 </div>
                                                 <Divider className={classes.divider} />
                                             </div>
                                         )}
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h5">הוספת תגובה</Typography>
+                                            <Typography variant="h5">כתיבת תגובה חדשה</Typography>
                                         </MuiThemeProvider>
                                         <StylesProvider jss={jss}>
                                             <MuiThemeProvider theme={theme}>
                                                 <FormControl margin="normal" fullWidth>
-                                                    <TextField label="שם"
+                                                    <TextField label="שם" required
                                                         id="name" name="name"
                                                         variant="outlined"
                                                         autoComplete="off" 
@@ -407,7 +433,7 @@ function Post(props)
                                                         className={classes.input} />
                                                 </FormControl>
                                                 <FormControl margin="normal" fullWidth>
-                                                    <TextField label="התגובה שלך"
+                                                    <TextField label="התגובה שלך" required
                                                         id="comment" name="comment"
                                                         variant="outlined"
                                                         multiline
@@ -522,10 +548,39 @@ function Post(props)
 
     async function addComment()
     {
-        const commentObject = {name: name, comment: comment};
+        if (name.trim() && comment.trim())
+        {
+            const commentObject = {name: name, comment: comment, admin: false};
+            try 
+            {
+                await firebase.addComment(title, commentObject);
+                setSnackbarMessage('התגובה נוספה ובקרוב תוצג בפוסט!');
+                handleOpen();
+                setName('');
+                setComment('');
+            } 
+            catch (error) 
+            {
+                console.log(error.message);
+                setSnackbarMessage('קרתה שגיאה, נסה שנית');
+                setOpenError(true);
+                setName('');
+                setComment('');
+            }
+        }
+        else
+        {
+            setSnackbarMessage('התגובה שלך ריקה!');
+            setOpenError(true);
+        }
+    }
+
+    async function addAdminComment(index)
+    {
+        const commentObject = {name: name, comment: comment, admin: true};
         try 
         {
-            await firebase.addComment(title, commentObject);
+            await firebase.addAdminComment(title, index+1, commentObject);
             setSnackbarMessage('התגובה נוספה ובקרוב תוצג בפוסט!');
             handleOpen();
             setName('');

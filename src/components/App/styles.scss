@@ -1214,6 +1214,11 @@ form {
       justify-content: center;
       align-self: center;
 
+      @media screen and (max-width: $vs)
+      {
+        padding: 0 5px;
+      }
+
       hr {
         border: 0;
         height: 1px;
@@ -1233,15 +1238,15 @@ form {
       justify-content: center;
       align-items: center;
       white-space: pre-wrap;
-      //width: 85%;
-      padding: 60px 100px 10px; //top sides bottom
+      padding: 60px 100px 25px; //top sides bottom
       font-size: 1.2rem;
 
       @media screen and (max-width: $sm) {
         padding: 60px 40px 40px; //top sides bottom
       }
 
-      .paragraphs {
+      .paragraphs,
+      .song-paragraphs {
         display: flex;
         flex-direction: column;
 
@@ -1274,20 +1279,25 @@ form {
       padding: 0 40px 20px; //top sides bottom
     }
 
-    .credit-container {
+    .credit-container,
+    .tags-container {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
       padding-bottom: 10px;
-    }
 
-    .tags-container
-    {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
+      .tag-link {
+        text-decoration: none;
+        color: black;
+        margin: 0 5px;
+        font-size: 15px;
+        transition: color 0.5s ease-in-out;
+
+        &:hover {
+          color: $hr-color;
+        }
+      }
     }
   }
 
@@ -1314,6 +1324,18 @@ form {
         align-items: flex-start;
         padding: 10px;
 
+        .avatars {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .buttons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
         .comment {
           display: flex;
           flex-direction: column;
@@ -1324,6 +1346,18 @@ form {
 
       .delete-icon
       {
+        color: rgba(black, 0.65);
+        transition: color 0.3s ease-in-out;
+
+        &:hover
+        {
+          color: rgba(black, 1);
+        }
+      }
+
+      .comment-icon
+      {
+        font-size: 22px;
         color: rgba(black, 0.65);
         transition: color 0.3s ease-in-out;
 

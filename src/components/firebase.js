@@ -171,7 +171,7 @@ class Firebase
         snapshot.docs.map(doc => 
         {
             if (new Date(doc.data().date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
-            doc.data().tags.map(tag => tags.push(tag));
+                doc.data().tags.map(tag => tags.push(tag));
         });
         tags.sort();
         for (var i = 0; i<tags.length; i++) 
@@ -206,6 +206,16 @@ class Firebase
         reference.update({
             comments: app.firestore.FieldValue.arrayUnion(comment)
         });
+    }
+
+    async addAdminComment(title, index, comment)
+    {
+        const reference = this.db.collection(`posts`).doc(`${title}`);
+        const doc = await reference.get();
+        var comments = doc.data().comments;
+        comments.splice(index, 0, comment);
+        console.log(comments);
+        reference.update({ comments: comments });
     }
 
     deleteComment(title, comment)
