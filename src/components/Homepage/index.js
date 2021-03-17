@@ -50,6 +50,7 @@ function Homepage(props)
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
     const [postsByCategories, setPostsByCategories] = useState([]);
+    const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
     const { classes } = props;
 
     useEffect(() =>
@@ -109,64 +110,66 @@ function Homepage(props)
         <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
             {/* <Navbar />
-            <About /> 
-            <Hero /> */}
-            <div className="posts-container" id="posts">
-                <div className="title">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="body1">פוסטים אחרונים</Typography>
-                    </MuiThemeProvider>
+            <Hero />
+            <About />  */}
+            <div className="main-content">
+                <div className="posts-container" id="posts">
+                    <div className="title">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="body1">פוסטים אחרונים</Typography>
+                        </MuiThemeProvider>
+                    </div>
+                    <ScrollContainer className="posts">
+                        {sixRecentPosts.map((post, index) =>
+                            <div key={index}>
+                                <MediumCard
+                                    category={post.category}
+                                    title={post.title}
+                                    subtitle={post.subtitle}
+                                    date={post.date}
+                                    comments={post.comments} />
+                            </div>
+                        )}
+                    </ScrollContainer>
                 </div>
-                <ScrollContainer className="posts">
-                    {sixRecentPosts.map((post, index) =>
-                        <div key={index}>
-                            <MediumCard
-                                category={post.category}
-                                title={post.title}
-                                subtitle={post.subtitle}
-                                date={post.date}
-                                comments={post.comments} />
-                        </div>
-                    )}
-                </ScrollContainer>
-            </div>
-            <div className="categories-and-tags">
-                <div className="posts-by-categories">
-                    {categories.map((category, index) =>
-                        <div key={index}>
-                            {renderPostsByCategory(category.category)}
-                        </div>
-                    )}
-                </div>
-                <div className="distributions">
-                    <div className="top-categories-container">
-                        <div className="title">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="body1">קטגוריות מובילות</Typography>
-                            </MuiThemeProvider>
-                        </div>
+                <div className="categories-and-tags">
+                    <div className="posts-by-categories">
                         {categories.map((category, index) =>
-                            <div className="category-container" key={index}>
-                                <MuiThemeProvider theme={theme}>
-                                    <Link style={{textDecoration: 'none', color: 'black'}} to={{pathname: `/categories/${category.category}`}}>
-                                        <Typography variant="subtitle1">{category.category}</Typography>
-                                    </Link>
-                                    <Typography variant="subtitle1">{category.occurrences}</Typography>
-                                </MuiThemeProvider>
+                            <div key={index}>
+                                {renderPostsByCategory(category.category)}
                             </div>
                         )}
                     </div>
-                    <div className="top-tags-container">
-                        <div className="title">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="body1">תגיות מובילות</Typography>
-                            </MuiThemeProvider>
+                    <div className="distributions">
+                        <div className="top-categories-container">
+                            <div className="title">
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography variant="body1">קטגוריות מובילות</Typography>
+                                </MuiThemeProvider>
+                            </div>
+                            {categories.map((category, index) =>
+                                <div className="category-container" key={index}>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Link style={{textDecoration: 'none', color: 'black'}} to={{pathname: `/categories/${category.category}`}}>
+                                            <Typography variant="subtitle1">{category.category}</Typography>
+                                        </Link>
+                                        <Typography variant="subtitle1">{category.occurrences}</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                            )}
                         </div>
-                        {renderTags()}
+                        <div className="top-tags-container">
+                            <div className="title">
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography variant="body1">תגיות מומלצות</Typography>
+                                </MuiThemeProvider>
+                            </div>
+                            {renderTags()}
+                        </div>
                     </div>
                 </div>
             </div>
-            {/* <Footer /> */}
+            <Footer />
         </div>
     )
 }

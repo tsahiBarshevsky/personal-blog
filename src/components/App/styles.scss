@@ -4,6 +4,7 @@ $container-color: #f5f5f5; //354463;
 $card-color: #b0bec5;
 $card-text: whitesmoke;
 $hr-color: #159753;
+$footer-color: #222222;
 $color-white: white;
 
 /* === breakpoints === */
@@ -92,7 +93,7 @@ $lg: 1920px;
   transition: all 0.5s ease-out;
 
   &.active {
-    background: #eceff1;
+    background: #222222; // #eceff1;
     transition: all 0.5s ease-in;
     box-shadow: 0 2px 3px rgba(15, 15, 15, 0.25);
   }
@@ -245,123 +246,128 @@ $lg: 1920px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 10px 40px 10px; //top sides bottom
+  //padding: 10px 40px 10px; //top sides bottom - need to be changed
   width: 100%;
   background-color: $container-color;
   cursor: default;
 
-  .posts-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
+  .main-content {
     width: 100%;
-    background-color: $container-color;
-    padding: 10px 0 25px; //top sides bottom
-    cursor: default;
+    padding: 10px 40px 10px;
 
-    .posts {
+    .posts-container {
       display: flex;
-      width: 100%;
-      cursor: grab;
-
-      &:active {
-        cursor: grabbing;
-      }
-    }
-  }
-
-  .categories-and-tags {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    width: 100%;
-
-    @media screen and (max-width: 1100px) {
       flex-direction: column;
-    }
+      justify-content: center;
+      align-items: flex-start;
+      width: 100%;
+      background-color: $container-color;
+      padding: 10px 0 25px; //top sides bottom
+      cursor: default;
 
-    .posts-by-categories {
-      //padding: 0 40px;
-
-      .title {
+      .posts {
         display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        border-right: 3px solid $hr-color;
-        margin: 0 0 20px; //top sides bottom
+        width: 100%;
+        cursor: grab;
 
-        .link {
-          text-decoration: none;
-          color: black;
-          transition: color 0.5s ease-in-out;
-
-          &:hover {
-            color: $hr-color;
-          }
+        &:active {
+          cursor: grabbing;
         }
       }
     }
 
-    .distributions {
+    .categories-and-tags {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: baseline;
+      width: 100%;
 
       @media screen and (max-width: 1100px) {
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
+        flex-direction: column;
       }
 
-      @media screen and (max-width: 630px) {
-        flex-direction: column;
-        justify-content: flex-start;
-        width: 100%;
-      }
+      .posts-by-categories {
+        //padding: 0 40px;
 
-      .top-categories-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        padding: 5px 0 25px; //top sides bottom
-
-        .category-container {
-          width: 250px;
+        .title {
           display: flex;
-          flex-direction: row;
           justify-content: space-between;
-          align-items: center;
-          margin: 5px 0 5px; //top sides bottom
-          border-bottom: 2px dotted $container-color;
-          transition: border-bottom 0.5s ease-in-out;
-          cursor: default;
+          align-items: flex-end;
+          border-right: 3px solid $hr-color;
+          margin: 0 0 20px; //top sides bottom
 
-          &:hover {
-            border-bottom: 2px dotted $hr-color;
+          .link {
+            text-decoration: none;
+            color: black;
+            transition: color 0.5s ease-in-out;
+
+            &:hover {
+              color: $hr-color;
+            }
           }
         }
       }
 
-      .top-tags-container {
+      .distributions {
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        padding: 5px 0 25px; //top sides bottom
 
-        .tags-container {
-          width: 250px;
-          display: flex;
-          flex-wrap: wrap;
+        @media screen and (max-width: 1100px) {
           flex-direction: row;
-          align-items: center;
-          margin: 5px 0 5px; //top sides bottom
-          cursor: default;
+          justify-content: space-between;
+          width: 100%;
+        }
 
-          @media screen and (max-width: 630px) {
-            width: 100%;
+        @media screen and (max-width: 630px) {
+          flex-direction: column;
+          justify-content: flex-start;
+          width: 100%;
+        }
+
+        .top-categories-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding: 5px 0 25px; //top sides bottom
+
+          .category-container {
+            width: 250px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0 5px; //top sides bottom
+            border-bottom: 2px dotted $container-color;
+            transition: border-bottom 0.5s ease-in-out;
+            cursor: default;
+
+            &:hover {
+              border-bottom: 2px dotted $hr-color;
+            }
+          }
+        }
+
+        .top-tags-container {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+          padding: 5px 0 25px; //top sides bottom
+
+          .tags-container {
+            width: 250px;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
+            align-items: center;
+            margin: 5px 0 5px; //top sides bottom
+            cursor: default;
+
+            @media screen and (max-width: 630px) {
+              width: 100%;
+            }
           }
         }
       }
@@ -829,44 +835,144 @@ $lg: 1920px;
 
 /* === Footer === */
 
-.footer-container {
-  position: relative;
-  width: 100%;
-  height: 600px;
+footer {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  cursor: default;
-  //align-items: center;
-  padding: 15px;
-  box-sizing: border-box;
-  background: linear-gradient(
-      180deg,
-      rgba(2, 0, 36, 1) 0%,
-      rgba(9, 9, 121, 1) 45%,
-      rgba(0, 212, 255, 1) 100%
-    ),
-    url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
-      fixed;
-  background-blend-mode: screen;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: $container-color;
+  margin-top: 30px;
+  color: $color-white;
+  overflow-x: hidden;
 
-  .footer-content {
+  .polygon {
+    width: 100%;
+    height: 50px;
+    clip-path: polygon(0 60%, 100% 0, 100% 100%, 0% 100%);
+    background-color: $footer-color;
+  }
+
+  .title {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    border-right: 3px solid $hr-color;
+    margin: 0 0 15px; //top sides bottom
+  }
 
-    .text {
-      padding: 10px 25px 25px; //top sides bottom
+  .information {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    background-color: $footer-color;
+    //border: 1px dashed whitesmoke;
+
+    .about-me,
+    .newsletter,
+    .socials {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 350px;
+      padding: 5px;
+      margin: 5px;
+      //border: 1px dashed chocolate;
+
+      .newsletter-textfield {
+        display: flex;
+        flex-direction: row;
+      }
     }
   }
 
-  .wave {
-    position: absolute;
-    top: 0;
-    left: 0;
+  .copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 15px 0 10px; //top sides bottom
+    background-color: $footer-color;
+
+    @media screen and (max-width: 754px) {
+      padding: 25px 0 10px; //top sides bottom
+    }
   }
 }
+
+// .footer-container {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-end;
+//   align-items: flex-start;
+//   color: white;
+//   background-color: #222222;
+//   //clip-path: polygon(0 40%, 100% 0, 100% 100%, 0% 100%);
+//   width: 100%;
+//   height: 200px;
+
+//   .footer-content
+//   {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+//     width: 100%;
+//     height: 100%;
+
+//     .about-me {
+//       display: flex;
+//       flex-direction: column;
+//       justify-content: flex-start;
+//       align-items: center;
+//       width: 25%;
+//       background-color: $hr-color;
+//     }
+//   }
+// }
+
+// .footer-container {
+//   position: relative;
+//   width: 100%;
+//   height: 600px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: flex-end;
+//   cursor: default;
+//   //align-items: center;
+//   padding: 15px;
+//   box-sizing: border-box;
+//   background: linear-gradient(
+//       180deg,
+//       rgba(2, 0, 36, 1) 0%,
+//       rgba(9, 9, 121, 1) 45%,
+//       rgba(0, 212, 255, 1) 100%
+//     ),
+//     url("https://images.pexels.com/photos/261662/pexels-photo-261662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940")
+//       fixed;
+//   background-blend-mode: screen;
+
+//   .footer-content {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     align-items: center;
+
+//     .text {
+//       padding: 10px 25px 25px; //top sides bottom
+//     }
+//   }
+
+//   .wave {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//   }
+// }
 
 /* === Admin === */
 
@@ -1214,8 +1320,7 @@ form {
       justify-content: center;
       align-self: center;
 
-      @media screen and (max-width: $vs)
-      {
+      @media screen and (max-width: $vs) {
         padding: 0 5px;
       }
 
@@ -1274,7 +1379,7 @@ form {
     align-items: flex-start;
     padding: 0 100px 20px; //top sides bottom
     width: 100%;
-    
+
     @media screen and (max-width: $sm) {
       padding: 0 40px 20px; //top sides bottom
     }
@@ -1344,25 +1449,21 @@ form {
         }
       }
 
-      .delete-icon
-      {
+      .delete-icon {
         color: rgba(black, 0.65);
         transition: color 0.3s ease-in-out;
 
-        &:hover
-        {
+        &:hover {
           color: rgba(black, 1);
         }
       }
 
-      .comment-icon
-      {
+      .comment-icon {
         font-size: 22px;
         color: rgba(black, 0.65);
         transition: color 0.3s ease-in-out;
 
-        &:hover
-        {
+        &:hover {
           color: rgba(black, 1);
         }
       }
