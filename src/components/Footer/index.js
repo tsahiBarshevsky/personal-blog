@@ -1,6 +1,37 @@
 import React from 'react';
-import { Grid, TextField, Button, Typography } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { Grid, Input, IconButton, Typography, InputAdornment } from '@material-ui/core';
+import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import NavigateBeforeRoundedIcon from '@material-ui/icons/NavigateBeforeRounded';
+import { FaFacebookF, FaInstagram } from 'react-icons/fa';
+import { GiWorld } from 'react-icons/gi';
+
+const styles = () => ({
+    input:
+    {
+        backgroundColor: 'white',
+        height: 30,
+        width: 200,
+        marginTop: 10,
+        marginBottom: 5,
+        borderTopRightRadius: 3,
+        borderBottomRightRadius: 3,
+        fontFamily: '"Varela Round", sans-serif'
+    },
+    button:
+    {
+        height: 30,
+        width: 30,
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopLeftRadius: 3,
+        borderBottomLeftRadius: 3,
+        marginTop: 10,
+        marginBottom: 5,
+        backgroundColor: '#159753',
+        '&:hover': { backgroundColor: '#159753' },
+        '&:active': { backgroundColor: '#14663c' }
+    }
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -13,8 +44,10 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Footer() 
+function Footer(props) 
 {
+    const { classes } = props;
+
     return (
         <footer>
             <div className="polygon" />
@@ -37,17 +70,33 @@ export default function Footer()
                                 <Typography variant="subtitle1">הישארו מעודכנים בפוסטים האחרונים שלי, מבטיח לא להציק יותר מדי :)</Typography>
                             </MuiThemeProvider>
                             <div className="newsletter-textfield">
-                                <TextField />
-                                <Button>קדימה</Button>
+                                <Input className={classes.input} 
+                                    disableUnderline 
+                                    placeholder="המייל שלך"
+                                    startAdornment={<InputAdornment position="start" />} />
+                                <IconButton className={classes.button}>
+                                    <NavigateBeforeRoundedIcon className="icon" />
+                                </IconButton>
                             </div>
                         </div>
                     </Grid>
                     <Grid item>
                         <div className="socials">
                             <MuiThemeProvider theme={theme}>
-                                <div className="title"><Typography variant="h6">בואו נשמור על קשר?</Typography></div>
-                                <Typography variant="subtitle1">תוכלו למצוא אותי גם כאן</Typography>
+                                <div className="title"><Typography variant="h6">נשמור על קשר?</Typography></div>
+                                <Typography variant="subtitle1">תוכלו למצוא אותי ברשתות החברתיות וגם פוסטים נוספים באתר הבלוגרים</Typography>
                             </MuiThemeProvider>
+                            <div className="icons">
+                                <a href="https://www.facebook.com/tsahi.barshavsky/" target="_blank">
+                                    <FaFacebookF className="icon" />
+                                </a>
+                                <a href="https://www.instagram.com/tsahi_barshavsky/" target="_blank">
+                                    <FaInstagram className="icon" />
+                                </a>
+                                <a href="https://www.thebloggers.co.il/author/tsahib/" target="_blank">
+                                    <GiWorld className="icon" style={{ marginRight: 2}} />
+                                </a>
+                            </div>
                         </div>
                     </Grid>
                 </Grid>
@@ -80,3 +129,5 @@ export default function Footer()
         // </section>
     )
 }
+
+export default withStyles(styles)(Footer);
