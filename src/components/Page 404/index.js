@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import { Link } from 'react-router-dom';
 import Image from '../../images/coding.png';
+import { Helmet } from 'react-helmet';
 
 const styles = () => ({
     button:
@@ -48,6 +49,7 @@ function Page404(props)
 
     return (
         <div className="full-container">
+            <Helmet><title>האיש והמילה הכתובה | שגיאה</title></Helmet>
             <div className="page-container">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="h3">404</Typography>

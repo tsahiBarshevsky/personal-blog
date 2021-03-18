@@ -255,6 +255,44 @@ class Firebase
         });
         return this.db.collection('posts').doc(`${title}`).delete();
     }
+
+    async addSubscribe(email)
+    {
+        var reference = this.db.collection('subscribes').doc('users');
+        reference.update({
+            emails: app.firestore.FieldValue.arrayUnion(email)
+        });
+    }
+
+    async unsubscribe(email)
+    {
+        var reference = this.db.collection('subscribes').doc('users');
+        const doc = await reference.get();
+        var exists = false;
+        if (doc.data())
+            doc.data().emails.map((element) => 
+            {
+                if (element === email)
+                    exists = true;
+            });
+        if (exists)
+        {
+            reference.update({
+                emails: app.firestore.FieldValue.arrayRemove(email)
+            });
+            return true;
+        }
+        return false;
+    }
+
+    async getListOfSubscribes()
+    {
+        const reference = this.db.collection('subscribes').doc('users');
+        const doc = await reference.get();
+        if (doc.data())
+            return doc.data().emails;
+        return null;
+    }
 }
 
 export default new Firebase();

@@ -1,9 +1,11 @@
-import React from 'react';
-import { Grid, Input, IconButton, Typography, InputAdornment } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Grid, Input, IconButton, Typography, InputAdornment, Snackbar } from '@material-ui/core';
 import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import MuiAlert from '@material-ui/lab/Alert';
 import NavigateBeforeRoundedIcon from '@material-ui/icons/NavigateBeforeRounded';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { GiWorld } from 'react-icons/gi';
+import firebase from '../firebase';
 
 const styles = () => ({
     input:
@@ -46,7 +48,22 @@ const theme = createMuiTheme({
 
 function Footer(props) 
 {
+    const [email, setEmail] = useState('');
+    const [open, setOpen] = useState(false);
+    const [openError, setOpenError] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
     const { classes } = props;
+
+    const Alert = (props) =>
+    {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+    
+    const handleClose = () => 
+    {
+        setOpen(false);
+        setOpenError(false);
+    }
 
     return (
         <footer>
@@ -71,10 +88,13 @@ function Footer(props)
                             </MuiThemeProvider>
                             <div className="newsletter-textfield">
                                 <Input className={classes.input} 
+                                    value={email}
+                                    autoComplete="off"
                                     disableUnderline 
                                     placeholder="המייל שלך"
-                                    startAdornment={<InputAdornment position="start" />} />
-                                <IconButton className={classes.button}>
+                                    startAdornment={<InputAdornment position="start" />} 
+                                    onChange={e => setEmail(e.target.value)} />
+                                <IconButton className={classes.button} onClick={addSubscribe}>
                                     <NavigateBeforeRoundedIcon className="icon" />
                                 </IconButton>
                             </div>
@@ -108,6 +128,28 @@ function Footer(props)
                     </Typography>
                 </MuiThemeProvider>
             </div>
+            <Snackbar onClick={handleClose}
+                anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+                }}
+                open={open}
+                autoHideDuration={4000}
+                onClose={handleClose}
+                message={
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="subtitle1" align="center">{snackbarMessage}</Typography>
+                    </MuiThemeProvider>}
+            />
+            <Snackbar open={openError} autoHideDuration={3500} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography align="center" variant="subtitle1">
+                            {snackbarMessage}
+                        </Typography>
+                    </MuiThemeProvider>
+                </Alert>
+            </Snackbar>
         </footer>
         // <section className="footer-container">
         //     <div className="footer-content">
@@ -128,6 +170,32 @@ function Footer(props)
         //     </svg>
         // </section>
     )
+
+    async function addSubscribe()
+    {
+        var reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (reg.test(email.trim()))
+        {
+            try
+            {
+                await firebase.addSubscribe(email.trim());
+                setEmail('');
+                setOpen(true);
+                setSnackbarMessage('הרישום בוצע בהצלחה!');
+            }
+            catch(error)
+            {
+                console.lgo(error.message);
+                setOpenError(true);
+                setSnackbarMessage('קרתה שגיאה, נסה שנית');
+            }
+        }
+        else
+        {
+            setOpenError(true);
+            setSnackbarMessage('כתובת המייל אינה תקינה');
+        }
+    }
 }
 
 export default withStyles(styles)(Footer);

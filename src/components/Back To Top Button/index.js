@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
         zIndex: 20,
         position: 'fixed',
         bottom: 7,
-        right: 10,
+        right: 7,
         border: '2px solid #424242',
         backgroundColor: 'transparent',
         transition: '0.3s ease-out',

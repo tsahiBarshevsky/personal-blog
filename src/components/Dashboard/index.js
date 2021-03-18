@@ -313,6 +313,10 @@ function Dashboard(props) {
                     component={Link} 
                     variant="contained"
                     className={classes.button}>פוסט חדש</Button>
+                <Button to="/newsletter"
+                    component={Link} 
+                    variant="contained"
+                    className={classes.button}>ערוך ניוזלטר</Button>
                 <div className="table-container">
                     <table>
                         <thead>

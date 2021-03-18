@@ -14,6 +14,8 @@ import EditPost from '../Edit Post';
 import Page404 from '../Page 404';
 import Categories from '../Categories';
 import Category from '../Categories/category';
+import Newsletter from '../Newsletter';
+import Unsubscribe from '../Newsletter/unsubscribe';
 
 const theme = createMuiTheme();
 const typographyTheme = createMuiTheme({
@@ -57,6 +59,8 @@ export default function App()
 					<Route exact path="/categories/:category" component={Category} />
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/dashboard" component={Dashboard} />
+					<Route exact path="/newsletter" component={Newsletter} />
+					<Route exact path="/unsubscribe" component={Unsubscribe} />
 					<Route exact path="/editor" component={Editor} />
 					<Route exact path="/edit/:title" component={EditPost} />
 					<Route exact path="/:title" component={Post} />
