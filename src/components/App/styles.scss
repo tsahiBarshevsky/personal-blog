@@ -750,7 +750,7 @@ $lg: 1920px;
       rgba(48, 168, 92, 0.5) 0%,
       rgba(#222222, 0.5) 80%
     ),
-    url("../../images/hero-backgorund.png") fixed;
+    url("../../images/hero-background.jpg") fixed;
   background-blend-mode: screen;
   background-position: center;
   background-repeat: no-repeat;
@@ -1179,7 +1179,7 @@ form {
   background-color: $container-color;
   cursor: default;
   user-select: none;
-  overflow: hidden;
+  //overflow: hidden;
 
   .post-header {
     height: 650px;

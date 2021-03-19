@@ -15,6 +15,7 @@ import Navbar from '../Navbar';
 import LargeCard from '../Cards/large';
 import SmallCard from '../Cards/small';
 import BackToTop from '../Back To Top Button';
+import ScrollToTop from '../scrollToTop';
 
 const styles = (theme) => ({
     input:
@@ -168,6 +169,7 @@ function Homepage(props)
     return (
         <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
+            <ScrollToTop />
             <BackToTop showBelow={110} />
             <Navbar />
             <Hero />

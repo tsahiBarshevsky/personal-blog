@@ -85,7 +85,7 @@ function Hero(props)
                     className={classes.button}>אודותיי</Button>
                     <Button variant='contained' component={Link} to='posts'
                         smooth={true} duration={1000} spy={true}
-                        exact='true' offset={-40} className={classes.button}>פוסטים אחרונים</Button>
+                        exact='true' offset={-45} className={classes.button}>פוסטים אחרונים</Button>
                 </div>
             </div>
         </div>

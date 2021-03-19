@@ -17,6 +17,7 @@ import ScrollToTop from '../scrollToTop';
 import SmallCard from '../Cards/small';
 import q1 from '../../images/q1.png';
 import q2 from '../../images/q2.png';
+import BackToTop from '../Back To Top Button';
 
 const breakpoints = createBreakpoints({})
 const theme = createMuiTheme({
@@ -320,6 +321,7 @@ function Post(props)
             {loaded ? 
                 <>
                     <ScrollToTop />
+                    <BackToTop showBelow={110} />
                     <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
                     <div className="post-header" style={background}>
                         <div className="subtitle-container">
@@ -336,156 +338,152 @@ function Post(props)
                             </MuiThemeProvider>
                         </div>
                     </div>
-                    <Grid spacing={2}
-                        container
-                        direction="row"
-                        justify="flex-start"
-                        alignItems="flex-start">
-                            <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
-                                <div className="content">
-                                    <div className="information">
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h3" align="center">
-                                                {post.title}
-                                            </Typography>
-                                            <hr />
-                                            {Object.keys(post).length > 0 ?
-                                            <Typography variant="subtitle1" align="center">
-                                                {formatDate(new Date(post.date.seconds * 1000))}
-                                            </Typography> : "oops"}
-                                        </MuiThemeProvider>
-                                    </div>
+                    <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+                        <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+                            <div className="content">
+                                <div className="information">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h3" align="center">
+                                            {post.title}
+                                        </Typography>
+                                        <hr />
+                                        {Object.keys(post).length > 0 ?
+                                        <Typography variant="subtitle1" align="center">
+                                            {formatDate(new Date(post.date.seconds * 1000))}
+                                        </Typography> : "oops"}
+                                    </MuiThemeProvider>
+                                </div>
+                                {Object.keys(post).length > 0 ? renderPost() : null}
+                                {/* <p className="post">
                                     {Object.keys(post).length > 0 ? renderPost() : null}
-                                    {/* <p className="post">
-                                        {Object.keys(post).length > 0 ? renderPost() : null}
-                                    </p> */}
-                                    <div className="main-credit-and-tags">
-                                        <div className="credit-container">
-                                            <MuiThemeProvider theme={theme}>
-                                                <Typography variant="body1">
-                                                    {`קרדיט לתמונה ראשית: ${post.credit}`}
-                                                </Typography>
-                                            </MuiThemeProvider>
-                                        </div>
-                                        <div className="tags-container">
-                                            <MuiThemeProvider theme={theme}>
-                                                <Typography variant="body1">
-                                                    {`תגיות: `}
-                                                </Typography>
-                                            </MuiThemeProvider>
-                                            {post.tags.map((tag) => <Link className="tag-link" to={`/tags/${tag}`}>{tag}</Link>)}
-                                        </div>
-                                    </div>
-                                    <div className="comments">
+                                </p> */}
+                                <div className="main-credit-and-tags">
+                                    <div className="credit-container">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h5">
-                                                {formatComments(post.comments.length)}
+                                            <Typography variant="body1">
+                                                {`קרדיט לתמונה ראשית: ${post.credit}`}
                                             </Typography>
                                         </MuiThemeProvider>
-                                        {post.comments.map((comment, index) =>
-                                            <div key={index} className="comment-root">
-                                                <div className="comment-container">
-                                                    {comment.name === 'צחי - האיש והמילה הכתובה' && comment.admin ? 
-                                                        <div className="avatars">
-                                                            <SubdirectoryArrowLeftRoundedIcon style={{color: 'gray'}} />
-                                                            <Avatar className={classes.avatar} src={image} />
-                                                        </div>
-                                                    :
-                                                        <Avatar className={classes.avatar} /> }
-                                                    <div className="comment">
-                                                        <div>
-                                                            <MuiThemeProvider theme={theme}>
-                                                                <Typography variant="body1" gutterBottom>
-                                                                    {comment.name}
-                                                                </Typography>
-                                                                <Typography variant="body2" gutterBottom>
-                                                                    {comment.comment}
-                                                                </Typography>
-                                                            </MuiThemeProvider>
-                                                        </div>
-                                                    </div>
-                                                    {firebase.getCurrentUsername() ? 
-                                                    <div className="buttons">
-                                                        <IconButton aria-label="delete" size="small" onClick={() => deleteComment(index)}>
-                                                            <DeleteForeverRoundedIcon className="delete-icon" />
-                                                        </IconButton>
-                                                        <IconButton aria-label="comment" size="small" onClick={() => addAdminComment(index)}>
-                                                            <CommentIcon className="comment-icon" />
-                                                        </IconButton>  
-                                                    </div>
-                                                    : null}
-                                                </div>
-                                                <Divider className={classes.divider} />
-                                            </div>
-                                        )}
+                                    </div>
+                                    <div className="tags-container">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h5">כתיבת תגובה חדשה</Typography>
+                                            <Typography variant="body1">
+                                                {`תגיות: `}
+                                            </Typography>
                                         </MuiThemeProvider>
-                                        <StylesProvider jss={jss}>
-                                            <MuiThemeProvider theme={theme}>
-                                                <FormControl margin="normal" fullWidth>
-                                                    <TextField label="שם" required
-                                                        id="name" name="name"
-                                                        variant="outlined"
-                                                        autoComplete="off" 
-                                                        value={name}
-                                                        onChange={e => setName(e.target.value)}
-                                                        className={classes.input} />
-                                                </FormControl>
-                                                <FormControl margin="normal" fullWidth>
-                                                    <TextField label="התגובה שלך" required
-                                                        id="comment" name="comment"
-                                                        variant="outlined"
-                                                        multiline
-                                                        autoComplete="off" 
-                                                        value={comment} 
-                                                        onChange={e => setComment(e.target.value)}
-                                                        inputProps={{maxLength: 500}}
-                                                        className={classes.input} />
-                                                </FormControl>
-                                            </MuiThemeProvider>
-                                            {500 - comment.length <= 10 && comment.length !== 500 ? 
-                                            <MuiThemeProvider theme={theme}>
-                                                <Typography variant="overline">
-                                                    {`${500-comment.length} תווים נשארו עד ל-500`}
-                                                </Typography>
-                                            </MuiThemeProvider>
-                                            :
-                                            [(comment.length === 500 ? 
-                                            <MuiThemeProvider theme={theme}>
-                                                <Typography variant="overline">
-                                                    {`הגעת לכמות התווים המקסימלית`}
-                                                </Typography>
-                                            </MuiThemeProvider>	
-                                            : null)]}
-                                        </StylesProvider>
-                                        <Button className={classes.commentButton} onClick={addComment}>הוסף תגובה</Button>
+                                        {post.tags.map((tag) => <Link className="tag-link" to={`/tags/${tag}`}>{tag}</Link>)}
                                     </div>
                                 </div>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">
-                                <img src={image} alt="Profile image" className="profile-image"/>
-                                <hr />
-                                <div className="about-text">
+                                <div className="comments">
                                     <MuiThemeProvider theme={theme}>
-                                        <Typography align="center" variant="body1">
-                                            צחי "האיש והמילה הכתובה" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                        <Typography variant="h5">
+                                            {formatComments(post.comments.length)}
                                         </Typography>
                                     </MuiThemeProvider>
-                                </div>
-                                <div className="recent-posts">
-                                    <MuiThemeProvider theme={theme}>
-                                        <Typography align="center" variant="h6" gutterBottom>
-                                            פוסטים אחרונים
-                                        </Typography>
-                                    </MuiThemeProvider>
-                                    {recentPosts.map((post, index) =>
-                                        <div key={index}>
-                                            <SmallCard title={post.title} />
+                                    {post.comments.map((comment, index) =>
+                                        <div key={index} className="comment-root">
+                                            <div className="comment-container">
+                                                {comment.name === 'צחי - האיש והמילה הכתובה' && comment.admin ? 
+                                                    <div className="avatars">
+                                                        <SubdirectoryArrowLeftRoundedIcon style={{color: 'gray'}} />
+                                                        <Avatar className={classes.avatar} src={image} />
+                                                    </div>
+                                                :
+                                                    <Avatar className={classes.avatar} /> }
+                                                <div className="comment">
+                                                    <div>
+                                                        <MuiThemeProvider theme={theme}>
+                                                            <Typography variant="body1" gutterBottom>
+                                                                {comment.name}
+                                                            </Typography>
+                                                            <Typography variant="body2" gutterBottom>
+                                                                {comment.comment}
+                                                            </Typography>
+                                                        </MuiThemeProvider>
+                                                    </div>
+                                                </div>
+                                                {firebase.getCurrentUsername() ? 
+                                                <div className="buttons">
+                                                    <IconButton aria-label="delete" size="small" onClick={() => deleteComment(index)}>
+                                                        <DeleteForeverRoundedIcon className="delete-icon" />
+                                                    </IconButton>
+                                                    <IconButton aria-label="comment" size="small" onClick={() => addAdminComment(index)}>
+                                                        <CommentIcon className="comment-icon" />
+                                                    </IconButton>  
+                                                </div>
+                                                : null}
+                                            </div>
+                                            <Divider className={classes.divider} />
                                         </div>
                                     )}
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h5">כתיבת תגובה חדשה</Typography>
+                                    </MuiThemeProvider>
+                                    <StylesProvider jss={jss}>
+                                        <MuiThemeProvider theme={theme}>
+                                            <FormControl margin="normal" fullWidth>
+                                                <TextField label="שם" required
+                                                    id="name" name="name"
+                                                    variant="outlined"
+                                                    autoComplete="off" 
+                                                    value={name}
+                                                    onChange={e => setName(e.target.value)}
+                                                    className={classes.input} />
+                                            </FormControl>
+                                            <FormControl margin="normal" fullWidth>
+                                                <TextField label="התגובה שלך" required
+                                                    id="comment" name="comment"
+                                                    variant="outlined"
+                                                    multiline
+                                                    autoComplete="off" 
+                                                    value={comment} 
+                                                    onChange={e => setComment(e.target.value)}
+                                                    inputProps={{maxLength: 500}}
+                                                    className={classes.input} />
+                                            </FormControl>
+                                        </MuiThemeProvider>
+                                        {500 - comment.length <= 10 && comment.length !== 500 ? 
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="overline">
+                                                {`${500-comment.length} תווים נשארו עד ל-500`}
+                                            </Typography>
+                                        </MuiThemeProvider>
+                                        :
+                                        [(comment.length === 500 ? 
+                                        <MuiThemeProvider theme={theme}>
+                                            <Typography variant="overline">
+                                                {`הגעת לכמות התווים המקסימלית`}
+                                            </Typography>
+                                        </MuiThemeProvider>	
+                                        : null)]}
+                                    </StylesProvider>
+                                    <Button className={classes.commentButton} onClick={addComment}>הוסף תגובה</Button>
                                 </div>
-                            </Grid>
+                            </div>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">
+                            <img src={image} alt="Profile image" className="profile-image"/>
+                            <hr />
+                            <div className="about-text">
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography align="center" variant="body1">
+                                        צחי "האיש והמילה הכתובה" ברשבסקי. היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                    </Typography>
+                                </MuiThemeProvider>
+                            </div>
+                            <div className="recent-posts">
+                                <MuiThemeProvider theme={theme}>
+                                    <Typography align="center" variant="h6" gutterBottom>
+                                        פוסטים אחרונים
+                                    </Typography>
+                                </MuiThemeProvider>
+                                {recentPosts.map((post, index) =>
+                                    <div key={index}>
+                                        <SmallCard title={post.title} />
+                                    </div>
+                                )}
+                            </div>
+                        </Grid>
                     </Grid>
                     <Snackbar onClick={handleClose}
                         anchorOrigin={{
