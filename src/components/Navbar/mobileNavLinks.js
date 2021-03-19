@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-scroll';
+import { Link } from 'react-router-dom';
 import MenuToggle from './menuToggle';
 import Socials from "./socials";
+
+const style = { display: 'flex', alignSelf: 'flex-start', paddingTop: 20 };
 
 export default function MobileNavLinks() 
 {
@@ -13,21 +15,16 @@ export default function MobileNavLinks()
             {isOpen ? 
                 <ul className="links-wrapper">
                     <li className="link-item">
-                        <Link className="link" to='about'
-                            smooth={true} duration={1000} spy={true}
-                            exact='true' offset={-55}
-                            onClick={() => setOpen(!isOpen)}>אודות</Link>
+                        <Link className="link" to='/about'>אודות</Link>
                     </li>
                     <li className="link-item">
-                        <Link className="link" to='posts'
-                            smooth={true} duration={1000} spy={true}
-                            exact='true' offset={-20}
-                            onClick={() => setOpen(!isOpen)}>אחרונים</Link>
+                        <Link className="link" to='/categories'>קטגוריות</Link>
                     </li>
                     <li className="link-item">
-                        <Link className="link" to='/'>לינק 3</Link>
+                        <a target="_blank" className="link" 
+                            href='https://www.instagram.com/tsahi_barshavsky/'
+                            onClick={() => setOpen(!isOpen)}>האינסטגרם שלי</a>
                     </li>
-                    <Socials />
                 </ul>  
             : null}  
         </div>

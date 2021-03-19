@@ -171,7 +171,6 @@ function Homepage(props)
             <BackToTop showBelow={110} />
             <Navbar />
             <Hero />
-            {/* <About />   */}
             <div className="main-content">
                 <div className="posts-container" id="posts">
                     <div className="title">

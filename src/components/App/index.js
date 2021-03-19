@@ -16,6 +16,7 @@ import Categories from '../Categories';
 import Category from '../Categories/category';
 import Newsletter from '../Newsletter';
 import Unsubscribe from '../Newsletter/unsubscribe';
+import About from '../About';
 
 const theme = createMuiTheme();
 const typographyTheme = createMuiTheme({
@@ -55,6 +56,7 @@ export default function App()
 			<Router>
 				<Switch>
                     <Route exact path="/" component={Homepage} />
+					<Route exact path="/about" component={About} />
 					<Route exact path="/categories" component={Categories} />
 					<Route exact path="/categories/:category" component={Category} />
                     <Route exact path="/admin" component={Admin} />
