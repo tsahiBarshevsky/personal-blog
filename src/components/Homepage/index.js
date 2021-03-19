@@ -77,7 +77,8 @@ const theme = createMuiTheme({
         subtitle2:
         {
             fontSize: 15,
-            marginBottom: 15
+            marginBottom: 20,
+            lineHeight: 1.2
         },
         body1:
         {
@@ -168,9 +169,9 @@ function Homepage(props)
         <div className="home-container">
             <Helmet><title>האיש והמילה הכתובה</title></Helmet>
             <BackToTop showBelow={110} />
-            {/* <Navbar />
+            <Navbar />
             <Hero />
-            <About />   */}
+            {/* <About />   */}
             <div className="main-content">
                 <div className="posts-container" id="posts">
                     <div className="title">
@@ -194,7 +195,7 @@ function Homepage(props)
                 <div className="newsletter-container">
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h5" gutterBottom>הירשם כמנוי כדי לקבל מייל עדכון שבועי</Typography>
-                        <Typography variant="subtitle2">רק פעם אחת בשבוע, מבטיח :)</Typography>
+                        <Typography variant="subtitle2">רק פעם אחת בשבוע וניתן להסיר את הרישום בכל עת</Typography>
                     </MuiThemeProvider>
                     <div className="newsletter-textfield">
                         <Input className={classes.input} 

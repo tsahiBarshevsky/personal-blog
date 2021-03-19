@@ -1,6 +1,31 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import { Link } from 'react-scroll';
+import { Link as LinkR } from 'react-router-dom';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = () => ({
+    button:
+    {
+        color: 'white',//'#4caf50',
+        width: 161,
+        height: 45,
+        fontSize: 17,
+        backgroundColor: 'transparent',
+        border: '2px solid #4caf50',
+        borderRadius: 25,
+        marginLeft: 10,
+        marginBottom: 10,
+        transition: 'all 0.4s ease-out',
+        '&:hover':
+		{
+            color: 'white',
+			backgroundColor: green[500]
+		}
+    }
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -8,73 +33,63 @@ const theme = createMuiTheme({
 		allVariants: 
         {
 			fontFamily: `"Varela Round", sans-serif`,
+            color: 'whitesmoke'
 		},
+        h3:
+        {
+            fontFamily: `"Gveret-Levin", sans-serif`,
+            fontSize: 'calc(3vw + 3vh + 1vmin)',
+            lineHeight: 1,
+            marginTop: 10,
+            textShadow: '4px 4px 2px rgba(0, 0, 0, 0.7)'
+        },
         body1:
         {
-            fontSize: 18
+            fontSize: 20,
+            marginTop: 15,
+            width: '70%',
+            '@media (max-width: 700px)':
+            {
+                width: '100%'
+            },
+            '@media (max-width: 430px)':
+            {
+                lineHeight: 1.2
+            }
         }
 	}
 });
 
-export default function Hero() 
+function Hero(props) 
 {
+    const { classes } = props;
+
     return (
         <div className="hero-container">
-            {/* <Grid
-                container
-                direction="row"
-                justify="center"
-                alignItems="flex-start">
-                    <Grid item lg={6}>
-                        בלה בלה בלה
-                    </Grid>
-                    <Grid item lg={6} className="image-container">
-                        <img src="https://images.pexels.com/photos/1955134/pexels-photo-1955134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""/>
-                    </Grid>
-            </Grid> */}
+            <div className="hero-black">
+                <div className="hero-content">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h5">ברוכים הבאים לבלוג</Typography>
+                        <Typography variant="h3">האיש והמילה הכתובה</Typography>
+                        <Typography variant="body1">
+                            ארנסט המינגוויי טען ש
+                            <i>"אין מה לכתוב. כל מה שאתה עושה זה להתיישב ליד מכונת כתיבה ומדמם". </i>
+                            אמנם היום אני לא כותב עם מכונת כתיבה (הלוואי וכן),
+                            אבל עדיין, הכתיבה עבורי מהווה שער כניסה לנבכי הנפש 
+                            ונותנת לי את האומץ לצעוק את הדברים שאני לא מסוגל לומר.
+                        </Typography>
+                    </MuiThemeProvider>
+                </div>
+                <div className="buttons-container">
+                    <Button variant='contained' component={LinkR} to="/about"
+                    className={classes.button}>אודותיי</Button>
+                    <Button variant='contained' component={Link} to='posts'
+                        smooth={true} duration={1000} spy={true}
+                        exact='true' offset={-40} className={classes.button}>פוסטים אחרונים</Button>
+                </div>
+            </div>
         </div>
-        // <section>
-        //     <div className="hero-content">
-        //         {/*<MuiThemeProvider theme={theme}>
-        //             <Typography variant="h2" align="center">
-        //                 האיש והמילה הכתובה
-        //             </Typography>
-        //             <Typography variant="h5">
-        //                 בלוג אישי שנכתב מהלב
-        //             </Typography>
-        //         </MuiThemeProvider>
-        //         <div className="fieldtests">
-        //             <fieldset>
-        //                 <legend>אז מי אני? </legend>
-        //                 <div className="text">
-        //                     <MuiThemeProvider theme={theme}>
-        //                         <Typography variant="body1">
-        //                             היי! אני צחי, בן 27 מהמרכז. מתכנת במקצועי וכותב למעלה מעשור כתחביב.
-        //                             אז חשבתי לעצמי, למה לא לשלב בין שני העולמות?
-        //                             אז למה המילה הכתובה? כבר כמה שנים טובות שאני כותב כל יום
-        //                             והכתיבה הפכה להיות חלק מרכזי בחיי.
-        //                         </Typography>
-        //                     </MuiThemeProvider>
-        //                 </div>
-        //             </fieldset>
-        //             <fieldset>
-        //                 <legend>על מה אני כותב? </legend>
-        //                 <div className="text">
-        //                     <MuiThemeProvider theme={theme}>
-        //                         <Typography variant="body1">
-        //                             אהבה, השראה, מוטיבציה, החיים עצמם
-        //                         </Typography>
-        //                     </MuiThemeProvider>
-        //                 </div>
-        //             </fieldset>
-        //         </div>*/}   
-        //     </div>
-        //     {/*<svg className="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        //         <path fill="#f5f5f5" fill-opacity="1" d="M0,128L40,144C80,160,160,192,240,213.3C320,235,400,245,480,240C560,235,640,213,720,192C800,171,880,149,960,128C1040,107,1120,85,1200,101.3C1280,117,1360,171,1400,197.3L1440,224L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
-        //     </svg>*/}
-        //     <svg className="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-        //         <path fill="#f5f5f5" fillOpacity="1" d="M0,256L48,218.7C96,181,192,107,288,80C384,53,480,75,576,122.7C672,171,768,245,864,250.7C960,256,1056,192,1152,165.3C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        //     </svg>
-        // </section>
     )
 }
+
+export default withStyles(styles)(Hero);
