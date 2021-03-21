@@ -18,6 +18,8 @@ import SmallCard from '../Cards/small';
 import q1 from '../../images/q1.png';
 import q2 from '../../images/q2.png';
 import BackToTop from '../Back To Top Button';
+import Navbar from '../Navbar';
+import Footer from '../Footer';
 
 const breakpoints = createBreakpoints({})
 const theme = createMuiTheme({
@@ -323,6 +325,7 @@ function Post(props)
                     <ScrollToTop />
                     <BackToTop showBelow={110} />
                     <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
+                    <Navbar />
                     <div className="post-header" style={background}>
                         <div className="subtitle-container">
                             <div className="right-quotation-marks-container">
@@ -485,6 +488,7 @@ function Post(props)
                             </div>
                         </Grid>
                     </Grid>
+                    <Footer />
                     <Snackbar onClick={handleClose}
                         anchorOrigin={{
                         vertical: 'bottom',

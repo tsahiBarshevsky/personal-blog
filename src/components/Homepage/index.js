@@ -8,12 +8,10 @@ import { Link } from 'react-router-dom';
 import MediumCard from '../Cards/medium';
 import firebase from '../firebase';
 import Hero from '../Hero';
-import About from '../About';
 import Footer from '../Footer';
 import { Helmet } from 'react-helmet';
 import Navbar from '../Navbar';
 import LargeCard from '../Cards/large';
-import SmallCard from '../Cards/small';
 import BackToTop from '../Back To Top Button';
 import ScrollToTop from '../scrollToTop';
 

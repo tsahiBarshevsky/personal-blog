@@ -62,7 +62,7 @@ export default function LargeCard(props)
     }
 
     return (
-      <div className="large-card-container">
+      <div className="large-card-container" style={props.location === 'categories' ? { width: '100%', margin: 10 } : {}}>
         <div className="meta">
           <div className="photo" style={background} />
           <div className="details">
