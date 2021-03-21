@@ -7,39 +7,35 @@ import MobileNavLinks from "./mobileNavLinks";
 import { animateScroll as scroll } from 'react-scroll';
 import logo from '../../images/logo.png'
 
-export default function Navbar(props) 
+export default function Navbar() 
 {
     const isMobile = useMediaQuery({ maxWidth: DeviceSize.mobile });
     const [navbar, setNavbar] = useState(false);
-    //const [color, setColor] = useState('#123456');
 
     const toggleHome = () => 
     {
         if (window.location.pathname === '/')
             scroll.scrollToTop();
+        else
+            window.location.replace('/');
     }
 
     const changeBackground = () =>
     {
-        if (window.scrollY >= 70)
-        {
-            setNavbar(true);
-            //setColor('white');
-        }
-        else
-        {
-            setNavbar(false);
-            //setColor('black');
-        }
+        window.scrollY >= 70 ? setNavbar(true) : setNavbar(false);
     }
 
-    window.addEventListener('scroll', changeBackground);
+    if (window.location.pathname === '/')
+        window.addEventListener('scroll', changeBackground);
 
     return (
-        <div className={isMobile || navbar ? "navbar-container active" : "navbar-container"}>
+        <div style={
+            window.location.pathname !== '/' ? 
+            { backgroundColor: '#222222' } : {}} 
+            className={isMobile || navbar ? "navbar-container active" : "navbar-container"}>
             <div className="left-section">
                 <div className="logo-wrapper">
-                    <img src={logo} alt="לוגו" onClick={toggleHome} aria-lable="flaticon" />
+                    <img src={logo} alt="לוגו" onClick={toggleHome} />
                 </div>
             </div>
             <div className="middle-section">

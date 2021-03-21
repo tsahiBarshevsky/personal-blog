@@ -1467,11 +1467,12 @@ form {
   justify-content: flex-start;
   align-items: center;
   cursor: default;
-  background-color: $container-color;
+  background-color: $color-white;
   min-height: 100%;
-  height: 100vh;
-  overflow-y: scroll;
+  height: 100%;
+  //overflow-y: scroll;
   padding: 40px;
+  margin-top: 35px;
 
   .title {
     display: flex;
