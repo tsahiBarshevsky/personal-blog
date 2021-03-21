@@ -419,16 +419,17 @@ $lg: 1920px;
   }
 }
 
-/* === About (short version) === */
+/* === About === */
 
-.about-container {
+.container > .about-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-self: center;
   width: 60%;
   background-color: $container-color;
-  padding: 20px 35px 25px; //top sides bottom
+  padding: 50px 35px 25px; //top sides bottom
   cursor: default;
 
   @media screen and (max-width: $sm) {
@@ -534,7 +535,7 @@ $lg: 1920px;
       transition: color 0.5s ease-in-out;
 
       &:hover {
-        color: $hr-color;
+        color: rgb(206, 205, 205);
       }
     }
 
@@ -830,6 +831,7 @@ footer {
   margin-top: 30px;
   color: $color-white;
   overflow-x: hidden;
+  cursor: default;
 
   .polygon {
     width: 100%;
@@ -1459,7 +1461,7 @@ form {
 
 /* === Category page === */
 
-.category-page-container {
+.category-and-tag-page-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1477,6 +1479,7 @@ form {
     align-items: flex-end;
     border-right: 3px solid $hr-color;
     margin: 0 0 20px; //top sides bottom
+    align-self: start;
   }
 
   .posts-container {

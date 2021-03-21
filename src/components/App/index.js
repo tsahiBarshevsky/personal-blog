@@ -17,6 +17,7 @@ import Category from '../Categories/category';
 import Newsletter from '../Newsletter';
 import Unsubscribe from '../Newsletter/unsubscribe';
 import About from '../About';
+import Tags from '../Tags';
 
 const theme = createMuiTheme();
 const typographyTheme = createMuiTheme({
@@ -59,6 +60,8 @@ export default function App()
 					<Route exact path="/about" component={About} />
 					<Route exact path="/categories" component={Categories} />
 					<Route exact path="/categories/:category" component={Category} />
+					<Route exact path="/tags" component={Page404} />
+					<Route exact path="/tags/:tag" component={Tags} />
                     <Route exact path="/admin" component={Admin} />
                     <Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/newsletter" component={Newsletter} />

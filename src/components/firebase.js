@@ -116,6 +116,19 @@ class Firebase
         return ret;
     }
 
+    async getAllPostsByTags(tag)
+    {
+        var ret = [];
+        const snapshot = await app.firestore().collection('posts').where("tags", "array-contains", tag).get();
+        snapshot.docs.map(doc => 
+            ret.push({title: doc.data().title, 
+                      subtitle: doc.data().subtitle, 
+                      category: doc.data().category,
+                      date: doc.data().date,
+                      comments: doc.data().comments}));
+        return ret;
+    }
+
     // async getPostsByCategories(category)
     // {
     //     var posts = [], ret = [];

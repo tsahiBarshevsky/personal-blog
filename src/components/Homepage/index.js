@@ -51,7 +51,8 @@ const styles = (theme) => ({
     {
         marginLeft: theme.spacing(1),
         marginBottom: theme.spacing(1),
-        border: '1px solid #159753'
+        border: '1px solid #159753',
+        cursor: 'pointer'
     }
 });
 
@@ -141,17 +142,13 @@ function Homepage(props)
         )
     }
 
-    const handleClick = (tagName) =>
-    {
-        console.log(`clicked on ${tagName}`);
-    }
-
     const renderTags = () =>
     {
         var ret = [];
         tags.map((tag) => 
-            ret.push(<Chip variant="outlined" onClick={() => handleClick(tag.tag)} 
-                           className={classes.chip} size="small" label={tag.tag} />));
+            ret.push(
+                <Chip component={Link} to={`tags/${tag.tag}`} variant="outlined" 
+                    className={classes.chip} size="small" label={tag.tag} />));
         return (<div className="tags-container">{ret}</div>);
     }
 

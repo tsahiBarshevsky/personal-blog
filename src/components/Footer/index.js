@@ -124,7 +124,7 @@ function Footer(props)
             <div className="copyright">
                 <MuiThemeProvider theme={theme}>
                     <Typography variant="body2">
-                        האיש והמילה הכתובה &bull; כל הזכויות שמורות &copy; {new Date().getFullYear()}
+                        האיש והמילה הכתובה &bull; כל הזכויות שמורות לצחי ברשבסקי &copy; {new Date().getFullYear()}
                     </Typography>
                 </MuiThemeProvider>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MediumCard from '../Cards/medium';
 import firebase from '../firebase';
+// import BackToTop from '../Back To Top Button';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
@@ -16,21 +17,22 @@ const theme = createMuiTheme({
 	}
 });
 
-export default function Category(props) 
+function Tags(props) 
 {
     const [posts, setPosts] = useState([]);
-    const category = props.match.params.category;
+    const tag = props.match.params.tag;
 
     useEffect(() => {
-        firebase.getAllPostsByCategory(category).then(setPosts);
-    }, []);
+        firebase.getAllPostsByTags(tag).then(setPosts);
+    }, [])
 
     return (
         <div className="category-and-tag-page-container">
-            <Helmet><title>פוסטים בקטגוריה {category} | האיש והמילה הכתיבה</title></Helmet>
+            {/* <BackToTop showBelow={110} /> */}
+            <Helmet><title>פוסטים עם תגית {tag} | האיש והמילה הכתיבה</title></Helmet>
             <div className="title">
                 <MuiThemeProvider theme={theme}>
-                    <Typography variant="h5">פוסטים בקטגוריה {category}</Typography>
+                    <Typography variant="h5">פוסטים המכילים את התיוג {tag}</Typography>
                 </MuiThemeProvider>
             </div>
             <div className="posts-container">
@@ -39,7 +41,8 @@ export default function Category(props)
                     <div className="cards" key={index}>
                         <MediumCard 
                             title={post.title} 
-                            subtitle={post.subtitle} 
+                            subtitle={post.subtitle}
+                            category={post.category}
                             date={post.date} 
                             comments={post.comments} />
                     </div>
@@ -48,3 +51,5 @@ export default function Category(props)
         </div>
     )
 }
+
+export default Tags;
