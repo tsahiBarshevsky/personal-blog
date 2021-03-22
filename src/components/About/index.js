@@ -1,14 +1,15 @@
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-// import Navbar from '../Navbar';
-// import Footer from '../Footer';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import Navbar from '../Navbar';
+import Footer from '../Footer';
 
 const theme = createMuiTheme({
 	typography:
 	{
 		allVariants: { fontFamily: `"Varela Round", sans-serif` },
-        h6: { fontWeight: 600, marginBottom: 5 }
+        h6: { fontWeight: 600, paddingBottom: 10 },
+        body1: { fontSize: 17.5 }
 	}
 });
 
@@ -17,23 +18,39 @@ export default function About()
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
 
     return (
-        <>
-            {/* <Navbar /> */}
-            <div className="container"> 
-                <div className="about-container" id="about">
-                    <p>
-                        <img src={image} alt="זה אני!" className="image"/>
-                        <b>היי! שמי צחי ברשבסקי.</b> <br />
-                        אני בן 27, מתגורר במרכז ובפן המקצועי אני בוגר תואר ראשון במדעי המחשב ומתכנת Frontend. 
-                        בפן ה"פחות" מקצועי, אני אוהב צילום, בישול, מוזיקה, ומעל הכל, איך לא - כתיבה.
-                        התחלתי לכתוב כשהייתי בן 17 ועם השנים האהבה שלי למילה הכתובה הלכה והתעצמה.
-                        {/* לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוקו בלוקריה שיצמה ברורק. צש בליא, מנסוטו צמלח לביקו ננבי, צמוקו בלוקריה שיצמה ברורק. הועניב היושבב שערש שמחויט – שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.
-                        גולר מונפרר סוברט לורם שבצק יהול, לכנוץ בעריר גק ליץ, קונדימנטום קורוס בליקרה, נונסטי קלובר בריקנה סטום, לפריקך תצטריק לרטי.
-                        קולורס מונפרד אדנדום סילקוף, מרגשי ומרגשח. עמחליף לורם איפסום דולור סיט אמט, נולום ארווס סאפיאן – פוסיליס קוויס, אקווזמן סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט – לפתיעם ברשג – ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט מוסן מנת. מוסן מנת. להאמית קרהשק סכעיט דז מא, מנכם למטכין נשואי מנורך. קוואזי במר מודוף. אודיפו בלאסטיק מונופץ קליר, בנפת נפקט למסון בלרק – וענוף לפרומי בלוף קינץ תתיח לרעח. לת צשחמי צש בליא, מנסוטו צמלח לביקו ננבי, צמוקו בלוקריה שיצמה ברורק. */}
-                    </p>
+        <div className="about-container">
+            <Navbar />
+            <div className="summary">
+                <p>
+                    <img src={image} alt="זה אני!" className="image"/>
+                    <b>היי! שמי צחי ברשבסקי.</b> <br />
+                    אני בן 27, מתגורר במרכז ובפן המקצועי אני בוגר תואר ראשון במדעי המחשב ועוסק בפיתוח ועיצוב אתרים, כך שאת הבלוג הזה תכנתתי, עיצבתי והקמתי מאפס אחרי שחלמתי לא מעט זמן לעשות את זה.
+                    בפן האישי, אני אוהב צילום, בישול, מוזיקה ונגינה, ומעל הכל, איך לא - כתיבה. התחלתי לכתוב כשהייתי בן 17 ועם השנים האהבה שלי למילה הכתובה הלכה והתעצמה.
+                </p>
+            </div>
+            <div className="arrow-50">
+                <div className="cards-content">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6">על מה אני כותב?</Typography>
+                        <Typography variant="body1">
+                            בגדול? כמעט על הכל, אבל אם הייתי צריך לציין נושאים ספציפיים, אז אבחר בנושאים שהכי מעסיקים אותי.
+                            אהבה, זוגיות ויחסים הם הנושאים שלרוב אני מוצא את עצמי כותב עליהם,
+                            העצמה והשראה הם גם נושאים שאני מרבה לכתוב עליהם.
+                        </Typography>
+                    </MuiThemeProvider>
                 </div>
             </div>
-            {/* <Footer /> */}
-        </>
+            <div className="arrow-75">
+                <div className="cards-content">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6">מהו סגנון הכתיבה שלי?</Typography>
+                        <Typography variant="body1">
+                            הסגנונות האהובים עליי הם שירה ופואמות; מאז שהתחלתי לכתוב ועד היום כתבתי למעלה מ2,300 כאלו. 
+                        </Typography>
+                    </MuiThemeProvider>
+                </div>
+            </div>
+            <Footer />
+        </div>
     )
 }

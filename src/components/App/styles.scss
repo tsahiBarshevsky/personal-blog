@@ -6,6 +6,8 @@ $card-text: whitesmoke;
 $hr-color: #159753;
 $footer-color: #222222;
 $color-white: white;
+$green-color-50: #84c6a4;
+$green-color-75: #48ad7a;
 
 /* === breakpoints === */
 
@@ -303,6 +305,16 @@ $lg: 1920px;
         width: 100%;
       }
 
+      .link {
+        text-decoration: none;
+        color: black;
+        transition: color 0.5s ease-in-out;
+
+        &:hover {
+          color: $hr-color;
+        }
+      }
+
       .newsletter-textfield {
         display: flex;
         flex-direction: row;
@@ -421,40 +433,109 @@ $lg: 1920px;
 
 /* === About === */
 
-.container > .about-container {
+.about-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-self: center;
-  width: 60%;
+  width: 100%;
+  // background-color: #1597543b;
   background-color: $container-color;
-  padding: 50px 35px 25px; //top sides bottom
   cursor: default;
 
-  @media screen and (max-width: $sm) {
-    width: 100%;
-  }
-
-  p {
-    font-size: 20px;
+  .summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    width: 60%;
+    padding: 50px 35px 25px; //top sides bottom
+    margin-top: 45px;
 
     @media screen and (max-width: $sm) {
-      text-align: center;
+      width: 100%;
     }
 
-    .image {
-      width: 165px;
-      height: 165px;
-      border-radius: 50%;
-      float: right;
-      margin: 0 0 20px 60px; //top right bottom left
+    p {
+      font-size: 20px;
 
       @media screen and (max-width: $sm) {
-        float: inline-start;
-        margin: 0 0 5px 15px; //top right bottom left
+        text-align: center;
+      }
+
+      .image {
+        width: 165px;
+        height: 165px;
+        border-radius: 50%;
+        float: right;
+        margin: 0 0 20px 60px; //top right bottom left
+
+        @media screen and (max-width: $sm) {
+          float: inline-start;
+          margin: 0 0 5px 15px; //top right bottom left
+        }
       }
     }
+  }
+
+  .arrow-50 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $green-color-50;
+    height: 100%;
+    width: 100%;
+    padding: 25px 0;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -20px;
+      width: 0;
+      height: 0;
+      border-top: solid 20px $green-color-50;
+      border-left: solid 20px transparent;
+      border-right: solid 20px transparent;
+      z-index: 1;
+    }
+  }
+
+  .arrow-75 {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: $green-color-75;
+    height: 100%;
+    width: 100%;
+    padding: 25px 0;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -20px;
+      width: 0;
+      height: 0;
+      border-top: solid 20px $green-color-75;
+      border-left: solid 20px transparent;
+      border-right: solid 20px transparent;
+    }
+  }
+
+  .cards-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 20%;
+    padding: 0 15px 15px; //top sides bottom
   }
 }
 
@@ -1421,6 +1502,11 @@ form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    .link {
+      border-radius: 50%;
+      text-decoration: none;
+    }
 
     .profile-image {
       width: 250px;

@@ -22,6 +22,7 @@ const theme = createMuiTheme({
 export default function SmallCard(props) 
 {
     const title = props.title;
+    const titleLink = props.title.replace(/\s+/g, '-');
     const [url, setUrl] = useState('');
 
     useEffect(() => {
@@ -32,7 +33,7 @@ export default function SmallCard(props)
 
     return (
         <Link className="small-card-container" 
-            to={{pathname: `/${title}`}}
+            to={{pathname: `/${titleLink}`}}
             target="_blank">
             <img src={url} alt="תמונה ראשית" className="image"/>
             <MuiThemeProvider theme={theme}>

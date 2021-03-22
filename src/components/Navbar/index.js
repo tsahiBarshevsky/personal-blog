@@ -31,7 +31,8 @@ export default function Navbar()
     return (
         <div style={
             window.location.pathname !== '/' ? 
-            { backgroundColor: '#222222' } : {}} 
+            { backgroundColor: '#222222',
+              boxShadow: '0 2px 3px rgba(15, 15, 15, 0.25)' } : {}} 
             className={isMobile || navbar ? "navbar-container active" : "navbar-container"}>
             <div className="left-section">
                 <div className="logo-wrapper">

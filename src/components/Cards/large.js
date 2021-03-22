@@ -28,6 +28,7 @@ const theme = createMuiTheme({
 export default function LargeCard(props) 
 {
     const title = props.title;
+    const titleLink = props.title.replace(/\s+/g, '-');
     const subtitle = props.subtitle;
     const date = props.date;
     const comments = props.comments;
@@ -87,7 +88,7 @@ export default function LargeCard(props)
           </div>
         </div>
         <div className="description">
-          <Link className="link" to={{pathname: `/${title}`}}>
+          <Link className="link" to={{pathname: `/${titleLink}`}}>
             <MuiThemeProvider theme={theme}>
               <Typography variant="h5">
                     {title}

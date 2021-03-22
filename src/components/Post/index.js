@@ -160,7 +160,7 @@ function Post(props)
     const [open, setOpen] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const title = props.match.params.title;
+    const title = props.match.params.title.replaceAll('-', ' ');
     const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
     const { classes } = props;
     const background = {
@@ -465,7 +465,9 @@ function Post(props)
                             </div>
                         </Grid>
                         <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">
-                            <img src={image} alt="Profile image" className="profile-image"/>
+                            <Link to="/about" className="link">
+                                <img src={image} alt="Profile image" className="profile-image"/>
+                            </Link>
                             <hr />
                             <div className="about-text">
                                 <MuiThemeProvider theme={theme}>

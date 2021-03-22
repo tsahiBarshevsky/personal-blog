@@ -190,8 +190,8 @@ function Homepage(props)
                 </div>
                 <div className="newsletter-container">
                     <MuiThemeProvider theme={theme}>
-                        <Typography variant="h5" gutterBottom>הירשם כמנוי כדי לקבל מייל עדכון שבועי</Typography>
-                        <Typography variant="subtitle2">רק פעם אחת בשבוע וניתן להסיר את הרישום בכל עת</Typography>
+                        <Typography variant="h5" gutterBottom>יש לי גם ניוזלטר! הירשמו כמנוי וקבלו מייל עדכון שבועי</Typography>
+                        <Typography variant="subtitle2">התחרטתם? תוכלו <Link className="link" to='/unsubscribe'>לבטל את המינוי</Link> בכל עת</Typography>
                     </MuiThemeProvider>
                     <div className="newsletter-textfield">
                         <Input className={classes.input} 

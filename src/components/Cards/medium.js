@@ -34,6 +34,7 @@ const theme = createMuiTheme({
 export default function MediumCard(props) 
 {
     const title = props.title;
+    const titleLink = props.title.replace(/\s+/g, '-');
     const subtitle = props.subtitle;
     const date = props.date;
     const category = props.category;
@@ -79,7 +80,7 @@ export default function MediumCard(props)
                         </Typography>
                     </MuiThemeProvider>
                 </div> : null}
-                <Link className="link" to={{pathname: `/${title}`}}>
+                <Link className="link" to={{pathname: `/${titleLink}`}}>
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h6">
                             {title}
