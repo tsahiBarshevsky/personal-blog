@@ -82,7 +82,7 @@ function Hero(props)
                 </div>
                 <div className="buttons-container">
                     <Button variant='contained' component={LinkR} to="/about"
-                    className={classes.button}>אודותיי</Button>
+                    className={classes.button}>קצת עליי</Button>
                     <Button variant='contained' component={Link} to='posts'
                         smooth={true} duration={1000} spy={true}
                         exact='true' offset={-45} className={classes.button}>פוסטים אחרונים</Button>

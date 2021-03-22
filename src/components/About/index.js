@@ -5,7 +5,6 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import BackToTop from '../Back To Top Button';
 import ScrollToTop from '../scrollToTop';
-import image from '../../images/pexels-pixabay-261510.jpg';
 import { Helmet } from 'react-helmet';
 import { FaInstagram } from 'react-icons/fa';
 import { SiFacebook } from 'react-icons/si';
@@ -35,7 +34,15 @@ const theme = createMuiTheme({
 
 function About(props) 
 {
-    //const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
+    function calculateAge(birthday) 
+    {
+        var ageDifMs = Date.now() - birthday.getTime();
+        var ageDate = new Date(ageDifMs); 
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+
+    const age = calculateAge(new Date("1993-10-13"));
+    const image = 'https://firebasestorage.googleapis.com/v0/b/personal-blog-a2e4f.appspot.com/o/images%2Fabout.jpg?alt=media&token=69dd2bc6-a29e-4c5b-bedc-e5109fb75505';
     const { classes } = props;
 
     return (
@@ -49,15 +56,15 @@ function About(props)
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h5">ממש בקטנה עליי</Typography>
                         <Divider className={classes.divider} />
-                        <Typography variant="h6">היי! שמי צחי ברשבסקי,</Typography>
+                        <Typography variant="h6">היי! קוראים לי צחי ברשבסקי,</Typography>
                         <Typography variant="body1">
-                            אני בן 27, מתגורר במרכז ובפן המקצועי אני בוגר תואר ראשון במדעי המחשב ועוסק בפיתוח ועיצוב אתרים, כך שאת הבלוג הזה כתבתי, עיצבתי והקמתי מאפס בעצמי כפי שחלמתי די הרבה זמן לעשות. בפן האישי, אני אוהב תכנות, צילום, בישול, מוזיקה ונגינה, ומעל הכל, לא קשה לפספס - כתיבה.
+                            אני בן {age}, מתגורר במרכז ובפן המקצועי אני בוגר תואר ראשון במדעי המחשב ועוסק בפיתוח ועיצוב אתרים, כך שאת הבלוג הזה כתבתי, עיצבתי והקמתי מאפס בעצמי כפי שחלמתי די הרבה זמן לעשות. בפן האישי, אני אוהב תכנות, צילום, בישול, מוזיקה ונגינה, ומעל הכל, לא קשה לפספס - כתיבה.
                             <br />
                             התחלתי לכתוב כשהייתי בן 17 ועם השנים האהבה שלי למילה הכתובה הלכה והתעצמה. בטבע שלי אני אדם שקט וביישן, כך יצא שבזכות הכתיבה מצאתי את הדרך שלי לצעוק לעולם והיא משקפת את עולמי הפנימי ועוזרת לי לפרוק, לשחרר ולצעוק את כל מה שאין לי אומץ לומר בקול.
                             בעברי כתבתי באתר "מה וזה" שנסגר ב-2019 וכיום כותב באתר "הבלוגרים".
                         </Typography>
                     </MuiThemeProvider>
-                    <img src={image} alt="פדיחה! זה אמור להיות אני"/>
+                    <img src={image} alt="פדיחה! אמורה להיות תמונה שלי כאן :("/>
                     <Grid container direction="row" justify="flex-start" alignItems="flex-start">
                         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                             <MuiThemeProvider theme={theme}>

@@ -21,7 +21,7 @@ import BackToTop from '../Back To Top Button';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 
-const breakpoints = createBreakpoints({})
+const breakpoints = createBreakpoints({});
 const theme = createMuiTheme({
 	typography:
 	{
@@ -161,7 +161,7 @@ function Post(props)
     const [openError, setOpenError] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const title = props.match.params.title.replaceAll('-', ' ');
-    const image = "https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08";
+    const image = 'https://firebasestorage.googleapis.com/v0/b/personal-blog-a2e4f.appspot.com/o/images%2Fabout-rounded.jpg?alt=media&token=206a498a-98c0-40ba-bb00-48da4ffa5789';
     const { classes } = props;
     const background = {
         backgroundImage: `url(${url})`,
@@ -466,7 +466,7 @@ function Post(props)
                         </Grid>
                         <Grid item xs={12} sm={12} md={4} lg={4} xl={4} className="about">
                             <Link to="/about" className="link">
-                                <img src={image} alt="Profile image" className="profile-image"/>
+                                <img src={image} alt="פדיחה! אמורה להיות תמונה שלי כאן :(" className="profile-image"/>
                             </Link>
                             <hr />
                             <div className="about-text">
