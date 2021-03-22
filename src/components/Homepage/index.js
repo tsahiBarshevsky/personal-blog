@@ -5,6 +5,8 @@ import MuiAlert from '@material-ui/lab/Alert';
 import NavigateBeforeRoundedIcon from '@material-ui/icons/NavigateBeforeRounded';
 import ScrollContainer from 'react-indiana-drag-scroll';
 import { Link } from 'react-router-dom';
+import { FaFacebookF, FaInstagram } from 'react-icons/fa';
+import { GiWorld } from 'react-icons/gi';
 import MediumCard from '../Cards/medium';
 import firebase from '../firebase';
 import Hero from '../Hero';
@@ -51,6 +53,26 @@ const styles = (theme) => ({
         marginBottom: theme.spacing(1),
         border: '1px solid #159753',
         cursor: 'pointer'
+    }
+});
+
+const aboutTheme = createMuiTheme({
+    typography:
+    {
+        allVariants: 
+        {
+			fontFamily: `"Varela Round", sans-serif`,
+		},
+        subtitle1:
+        {
+            fontWeight: 600,
+            marginBottom: 2
+        },
+        subtitle2: 
+        { 
+            fontSize: 15,
+            lineHeight: 1.2
+        }
     }
 });
 
@@ -216,6 +238,32 @@ function Homepage(props)
                         )}
                     </div>
                     <div className="distributions">
+                        <div className="about">
+                            <img src="https://firebasestorage.googleapis.com/v0/b/tsahis-website.appspot.com/o/Backgrounds%2FIMG_0561_Easy-Resize.com.jpg?alt=media&token=f6d4acc4-f5ea-41c1-b018-e3829afeac08" alt=""/>
+                            <MuiThemeProvider theme={aboutTheme}>
+                                <Typography variant="subtitle1">צחי ברשבסקי</Typography>
+                                <div className="socials-container">
+                                    <div className="social-item">
+                                        <a href="https://www.facebook.com/tsahi.barshavsky/" target="_blank">
+                                            <FaFacebookF className="icon" id="facebook" />
+                                        </a>
+                                    </div>
+                                    <div className="social-item">
+                                        <a href="https://www.instagram.com/tsahi_barshavsky/" target="_blank">
+                                            <FaInstagram className="icon" id="instagram" />
+                                        </a>
+                                    </div>
+                                    <div className="social-item">
+                                        <a href="https://www.thebloggers.co.il/author/tsahib/" target="_blank">
+                                            <GiWorld className="icon" id="blog" />
+                                        </a>
+                                    </div>
+                                </div>
+                                <Typography variant="subtitle2">
+                                    היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                </Typography>
+                            </MuiThemeProvider>
+                        </div>
                         <div className="top-categories-container">
                             <div className="title">
                                 <MuiThemeProvider theme={theme}>
