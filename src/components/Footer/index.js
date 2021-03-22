@@ -3,6 +3,7 @@ import { Grid, Input, IconButton, Typography, InputAdornment, Snackbar } from '@
 import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import NavigateBeforeRoundedIcon from '@material-ui/icons/NavigateBeforeRounded';
+import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { GiWorld } from 'react-icons/gi';
 import firebase from '../firebase';
@@ -35,6 +36,7 @@ const styles = () => ({
     }
 });
 
+const breakpoints = createBreakpoints({});
 const theme = createMuiTheme({
 	typography:
 	{
@@ -42,7 +44,14 @@ const theme = createMuiTheme({
         body1: { lineHeight: 1.25 },
         subtitle1: { lineHeight: 1.25 },
         h6: { marginRight: 10 },
-        body2: { marginBottom: 5 }
+        body2: 
+        { 
+            marginBottom: 5, 
+            [breakpoints.down("xs")]:
+            {
+                width: '80%'
+            }
+        }
 	}
 });
 
