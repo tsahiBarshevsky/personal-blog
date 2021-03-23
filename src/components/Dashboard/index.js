@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
-import { Button, Typography, DialogActions, Snackbar, Grid } from '@material-ui/core';
+import { Button, Typography, DialogActions, Snackbar, Grid, IconButton } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -13,13 +13,17 @@ import { withStyles } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import Navbar from './navbar';
 import { blueGrey, green } from '@material-ui/core/colors';
-import Chart from "react-google-charts";
+import { Bars, useLoading } from '@agney/react-loading';
+import DataTable, { createTheme } from 'react-data-table-component';
+import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 const styles = theme => ({
     button:
     {
         color: 'white',
-        width: 120,
+        width: 122,
         height: 40,
         fontSize: 16,
         backgroundColor: green[500],
@@ -31,15 +35,14 @@ const styles = theme => ({
 			backgroundColor: green[300]
 		}
     },
-    tableButton:
+    iconButton:
     {
         color: 'white',
-        width: 120,
+        width: 40,
         height: 40,
         fontSize: 16,
         backgroundColor: blueGrey[600],
-        borderRadius: 15,
-        marginLeft: 10,
+        margin: 5,
         transition: 'all 0.5s ease-out',
         '&:hover':
 		{
@@ -86,37 +89,51 @@ const theme = createMuiTheme({
 	typography:
 	{
 		allVariants: { fontFamily: `"Varela Round", sans-serif` },
-        h4: { textAlign: 'center' },
+        h4: { textAlign: 'center', fontSize: 20 },
         h5: { fontWeight: 600, letterSpacing: 2, paddingBottom: 20 },
-        subtitle1: { fontWeight: 'bold' }
+        h6: { textDecoration: 'underline', paddingBottom: 15 },
+        subtitle1: { fontWeight: 'bold' },
+        subtitle2: { fontSize: 15 },
+        body1: { marginBottom: 10 },
+        caption: { fontSize: 18 }
 	}
 });
 
-function Dashboard(props) {
+const typographyTheme = createMuiTheme({
+	typography:
+	{
+        subtitle2:
+        {   
+            fontFamily: `"Varela Round", sans-serif`,
+            fontSize: 18,
+            color: '#159753',
+            fontWeight: 600,
+            paddingTop: 10
+        }
+	}
+});
 
+createTheme('solarized', 
+{
+    background: {
+        default: '#f5f5f5',
+    }
+});
+
+function Dashboard(props) 
+{
     const [posts, setPosts] = useState([]);
     const [title, setTitle] = useState('');
     const [update, setUpdate] = useState(true);
     const [open, setOpen] = useState(false);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [success, setSuccess] = useState('');
-    const [months, setMonths] = useState([
-        ['םישדוח', 'םיטסופ'],
-        ['ראוני', 0],
-        ['ראורבפ', 0],
-        ['ץרמ', 0],
-        ['לירפא', 0],
-        ['יאמ', 0],
-        ['ינוי', 0],
-        ['ילוי', 0],
-        ['טסוגוא', 0],
-        ['רבמטפס', 0],
-        ['רבוטקוא', 0],
-        ['רבמבונ', 0],
-        ['רבמצד', 0]
-    ]);
-
-    console.log(months);
+    const [months, setMonths] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+    const { indicatorEl } = useLoading({
+        loading: true,
+        indicator: <Bars width="50" className="loading" />,
+    });
     const { classes } = props;
     const dialogBackground = {backgroundColor: '#f5f5f5'};
     const warningStyle = {
@@ -125,30 +142,25 @@ function Dashboard(props) {
         marginLeft: 10,
     }
 
-    const postsPerMonths = (array, months) =>
-    {
-        array.map((item) =>
-        {
-            var casting = new Date(item.date.seconds * 1000);
-            if (casting.getFullYear() === new Date().getFullYear())
-                months[casting.getMonth() + 1][1]++;
-        });
-    }
-
     useEffect(() => {
         if (update)
         {
-            firebase.getAllPosts().then(setPosts);
+            //firebase.getAllPostsWithConvertedDate().then(setPosts);
+            getAllPosts();
+            firebase.getPostsPerMonths().then(setMonths);
             setUpdate(false);
             console.log("bdika");
+            console.log(posts);
         }
-        postsPerMonths(posts, months);
-    }, [firebase.getAllPosts(), postsPerMonths]);
+    }, [getAllPosts, firebase.getPostsPerMonths()]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
 		return null;
 	}
+
+    if (posts && !loaded)
+        setTimeout(() => { setLoaded(true); }, 1000);
 
     const Alert = (props) =>
     {
@@ -206,182 +218,211 @@ function Dashboard(props) {
         )
     }
 
-    const renderPosts = () =>
-    {
-        var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
-        return (
-            <tbody>
-                {sorted.map((post, index) =>
-                    <tr index={index}>
-                        <td>{index+1}</td>
-                        <td>{post.title}</td>
-                        <td>{new Date(post.date.seconds * 1000).toLocaleDateString("en-GB")}</td>
-                        <td>{post.category}</td>
-                        <td>
-                            <Button component={Link}
-                                to={{pathname: `/${post.title}`}} 
-                                variant="contained"
-                                className={classes.tableButton}>צפייה</Button>
-                            <Button component={Link}
-                                to={{pathname: `/edit/${post.title}`}} 
-                                variant="contained"
-                                className={classes.tableButton}>עריכה</Button>
-                            <Button 
-                                variant="contained" 
-                                className={classes.tableButton}
-                                onClick={() => {setTitle(post.title); handleOpen();}}>מחיקה</Button>
-                        </td>
-                    </tr>
-                )}
-            </tbody>
-        )
-    }
+    const columns = [
+        {
+            name: <h2>שם הפוסט</h2>,
+            selector: 'title',
+            sortable: true,
+        },
+        {
+            name: <h2>תאריך</h2>,
+            selector: 'date',
+            sortable: true,
+        },
+        {
+            name: <h2>קטגוריה</h2>,
+            selector: 'category',
+            sortable: true,
+        },
+        {
+            name: <h2>מספר תגובות</h2>,
+            selector: 'comments',
+            sortable: true,
+        },
+        {
+            name: <h2>אפשרויות</h2>,
+            selector: 'buttons',
+            sortable: true,
+        },
+    ];
 
     return (
         <>
-            <Navbar />
-            <div className="dashboard-container">
-                <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h5">לוח הבקרה</Typography>
-                    <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
-                </MuiThemeProvider>
-                <Grid spacing={2}
-                    container
-                    direction="row"
-                    justify="flex-start"
-                    alignItems="flex-start">
-                        <Grid item lg={8}>
-                            <div className="chart-container">
-                                <Chart
-                                    width={'100%'}
-                                    height={500}
-                                    chartType="ColumnChart"
-                                    loader={<div>טוען נתונים</div>}
-                                    data={months}
-                                    options={{
-                                        chartArea: { width: '100%' },
-                                        hAxis: {
-                                            title: 'םישדוח',
-                                            minValue: 0,
-                                        }
-                                    }}
-                                    legendToggle
-                                />
-                            </div>
-                        </Grid>
-                        <Grid item lg={4}>
-                            <div className="statistics-holder">
-                                <div className="statistics-container">
-                                    <div className="content">
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h4">{posts.length}</Typography>
-                                        </MuiThemeProvider>
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="subtitle1">כמות פוסטים</Typography>
-                                        </MuiThemeProvider>
-                                    </div>
+            {loaded ? 
+            <>
+                <Navbar />
+                <div className="dashboard-container">
+                    <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h5">לוח הבקרה</Typography>
+                        <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
+                    </MuiThemeProvider>
+                    <div className="statistics-holder">
+                        <div className="months">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="body1">פוסטים פר חודש לשנת {new Date().getFullYear()}</Typography>
+                            </MuiThemeProvider>
+                            {months.map((month, index) =>
+                                <div className="month-container" key={index}>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="subtitle2">{month.month}</Typography>
+                                        <Typography variant="subtitle2">{month.amount}</Typography>
+                                    </MuiThemeProvider>
                                 </div>
-                                <div className="statistics-container">
-                                    <div className="content">
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h4">{countCategories(posts)}</Typography>
-                                        </MuiThemeProvider>
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="subtitle1">כמות קטגוריות</Typography>
-                                        </MuiThemeProvider>
-                                    </div>
-                                </div>
-                                <div className="statistics-container">
-                                    <div className="content">
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="h4">{findTopCategory(posts)}</Typography>
-                                        </MuiThemeProvider>
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="subtitle1">הקטגוריה המובילה</Typography>
-                                        </MuiThemeProvider>
-                                    </div>
+                            )}
+                        </div>
+                        <div className="cards">
+                            <div className="statistics-container">
+                                <div className="content">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h4">{posts.length}</Typography>
+                                    </MuiThemeProvider>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="subtitle1">כמות פוסטים</Typography>
+                                    </MuiThemeProvider>
                                 </div>
                             </div>
-                        </Grid>
-                </Grid>
-                <hr />
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h6" gutterBottom>פוסטים</Typography>
-                </MuiThemeProvider>
-                <Button to="/editor"
-                    component={Link} 
-                    variant="contained"
-                    className={classes.button}>פוסט חדש</Button>
-                <Button to="/newsletter"
-                    component={Link} 
-                    variant="contained"
-                    className={classes.button}>ערוך ניוזלטר</Button>
-                <div className="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>שם הפוסט</th>
-                                <th>תאריך</th>
-                                <th>קטגוריה</th>
-                                <th>אפשרויות</th>
-                            </tr>
-                        </thead>
-                        {renderPosts()}
-                    </table>
-                </div>
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h6" gutterBottom>פעולות נוספות</Typography>
-                </MuiThemeProvider>
-                <div className="buttons-container">
-                    <Button to="/"
-                        component={Link} 
-                        variant="contained"
-                        className={classes.button}>לדף הבית</Button>
-                    <Button 
-                        variant="contained"
-                        className={classes.button}
-                        onClick={logout}>התנתק</Button>
-                </div>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    style={{cursor: "default", borderRadius: '25px'}}>
-                        <DialogTitle style={dialogBackground}>
-                            <div style={{display: 'flex', flexDirection: 'row'}}>
-                                <WarningIcon style={warningStyle} />
+                            <div className="statistics-container">
+                                <div className="content">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h4">{countCategories(posts)}</Typography>
+                                    </MuiThemeProvider>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="subtitle1">כמות קטגוריות</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                            </div>
+                            <div className="statistics-container">
+                                <div className="content">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h4">{findTopCategory(posts)}</Typography>
+                                    </MuiThemeProvider>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="subtitle1">הקטגוריה המובילה</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6" gutterBottom>פוסטים</Typography>
+                    </MuiThemeProvider>
+                    <div className="buttons-container">
+                        <Button to="/editor"
+                            component={Link} 
+                            variant="contained"
+                            className={classes.button}>פוסט חדש</Button>
+                        <Button to="/newsletter"
+                            component={Link} 
+                            variant="contained"
+                            className={classes.button}>ערוך ניוזלטר</Button>
+                    </div>
+                    <div className="table-container">
+                        <DataTable
+                            title="רשימת פוסטים"
+                            columns={columns}
+                            data={posts}
+                            pagination
+                            direction="rtl"
+                            pointerOnHover
+                            theme="solarized"
+                        />
+                    </div>
+                    <hr />
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6" gutterBottom>פעולות נוספות</Typography>
+                    </MuiThemeProvider>
+                    <div className="buttons-container">
+                        <Button to="/"
+                            component={Link} 
+                            variant="contained"
+                            className={classes.button}>לדף הבית</Button>
+                        <Button 
+                            variant="contained"
+                            className={classes.button}
+                            onClick={logout}>התנתק</Button>
+                    </div>
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        style={{cursor: "default", borderRadius: '25px'}}>
+                            <DialogTitle style={dialogBackground}>
+                                <div style={{display: 'flex', flexDirection: 'row'}}>
+                                    <WarningIcon style={warningStyle} />
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography component="h1" variant="h5">
+                                            {`מחיקת פוסט`}
+                                        </Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                            </DialogTitle>
+                            <DialogContent style={dialogBackground}>
                                 <MuiThemeProvider theme={theme}>
-                                    <Typography component="h1" variant="h5">
-                                        {`מחיקת פוסט`}
+                                    <Typography variant="caption" gutterBottom>
+                                        {`רגע, בטוח שאתה רוצה למחוק את הפוסט ${title}?`}
                                     </Typography>
                                 </MuiThemeProvider>
-                            </div>
-                        </DialogTitle>
-                        <DialogContent style={dialogBackground}>
+                            </DialogContent>
+                            <DialogActions style={dialogBackground}>
+                                <Button onClick={handleClose} className={classes.delete}>ביטול</Button>
+                                <Button onClick={deletePost} className={classes.cancel}>מחיקה</Button>
+                            </DialogActions>
+                    </Dialog>
+                    <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+                        <Alert onClose={closeSnackbar} severity="success">
                             <MuiThemeProvider theme={theme}>
-                                <Typography variant="h6" gutterBottom>
-                                    {`רגע, בטוח שאתה רוצה למחוק את הפוסט ${title}?`}
+                                <Typography align="center" variant="subtitle2">
+                                    {success}
                                 </Typography>
                             </MuiThemeProvider>
-                        </DialogContent>
-                        <DialogActions style={dialogBackground}>
-                            <Button onClick={handleClose} className={classes.delete}>ביטול</Button>
-                            <Button onClick={deletePost} className={classes.cancel}>מחיקה</Button>
-                        </DialogActions>
-                </Dialog>
-                <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
-                    <Alert onClose={closeSnackbar} severity="success">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography align="center" variant="subtitle2">
-                                {success}
-                            </Typography>
-                        </MuiThemeProvider>
-                    </Alert>
-                </Snackbar>
-            </div>
+                        </Alert>
+                    </Snackbar>
+                </div>
+            </>
+            :
+            <div className="full-container">
+                {indicatorEl}
+                <MuiThemeProvider theme={typographyTheme}>
+                    <Typography align="center" variant="subtitle2">
+                        רק רגע...
+                    </Typography>
+                </MuiThemeProvider>
+            </div>}
         </>
     )
+
+    async function getAllPosts()
+    {
+        var arr = [];
+        firebase.db.collection("posts").get().then((querySnapshot) =>
+        {
+            querySnapshot.forEach((doc) => {
+                arr.push({
+                    title: doc.data().title, 
+                    date: new Date(doc.data().date.seconds * 1000).toLocaleDateString("en-GB"), 
+                    category: doc.data().category,
+                    comments: doc.data().comments.length,
+                    buttons: 
+                        <div>
+                            <IconButton component={Link}
+                                to={{pathname: `/${doc.data().title.replace(/\s+/g, '-')}`}} 
+                                className={classes.iconButton}
+                                variant="contained"><VisibilityOutlinedIcon /></IconButton>
+                            <IconButton component={Link}
+                                to={{pathname: `/edit/${doc.data().title.replace(/\s+/g, '-')}`}}
+                                className={classes.iconButton} 
+                                variant="contained"><EditOutlinedIcon /></IconButton>
+                            <IconButton 
+                                variant="contained" 
+                                className={classes.iconButton}
+                                onClick={() => {setTitle(doc.data().title); handleOpen();}}><DeleteOutlinedIcon /></IconButton>
+                        </div>});
+            });
+            if (arr.length > 0)
+                setPosts(arr);
+        });
+    }
 
     async function deletePost()
     {

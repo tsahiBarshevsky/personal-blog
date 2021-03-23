@@ -129,6 +129,30 @@ class Firebase
         return ret;
     }
 
+    async getPostsPerMonths()
+    {
+        var months = [
+            {month: 'ינואר', amount: 0},
+            {month: 'פברואר', amount: 0},
+            {month: 'מרץ', amount: 0},
+            {month: 'אפריל', amount: 0},
+            {month: 'מאי', amount: 0},
+            {month: 'יוני', amount: 0},
+            {month: 'יולי', amount: 0},
+            {month: 'אוגוסט', amount: 0},
+            {month: 'ספטמבר', amount: 0},
+            {month: 'אוקטובר', amount: 0},
+            {month: 'נובמבר', amount: 0},
+            {month: 'דצמבר', amount: 0}];
+        const snapshot = await app.firestore().collection('posts').get();
+        snapshot.docs.map(doc => {
+            var casting = new Date(doc.data().date.seconds * 1000);
+            if (casting.getFullYear() === new Date().getFullYear())
+                months[casting.getMonth()].amount++;
+        });
+        return months;
+    }
+
     // async getPostsByCategories(category)
     // {
     //     var posts = [], ret = [];

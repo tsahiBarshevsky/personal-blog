@@ -37,7 +37,7 @@ const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 function Editor(props) 
 {
     const [post, setPost] = useState({});
-    const title = props.match.params.title;
+    const title = props.match.params.title.replaceAll('-', ' ');
     const [subtitle, setSubtitle] = useState('');
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
@@ -288,21 +288,13 @@ function Editor(props)
     {
         try 
         {
-            if (date >= new Date().setHours(0, 0, 0, 0))
+            await firebase.editPost(title, subtitle, category, date, text);
+            setMessage("הפוסט עודכן בהצלחה");
+            setOpenSuccess(true);
+            setTimeout(() => 
             {
-                await firebase.editPost(title, subtitle, category, date, text);
-                setMessage("הפוסט עודכן בהצלחה");
-                setOpenSuccess(true);
-                setTimeout(() => 
-                {
-                    props.history.replace("/dashboard");
-                }, 3500);
-            }
-            else
-            {
-                setOpenError(true);
-                setError("התאריך חלף כבר");
-            }
+                props.history.replace("/dashboard");
+            }, 3500);
         } 
         catch (error) 
         {

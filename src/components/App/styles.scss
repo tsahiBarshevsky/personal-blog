@@ -6,8 +6,6 @@ $card-text: whitesmoke;
 $hr-color: #159753;
 $footer-color: #222222;
 $color-white: white;
-$green-color-50: #84c6a4;
-$green-color-75: #48ad7a;
 
 /* === breakpoints === */
 
@@ -1095,35 +1093,57 @@ form {
   padding: 25px 55px 35px; //top sides bottom
   cursor: default;
 
-  .chart-container {
+  .months {
     display: flex;
-    padding: 10px 0;
-    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0 0 25px; //top sides bottom
+
+    .month-container {
+      width: 250px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin: 5px 0 5px; //top sides bottom
+      border-bottom: 2px dotted $hr-color;
+      transition: border-bottom 0.5s ease-in-out;
+    }
   }
 
   .statistics-holder {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    padding: 10px 10px 0; //top sides bottom
 
-    .statistics-container {
+    .cards {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
-      margin-bottom: 20px;
-      border-radius: 25px;
-      width: 300px;
-      height: 170px;
-      padding: 20px;
-      margin: 5px 0 30px 40px; //top right bottom left
-      background: linear-gradient(
-        152deg,
-        rgba(197, 225, 165, 0.9) 45%,
-        rgba(102, 187, 106, 0.9) 80%
-      );
+      margin-right: 100px;
+      height: 489px;
+
+      .statistics-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+        margin-bottom: 30px;
+        border-radius: 5px;
+        width: 250px;
+        height: 120px;
+        padding: 20px;
+        //margin: 5px 0 30px 40px; //top right bottom left
+        background: linear-gradient(
+          152deg,
+          rgba(197, 225, 165, 0.9) 45%,
+          rgba(102, 187, 106, 0.9) 80%
+        );
+      }
     }
   }
 
@@ -1140,57 +1160,22 @@ form {
   }
 
   .table-container {
-    overflow-x: auto;
     width: 100%;
-    padding: 30px 0;
-  }
+    height: 100%;
+    padding: 15px 0;
 
-  table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-
-  tr {
-    letter-spacing: 2px;
-
-    &:nth-child(odd) {
-      background-color: #e0e0e0;
+    h2 {
+      letter-spacing: 1px;
     }
-
-    &:nth-child(even) {
-      background-color: #cccaca;
-    }
-  }
-
-  th {
-    color: whitesmoke;
-    font-size: 17px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: right;
-    background-color: #455a64;
-    padding: 15px;
-
-    &:first-child {
-      border-top-right-radius: 15px;
-    }
-    &:last-child {
-      border-top-left-radius: 15px;
-    }
-  }
-
-  td {
-    padding: 15px;
-    font-size: 17px;
   }
 }
 
 /* === Dashboard navbar === */
 
 .dasboard-navbar {
-  background: #121212;
-  border-bottom: 1px dotted white;
-  height: 35px;
+  background: $footer-color;
+  box-shadow: 0 2px 3px rgba(15, 15, 15, 0.25);
+  height: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1203,10 +1188,10 @@ form {
     z-index: 1;
     width: 100%;
     max-width: 1300px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 50px;
-    padding-left: 50px;
+    // margin-right: auto;
+    // margin-left: auto;
+    // padding-right: 50px;
+    // padding-left: 50px;
     display: flex;
     justify-content: space-between;
     height: 35px;
@@ -1231,6 +1216,10 @@ form {
       font-size: 2rem;
       display: flex;
       align-items: center;
+
+      #newsletter {
+        font-size: 18px;
+      }
 
       .text {
         font-size: 18px;
