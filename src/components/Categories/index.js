@@ -62,7 +62,7 @@ export default function Categories()
         var sorted = posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0));
         for (var i=0; i<posts.length; i++) 
         {
-            if (sorted[i].category === category)
+            if (sorted[i].category === category && new Date(sorted[i].date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59))
             {
                 arr.push(
                     <LargeCard key={i} 

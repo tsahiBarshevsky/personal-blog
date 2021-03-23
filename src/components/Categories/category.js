@@ -41,11 +41,13 @@ export default function Category(props)
                     {posts.sort((a,b) => (a.date < b.date) ? 1 : ((b.date < a.date) ? -1 : 0))
                     .map((post, index) => 
                         <div className="cards" key={index}>
+                            {new Date(post.date.seconds * 1000) <= new Date().setHours(23, 59, 59, 59) ?
                             <MediumCard 
                                 title={post.title} 
                                 subtitle={post.subtitle} 
                                 date={post.date} 
                                 comments={post.comments} />
+                            : null }
                         </div>
                     )}
                 </div>
