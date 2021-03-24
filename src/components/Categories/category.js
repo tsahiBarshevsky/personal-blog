@@ -5,7 +5,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 import Navbar from '../Navbar';
-// import Footer from '../Footer';
+import Footer from '../Footer';
 
 const theme = createMuiTheme({
 	typography:
@@ -52,7 +52,7 @@ export default function Category(props)
                     )}
                 </div>
             </div>
-            {/* <Footer /> */}
+            <Footer />
         </>
     )
 }

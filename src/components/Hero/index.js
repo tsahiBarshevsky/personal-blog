@@ -5,6 +5,8 @@ import { green } from '@material-ui/core/colors';
 import { Link } from 'react-scroll';
 import { Link as LinkR } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import ScrollAnimation from 'react-animate-on-scroll';
+import "animate.css/animate.min.css";
 
 const styles = () => ({
     button:
@@ -68,24 +70,28 @@ function Hero(props)
         <div className="hero-container">
             <div className="hero-black">
                 <div className="hero-content">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h5">ברוכים הבאים לבלוג</Typography>
-                        <Typography variant="h3">האיש והמילה הכתובה</Typography>
-                        <Typography variant="body1">
-                            ארנסט המינגוויי טען ש
-                            <i>"אין מה לכתוב. כל מה שאתה עושה זה להתיישב ליד מכונת כתיבה ומדמם". </i><br />
-                            שמי צחי ואמנם היום אני לא כותב עם מכונת כתיבה (הלוואי וכן),
-                            אבל עדיין, הכתיבה עבורי מהווה שער כניסה לנבכי הנפש 
-                            ונותנת לי את האומץ לצעוק את הדברים שאני לא מסוגל לומר.
-                        </Typography>
-                    </MuiThemeProvider>
+                    <ScrollAnimation animateIn='animate__flipInX' animateOnce>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h5">ברוכים הבאים לבלוג</Typography>
+                            <Typography variant="h3">האיש והמילה הכתובה</Typography>
+                            <Typography variant="body1">
+                                ארנסט המינגוויי טען ש
+                                <i>"אין מה לכתוב. כל מה שאתה עושה זה להתיישב ליד מכונת כתיבה ומדמם". </i><br />
+                                שמי צחי ואמנם היום אני לא כותב עם מכונת כתיבה (הלוואי וכן),
+                                אבל עדיין, הכתיבה עבורי מהווה שער כניסה לנבכי הנפש 
+                                ונותנת לי את האומץ לצעוק את הדברים שאני לא מסוגל לומר.
+                            </Typography>
+                        </MuiThemeProvider>
+                    </ScrollAnimation>
                 </div>
                 <div className="buttons-container">
-                    <Button variant='contained' component={LinkR} to="/about"
-                    className={classes.button}>קצת עליי</Button>
-                    <Button variant='contained' component={Link} to='posts'
-                        smooth={true} duration={1000} spy={true}
-                        exact='true' offset={-45} className={classes.button}>פוסטים אחרונים</Button>
+                    <ScrollAnimation animateIn='animate__lightSpeedInRight' animateOnce delay={460}>
+                        <Button variant='contained' component={LinkR} to="/about"
+                            className={classes.button}>קצת עליי</Button>
+                        <Button variant='contained' component={Link} to='posts'
+                            smooth={true} duration={1000} spy={true}
+                            exact='true' offset={-45} className={classes.button}>פוסטים אחרונים</Button>
+                    </ScrollAnimation>
                 </div>
             </div>
         </div>

@@ -133,6 +133,22 @@ const styles = (theme) => ({
         marginBottom: 5,
         borderRadius: 5
     },
+    aboveCommmetDivider:
+    {
+        height: 2,
+        width: '100%',
+        backgroundColor: 'black',
+        margin: '5px 0',
+        borderRadius: 5
+    },
+    aboutDivider:
+    {
+        height: 4,
+        width: 150,
+        backgroundColor: '#159753',
+        margin: 15,
+        borderRadius: 5
+    },
     input:
     {
         width: 500,
@@ -209,11 +225,12 @@ function Post(props)
         // get 3 recent posts
         firebase.getRecentPosts(title).then(setRecentPosts);
 
-        // disable right click
-        document.addEventListener('contextmenu', (e) => 
-        {
-            e.preventDefault();
-        });
+        // disable right click 
+        if (!firebase.getCurrentUsername())
+            document.addEventListener('contextmenu', (e) => 
+            {
+                e.preventDefault();
+            });
     }, []);
 
     if (post === null && !fault)
@@ -319,7 +336,10 @@ function Post(props)
     }
 
     return (
-        <div className="root">
+        
+        <div className="root"
+            style={!firebase.getCurrentUsername() ?
+            { userSelect: 'none' } : {}}>
             {loaded ? 
                 <>
                     <ScrollToTop />
@@ -370,12 +390,11 @@ function Post(props)
                                     </div>
                                     <div className="tags-container">
                                         <MuiThemeProvider theme={theme}>
-                                            <Typography variant="body1">
-                                                {`תגיות: `}
-                                            </Typography>
+                                            <Typography variant="body1">תגיות: </Typography>
                                         </MuiThemeProvider>
                                         {post.tags.map((tag) => <Link className="tag-link" to={`/tags/${tag}`}>{tag}</Link>)}
                                     </div>
+                                    <Divider className={classes.aboveCommmetDivider}/>
                                 </div>
                                 <div className="comments">
                                     <MuiThemeProvider theme={theme}>
@@ -388,7 +407,7 @@ function Post(props)
                                             <div className="comment-container">
                                                 {comment.name === 'צחי - האיש והמילה הכתובה' && comment.admin ? 
                                                     <div className="avatars">
-                                                        <SubdirectoryArrowLeftRoundedIcon style={{color: 'gray'}} />
+                                                        <SubdirectoryArrowLeftRoundedIcon style={{color: 'black'}} />
                                                         <Avatar className={classes.avatar} src={image} />
                                                     </div>
                                                 :
@@ -468,7 +487,7 @@ function Post(props)
                             <Link to="/about" className="link">
                                 <img src={image} alt="פדיחה! אמורה להיות תמונה שלי כאן :(" className="profile-image"/>
                             </Link>
-                            <hr />
+                            <Divider className={classes.aboutDivider} />
                             <div className="about-text">
                                 <MuiThemeProvider theme={theme}>
                                     <Typography align="center" variant="body1">

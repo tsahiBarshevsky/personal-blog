@@ -7,6 +7,8 @@ import ScrollContainer from 'react-indiana-drag-scroll';
 import { Link } from 'react-router-dom';
 import { FaFacebookF, FaInstagram } from 'react-icons/fa';
 import { GiWorld } from 'react-icons/gi';
+import ScrollAnimation from 'react-animate-on-scroll';
+import "animate.css/animate.min.css";
 import MediumCard from '../Cards/medium';
 import firebase from '../firebase';
 import Hero from '../Hero';
@@ -96,6 +98,11 @@ const theme = createMuiTheme({
             fontWeight: 500,
             lineHeight: 1.4
         },
+        h6: 
+        {
+            fontWeight: 600,
+            marginRight: 10,
+        },
         subtitle2:
         {
             fontSize: 15,
@@ -147,7 +154,7 @@ function Homepage(props)
                 break;
         }
         return (
-            <div>
+            <ScrollAnimation animateIn="animate__backInDown" animateOnce>
                 <div className="title">
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="body1">{category}</Typography>
@@ -158,7 +165,7 @@ function Homepage(props)
                     </MuiThemeProvider>
                 </div>
                 <div style={{paddingBottom: 25}}>{arr}</div>
-            </div>
+            </ScrollAnimation>
         )
     }
 
@@ -194,7 +201,7 @@ function Homepage(props)
                 <div className="posts-container" id="posts">
                     <div className="title">
                         <MuiThemeProvider theme={theme}>
-                            <Typography variant="body1">פוסטים אחרונים</Typography>
+                            <Typography variant="h6">פוסטים אחרונים</Typography>
                         </MuiThemeProvider>
                     </div>
                     <ScrollContainer className="posts">
@@ -228,6 +235,11 @@ function Homepage(props)
                             <NavigateBeforeRoundedIcon className="icon" />
                         </IconButton>
                     </div>
+                </div>
+                <div className="title" style={{marginBottom: 20}}>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h6">פוסטים נוספים</Typography>
+                    </MuiThemeProvider>
                 </div>
                 <div className="categories-and-tags">
                     <div className="posts-by-categories">

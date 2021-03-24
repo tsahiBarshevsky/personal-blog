@@ -1,4 +1,4 @@
-/* === colors === */
+/* === Colors === */
 
 $container-color: #f5f5f5; //354463;
 $card-color: #b0bec5;
@@ -7,7 +7,7 @@ $hr-color: #159753;
 $footer-color: #222222;
 $color-white: white;
 
-/* === breakpoints === */
+/* === Breakpoints === */
 
 $vs: 400px;
 $xs: 600px;
@@ -15,7 +15,7 @@ $sm: 960px;
 $md: 1280px;
 $lg: 1920px;
 
-/* === fonts === */
+/* === Fonts === */
 
 @font-face {
   font-family: "Gveret-Levin";
@@ -964,6 +964,8 @@ footer {
     height: 50px;
     clip-path: polygon(0 80%, 100% 0, 100% 100%, 0% 100%);
     background-color: $footer-color;
+    border-bottom: 1px solid $footer-color;
+    transform: translateY(1%);
   }
 
   .information {
@@ -1298,7 +1300,7 @@ form {
 .root {
   background-color: $container-color;
   cursor: default;
-  user-select: none;
+  //user-select: none;
   //overflow: hidden;
 
   .post-header {
@@ -1556,12 +1558,14 @@ form {
       }
     }
 
-    hr {
-      border: 1px solid $hr-color;
-      border-radius: 5px;
-      width: 150px;
-      margin: 15px;
-    }
+    // hr {
+    //   border: 1px solid $hr-color;
+    //   background-color: $hr-color;
+    //   height: 4px;
+    //   border-radius: 5px;
+    //   width: 150px;
+    //   margin: 15px;
+    // }
 
     .about-text {
       display: flex;
@@ -1747,4 +1751,26 @@ form {
       }
     }
   }
+}
+
+/* === Scorllbar === */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #121212;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: inset 7px 10px 12px #f0f0f0;
 }
