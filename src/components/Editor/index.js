@@ -78,24 +78,28 @@ function Editor(props)
         subtitle: false,
         checkCategory: false,
         checkText: false,
-        checkCredit: false
+        checkCredit: false,
+        checkTags: false
     });
     const [disableTitle, setDisableTitle] = useState(true);
     const [disableSubtitle, setDisableSubtitle] = useState(true);
     const [disableCategory, setDisableCategory] = useState(true);
     const [disableText, setDisableText] = useState(true);
     const [disableCredit, setDisableCredit] = useState(true);
+    const [disableTags, setDisableTags] = useState(true);
     
-    const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit } = state;
-    const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
+    const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit, checkTags } = state;
+    const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit, checkTags].filter((v) => v).length !== 6;
     const { classes } = props;
+
+    console.log(text.split('\n'));
 
     useEffect(() => {
         if (!errorCheck) 
             setDisableSending(false);
         else
             setDisableSending(true)
-        switch (title)
+        switch(title)
         {
             case '': 
                 setDisableTitle(true)
@@ -131,8 +135,15 @@ function Editor(props)
                 break;
             default: setDisableCredit(false);
         }
-    }, [setDisableTitle, setDisableSubtitle, setDisableCategory, setDisableText, setDisableCredit,
-        title, subtitle, category, text, credit, errorCheck, setDisableSending]);
+        switch(tags.length)
+        {
+            case 5:
+                setDisableTags(false);
+                break;
+            default: setDisableTags(true);
+        }
+    }, [setDisableTitle, setDisableSubtitle, setDisableCategory, setDisableText, setDisableCredit, setDisableTags,
+        title, subtitle, category, text, credit, tags, errorCheck, setDisableSending]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -143,8 +154,8 @@ function Editor(props)
 	{
 		setOpenSuccess(true);
 		setMessage("התמונה הועלתה בהצלחה");
-		setProgress(0);
-        setProgress2(0);
+        setProgress(0);
+        setProgress2(0); 
 	}
 
     const handleChange = (event) => 
@@ -369,11 +380,15 @@ function Editor(props)
                             disableUnderline
                             onChange={handleMainImageChange} />
                         {progress > 0 ? 
-						<ProgressBar width="250px"
-							completed={progress} 
-							bgcolor="#ff4040" 
-							labelColor="#000000" 
-							labelAlignment="center" /> : null}
+                            <Box mt={3} mb={2}>
+                                <ProgressBar
+                                width="250px"
+                                completed={progress} 
+                                bgcolor="#ff4040" 
+                                labelColor="#000000" 
+                                labelAlignment="center" />
+                            </Box>
+                        : null}
                         <FormControl margin="normal" fullWidth>
                             <TextField label="קרדיט לתמונה ראשית" 
                                 id="main-image-credit" name="main-image-credit"
@@ -387,30 +402,54 @@ function Editor(props)
                     </MuiThemeProvider>
                 </StylesProvider>
             </form>
-            <ThemeProvider theme={theme}>
-                    <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
-                </ThemeProvider>
-            <div className="editor-container">
-                <TinyEditor key={editorKey}
-                    apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
-                    outputFormat='text'
-                    init={{
-                    height: 500,
-                    width: '80%',
-                    menubar: false,
-                    directionality: 'rtl',
-                    plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount'
-                    ],
-                    toolbar:
-                        'undo redo | formatselect | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        bullist numlist outdent indent | removeformat | help'
-                    }}
-                    onEditorChange={handleEditorChange}
-                />
+            <div className="text-container">
+                <div className="editor">
+                    <ThemeProvider theme={theme}>
+                        <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
+                    </ThemeProvider>
+                    <TinyEditor key={editorKey}
+                        apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
+                        outputFormat='text'
+                        init={{
+                        height: 500,
+                        width: '100%',
+                        menubar: false,
+                        directionality: 'rtl',
+                        plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount'
+                        ],
+                        toolbar:
+                            'undo redo | formatselect | bold italic backcolor | \
+                            alignleft aligncenter alignright alignjustify | \
+                            bullist numlist outdent indent | removeformat | help'
+                        }}
+                        onEditorChange={handleEditorChange}
+                    />
+                </div>
+                <div className="text-format-preview">
+                    <ThemeProvider theme={theme}>
+                        <Typography variant="h5" gutterBottom>פורמט טקסט - תצוגה מקדימה</Typography>
+                    </ThemeProvider>
+                    {text !== '' ?
+                    <>
+                        {text.split('\n').map((paragraph, index) =>
+                            <div key={index}>
+                                {paragraph !== '' ? 
+                                    <p id="paragraph">פסקה</p>
+                                :
+                                    [(category === 'שירים' ?
+                                        <p id="image">רווח</p>
+                                    :
+                                        <p id="image">תמונה</p>
+                                    )]
+                                }
+                            </div>
+                        )}
+                    </>
+                    : null}
+                </div>
             </div>
             <ThemeProvider theme={theme}>
                 <Typography variant="h5" gutterBottom>{`תמונות נוספות`}</Typography>
@@ -424,11 +463,14 @@ function Editor(props)
                 disableUnderline
                 onChange={handleImagesChange} />
             {progress2 > 0 ? 
-            <ProgressBar width="250px"
-                completed={progress2} 
-                bgcolor="#ff4040" 
-                labelColor="#000000" 
-                labelAlignment="center" /> : null}
+            <Box mt={3}>
+                <ProgressBar width="250px"
+                    completed={progress2} 
+                    bgcolor="#ff4040" 
+                    labelColor="#000000" 
+                    labelAlignment="center" /> 
+            </Box>
+            : null}
             <div className="tags-container">
                 <ThemeProvider theme={theme}>
                     <Typography variant="h5" gutterBottom>{`תגיות`}</Typography>
@@ -437,6 +479,7 @@ function Editor(props)
                     onTag={getTags}
                     tagColor={green[300]}
                     placeHolder="הוסף תגית..."
+                    
                 />
             </div>
             <FormControl required error={errorCheck} component="fieldset">
@@ -472,6 +515,13 @@ function Editor(props)
                         className="checkBox"
                         color="primary"
                         disabled={disableCredit}
+                    />
+                    <FormControlLabel
+                        control={<Checkbox checked={checkTags}  onChange={handleChange} name="checkTags" color="primary" />}
+                        label="5 תגיות"
+                        className="checkBox"
+                        color="primary"
+                        disabled={disableTags}
                     />
                     <FormHelperText className="helper">
                         {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
@@ -533,6 +583,7 @@ function Editor(props)
                 await firebase.addPost(title, subtitle, date, category, text, credit, tags);
                 setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);
+                setDisableSending(true);
                 setTimeout(() => 
                 {
                     props.history.replace("/dashboard");

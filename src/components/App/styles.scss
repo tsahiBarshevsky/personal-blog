@@ -1262,14 +1262,42 @@ form {
   }
 }
 
-.editor-container {
+.text-container {
   display: flex;
   width: 100%;
   padding-bottom: 40px;
+
+  .editor {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .text-format-preview {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    padding-right: 20px;
+
+    p {
+      font-size: 17px;
+    }
+
+    #paragraph {
+      margin-bottom: 5px;
+    }
+
+    #image {
+      color: red;
+      font-weight: bold;
+      margin-bottom: 5px;
+      letter-spacing: 1.5px;
+    }
+  }
 }
 
 .container > .tags-container {
-  width: 500px;
+  width: 600px;
   padding-top: 30px;
 }
 

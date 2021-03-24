@@ -90,10 +90,12 @@ function Newsletter(props)
 
         emails.map((email) =>
         {
+            var formattedContent = [];
+            content.split('\n').map(x => x !== '' ? formattedContent.push(x) : formattedContent.push('<br />'));
             var templateParams = {
                 subscriber: email,
                 subjuect: subject,
-                content: content
+                content: formattedContent.join(' ')
             };
 
             emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, userID)
@@ -160,6 +162,7 @@ function Newsletter(props)
                     <Button variant="contained" onClick={sendEmail} className={classes.button}>שלח</Button>
                     <Button variant="contained" onClick={clearForm} className={classes.button}>נקה</Button>
                 </div>
+                {/* <p>{content.split}</p> */}
             </div>
             <Snackbar onClick={handleClose}
                 anchorOrigin={{

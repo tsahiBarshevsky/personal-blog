@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import firebase from '../firebase';
 
-function navLinks() {
+function navLinks()
+{
     return (
         <div className="navlinks-container">
             <ul className="links-wrapper">
@@ -11,6 +13,11 @@ function navLinks() {
                 <li className="link-item">
                     <Link className="link" to='/categories'>קטגוריות</Link>
                 </li>
+                {firebase.getCurrentUsername() ? 
+                <li className="link-item">
+                    <Link className="link" to='/admin'>ניהול</Link>
+                </li>
+                : null}
             </ul>
         </div>
     )

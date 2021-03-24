@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
-import { Button, Typography, DialogActions, Snackbar, Grid, IconButton } from '@material-ui/core';
+import { Button, Typography, DialogActions, Snackbar, Grid, IconButton, Box } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
@@ -152,32 +152,32 @@ function Dashboard(props)
             label: 'פוסטים פר חודש',
             data: months.map(a => a.amount),
             backgroundColor: [
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
+                'rgba(54, 162, 235, 0.3)',
+                'rgba(255, 206, 86, 0.3)',
             ],
             borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
             ],
             borderWidth: 1,
         },],
@@ -204,7 +204,7 @@ function Dashboard(props)
 		return null;
 	}
 
-    if (posts && !loaded)
+    if (posts && months && !loaded)
         setTimeout(() => { setLoaded(true); }, 1000);
 
     const Alert = (props) =>
@@ -344,7 +344,7 @@ function Dashboard(props)
                             <div className="statistics-container">
                                 <div className="content">
                                     <MuiThemeProvider theme={theme}>
-                                        <Typography variant="h4">{months? findFruitfulMonth(posts): null}</Typography>
+                                        <Typography variant="h4">{findFruitfulMonth(posts)}</Typography>
                                     </MuiThemeProvider>
                                     <MuiThemeProvider theme={theme}>
                                         <Typography variant="subtitle1">החודש הפורה ביותר</Typography>
@@ -355,9 +355,11 @@ function Dashboard(props)
                         <Bar data={data} options={options} height={100} />
                     </div>
                     <hr />
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h6" gutterBottom>פוסטים</Typography>
-                    </MuiThemeProvider>
+                    <Box mt={4}>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h6" gutterBottom>פוסטים</Typography>
+                        </MuiThemeProvider>
+                    </Box>
                     <div className="buttons-container">
                         <Button to="/editor"
                             component={Link} 
