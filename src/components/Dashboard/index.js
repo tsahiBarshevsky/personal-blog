@@ -18,6 +18,7 @@ import DataTable, { createTheme } from 'react-data-table-component';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import { Bar } from '@reactchartjs/react-chart.js'
 
 const styles = theme => ({
     button:
@@ -120,6 +121,8 @@ createTheme('solarized',
     }
 });
 
+
+
 function Dashboard(props) 
 {
     const [posts, setPosts] = useState([]);
@@ -140,6 +143,48 @@ function Dashboard(props)
         fontSize: 30,
         color: '#263238',
         marginLeft: 10,
+    }
+
+    const data = {
+        labels: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+        datasets: 
+        [{
+            label: 'פוסטים פר חודש',
+            data: months.map(a => a.amount),
+            backgroundColor: [
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 1,
+        },],
+    }
+      
+    const options = {
+        scales: { yAxes: [{ ticks: { beginAtZero: true, },},], },
     }
 
     useEffect(() => {
@@ -218,6 +263,13 @@ function Dashboard(props)
         )
     }
 
+    const findFruitfulMonth = () =>
+    {
+        var max = months.reduce((p, c) => p.amount > c.amount ? p : c);
+        return `${max.month} - ${max.amount}`; 
+    }
+
+    // Posts table columns
     const columns = [
         {
             name: <h2>שם הפוסט</h2>,
@@ -255,22 +307,9 @@ function Dashboard(props)
                     <Helmet><title>{`האיש והמילה הכתובה | לוח בקרה`}</title></Helmet>
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h5">לוח הבקרה</Typography>
-                        <Typography variant="h6" gutterBottom>סטטיסטיקות שונות</Typography>
+                        <Typography variant="h6" gutterBottom>סטטיסטיקות</Typography>
                     </MuiThemeProvider>
                     <div className="statistics-holder">
-                        <div className="months">
-                            <MuiThemeProvider theme={theme}>
-                                <Typography variant="body1">פוסטים פר חודש לשנת {new Date().getFullYear()}</Typography>
-                            </MuiThemeProvider>
-                            {months.map((month, index) =>
-                                <div className="month-container" key={index}>
-                                    <MuiThemeProvider theme={theme}>
-                                        <Typography variant="subtitle2">{month.month}</Typography>
-                                        <Typography variant="subtitle2">{month.amount}</Typography>
-                                    </MuiThemeProvider>
-                                </div>
-                            )}
-                        </div>
                         <div className="cards">
                             <div className="statistics-container">
                                 <div className="content">
@@ -302,7 +341,18 @@ function Dashboard(props)
                                     </MuiThemeProvider>
                                 </div>
                             </div>
+                            <div className="statistics-container">
+                                <div className="content">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="h4">{months? findFruitfulMonth(posts): null}</Typography>
+                                    </MuiThemeProvider>
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="subtitle1">החודש הפורה ביותר</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                            </div>
                         </div>
+                        <Bar data={data} options={options} height={100} />
                     </div>
                     <hr />
                     <MuiThemeProvider theme={theme}>

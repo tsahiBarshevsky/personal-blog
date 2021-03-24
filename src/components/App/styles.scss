@@ -1095,56 +1095,34 @@ form {
   padding: 25px 55px 35px; //top sides bottom
   cursor: default;
 
-  .months {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding: 0 0 25px; //top sides bottom
-
-    .month-container {
-      width: 250px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      margin: 5px 0 5px; //top sides bottom
-      border-bottom: 2px dotted $hr-color;
-      transition: border-bottom 0.5s ease-in-out;
-    }
-  }
-
   .statistics-holder {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
     align-items: flex-start;
-    padding: 10px 10px 0; //top sides bottom
+    padding-top: 10px;
+    width: 100%;
 
     .cards {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       justify-content: center;
-      margin-right: 100px;
-      height: 489px;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 30px;
 
       .statistics-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 3px 7px -1px rgba(black, 0.1);
         margin-bottom: 30px;
         border-radius: 5px;
-        width: 250px;
-        height: 120px;
+        width: 300px;
+        height: 130px;
         padding: 20px;
-        //margin: 5px 0 30px 40px; //top right bottom left
-        background: linear-gradient(
-          152deg,
-          rgba(197, 225, 165, 0.9) 45%,
-          rgba(102, 187, 106, 0.9) 80%
-        );
+        margin: 0 50px;
+        background-color: $color-white;
       }
     }
   }
