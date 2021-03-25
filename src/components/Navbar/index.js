@@ -5,7 +5,23 @@ import NavLinks from "./navLinks";
 import { DeviceSize } from "../Responsive";
 import MobileNavLinks from "./mobileNavLinks";
 import { animateScroll as scroll } from 'react-scroll';
-import logo from '../../images/logo.png'
+import logo from '../../images/quill.png';
+import { createMuiTheme, MuiThemeProvider, Typography } from '@material-ui/core';
+
+const theme = createMuiTheme({
+    typography:
+    {
+        allVariants:
+        {
+            color: 'white',
+            lineHeight: 1,
+            textAlign: 'center',
+            fontFamily: `"Gveret-Levin", sans-serif`
+        },
+        body1: { fontSize: 14},
+        body2: { fontSize: 14, transform: 'translateY(10%)' },
+    }
+});
 
 export default function Navbar() 
 {
@@ -35,7 +51,14 @@ export default function Navbar()
               boxShadow: '0 2px 3px rgba(15, 15, 15, 0.25)' } : {}} 
             className={isMobile || navbar ? "navbar-container active" : "navbar-container"}>
             <div className="left-section">
-                <div className="logo-wrapper">
+                <div className="logo-wrapper" onClick={toggleHome}>
+                    <div className="text">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="body1">האיש</Typography>
+                            <Typography variant="body2">והמילה</Typography>
+                            <Typography variant="body1">הכתובה</Typography>
+                        </MuiThemeProvider>
+                    </div>
                     <img src={logo} alt="לוגו" onClick={toggleHome} />
                 </div>
             </div>

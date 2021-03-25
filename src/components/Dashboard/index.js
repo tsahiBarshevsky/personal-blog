@@ -344,7 +344,7 @@ function Dashboard(props)
                             <div className="statistics-container">
                                 <div className="content">
                                     <MuiThemeProvider theme={theme}>
-                                        <Typography variant="h4">{findFruitfulMonth(posts)}</Typography>
+                                        <Typography variant="h4">{months.length > 0 ? findFruitfulMonth(posts) : null}</Typography>
                                     </MuiThemeProvider>
                                     <MuiThemeProvider theme={theme}>
                                         <Typography variant="subtitle1">החודש הפורה ביותר</Typography>

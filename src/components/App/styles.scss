@@ -104,9 +104,18 @@ $lg: 1920px;
     .logo-wrapper {
       display: flex;
       align-items: center;
+      height: 45px;
+      cursor: pointer;
+
+      .text {
+        display: flex;
+        flex-direction: column;
+      }
 
       img {
-        cursor: pointer;
+        margin-right: 2px;
+        width: 25px;
+        height: 38px;
       }
     }
   }
@@ -1699,10 +1708,14 @@ form {
     width: 70%;
     padding: 15px;
 
+    p {
+      font-size: 18px;
+    }
+
     .buttons {
       display: flex;
       flex-direction: row;
-      padding-top: 15px;
+      padding: 20px 0;
     }
   }
 }

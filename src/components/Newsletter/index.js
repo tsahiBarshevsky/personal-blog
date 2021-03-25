@@ -162,7 +162,10 @@ function Newsletter(props)
                     <Button variant="contained" onClick={sendEmail} className={classes.button}>שלח</Button>
                     <Button variant="contained" onClick={clearForm} className={classes.button}>נקה</Button>
                 </div>
-                {/* <p>{content.split}</p> */}
+                <ThemeProvider theme={theme}>
+                    <Typography variant="h5" gutterBottom>{`תצוגה מקדימה`}</Typography>
+                </ThemeProvider>
+                {content !== '' ? content.split('\n').map(x => x !== '' ? <p>{x}</p> : <br />) : null}
             </div>
             <Snackbar onClick={handleClose}
                 anchorOrigin={{
