@@ -175,7 +175,7 @@ class Firebase
         return ret;
     }
 
-    async categoriesDistribution()
+    async categoriesDistribution(origin)
     {
         var categories = [], a = [], b = [], ret = [], prev;
         const snapshot = await app.firestore().collection('posts').get();
@@ -196,8 +196,17 @@ class Firebase
                 b[b.length-1]++;
             prev = categories[i];
         }
-        for (var i=0; i<a.length; i++)
-            ret.push({category: a[i], occurrences: b[i]});
+        if (origin === 'homepage')
+        {
+            for (var i=0; i<a.length; i++)
+                //if (b[i] >= 4)
+                    ret.push({category: a[i], occurrences: b[i]});
+        }
+        else
+        {
+            for (var i=0; i<a.length; i++)
+                ret.push({category: a[i], occurrences: b[i]});
+        }
         return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
     }
 
@@ -223,7 +232,8 @@ class Firebase
             prev = tags[i];
         }
         for (var i=0; i<a.length; i++)
-            ret.push({tag: a[i], occurrences: b[i]});
+            if (b[i] >= 1)
+                ret.push({tag: a[i], occurrences: b[i]});
         return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
     }
 

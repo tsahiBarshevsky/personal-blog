@@ -50,7 +50,7 @@ export default function Categories()
     useEffect(() =>
     {
         firebase.getAllPosts().then(setPosts);
-        firebase.categoriesDistribution().then(setCategories);
+        firebase.categoriesDistribution('categories').then(setCategories);
     }, []);
 
     if (posts && !loaded)

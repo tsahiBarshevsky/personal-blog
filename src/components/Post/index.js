@@ -176,7 +176,8 @@ function Post(props)
     const [open, setOpen] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    const title = props.match.params.title.replaceAll('-', ' ');
+    //const title = props.match.params.title.replaceAll('-', ' ');
+    const title = props.match.params.title.replace(/-/g, ' ');
     const image = 'https://firebasestorage.googleapis.com/v0/b/personal-blog-a2e4f.appspot.com/o/images%2Fabout-rounded.jpg?alt=media&token=206a498a-98c0-40ba-bb00-48da4ffa5789';
     const { classes } = props;
     const background = {
@@ -236,7 +237,7 @@ function Post(props)
     if (post === null && !fault)
         setTimeout(() => { setFault(true); }, 1000); 
 
-    if (post && !loaded)
+    if (post && images && !loaded)
         setTimeout(() => { setLoaded(true); }, 1000);
 
     const Alert = (props) =>
@@ -282,8 +283,8 @@ function Post(props)
                         </div>
                     : 
                         <div className="paragraphs">
-                            {/* {Object.keys(images).length >= 1 ?
-                            <> */}
+                            {Object.keys(images).length >= 1 ?
+                            <>
                                 <img src={images[i++].link} alt="תמונה" className="image" />
                                 <MuiThemeProvider theme={theme}>
                                     <Typography variant="caption">
@@ -291,7 +292,7 @@ function Post(props)
                                     </Typography>
                                 </MuiThemeProvider>
                                 <br />
-                            {/* </> : null } */}
+                            </> : null }
                         </div>
                     }
                 </div>
@@ -347,6 +348,7 @@ function Post(props)
                     <Helmet><title>{`${title} | האיש והמילה הכתובה`}</title></Helmet>
                     <Navbar />
                     <div className="post-header" style={background}>
+                        <div className="black">
                         <div className="subtitle-container">
                             <div className="right-quotation-marks-container">
                                 <img src={q1} className="quotation-marks" />
@@ -359,6 +361,7 @@ function Post(props)
                                     {post.subtitle}
                                 </Typography>
                             </MuiThemeProvider>
+                        </div>
                         </div>
                     </div>
                     <Grid container direction="row" justify="flex-start" alignItems="flex-start">
@@ -389,9 +392,11 @@ function Post(props)
                                         </MuiThemeProvider>
                                     </div>
                                     <div className="tags-container">
-                                        <MuiThemeProvider theme={theme}>
-                                            <Typography variant="body1">תגיות: </Typography>
-                                        </MuiThemeProvider>
+                                        <Box ml={1}>
+                                            <MuiThemeProvider theme={theme}>
+                                                <Typography variant="body1">תגיות: </Typography>
+                                            </MuiThemeProvider>
+                                        </Box>
                                         {post.tags.map((tag) => <Link className="tag-link" to={`/tags/${tag}`}>{tag}</Link>)}
                                     </div>
                                     <Divider className={classes.aboveCommmetDivider}/>

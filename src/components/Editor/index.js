@@ -370,7 +370,7 @@ function Editor(props)
                             </MuiPickersUtilsProvider>
                         </div>
                         <ThemeProvider theme={theme}>
-                            <Typography variant="h5" gutterBottom>{`תמונה ראשית`}</Typography>
+                            <Typography variant="h5" gutterBottom>{`תמונה ראשית (עד 3.5 מגה)`}</Typography>
                         </ThemeProvider>
                         <Input
                             accept="image/*"
@@ -452,7 +452,7 @@ function Editor(props)
                 </div>
             </div>
             <ThemeProvider theme={theme}>
-                <Typography variant="h5" gutterBottom>{`תמונות נוספות`}</Typography>
+                <Typography variant="h5" gutterBottom>תמונות נוספות - עד 1 מגה</Typography>
             </ThemeProvider>
             <input
                 multiple

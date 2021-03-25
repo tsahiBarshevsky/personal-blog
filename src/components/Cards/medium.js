@@ -35,6 +35,8 @@ export default function MediumCard(props)
 {
     const title = props.title;
     const titleLink = props.title.replace(/\s+/g, '-');
+    const titleCheck = 'כותרת-עם-רווחים';
+    const titleCheck2 = titleCheck.replace('-', /\s+/g);
     const subtitle = props.subtitle;
     const date = props.date;
     const category = props.category;

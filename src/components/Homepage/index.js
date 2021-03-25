@@ -135,7 +135,7 @@ function Homepage(props)
     {
         firebase.getAllPosts().then(setPosts);
         firebase.getSixRecentPosts().then(setSixRecentPosts);
-        firebase.categoriesDistribution().then(setCategories);
+        firebase.categoriesDistribution('homepage').then(setCategories);
         firebase.tagsDistribution().then(setTags);
     }, []);
 

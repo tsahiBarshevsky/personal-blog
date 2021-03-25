@@ -18,8 +18,8 @@ const theme = createMuiTheme({
             textAlign: 'center',
             fontFamily: `"Gveret-Levin", sans-serif`
         },
-        body1: { fontSize: 14},
-        body2: { fontSize: 14, transform: 'translateY(10%)' },
+        body1: { fontSize: 14, transform: 'translateY(-12%)'},
+        body2: { fontSize: 14, transform: 'translateY(1%)' },
     }
 });
 
