@@ -16,8 +16,6 @@ const theme = createMuiTheme({
         caption:
         {
             transform: 'translateY(10%)'
-            // fontWeight: 600,
-            // letterSpacing: 1
         },
         h5:
         {
@@ -57,19 +55,6 @@ export default function MediumCard(props)
         var year = date.toLocaleString('he', {year: 'numeric'});
         return `${day} ב${month}, ${year}`;
     }
-
-    // const formatComments = (amount) =>
-    // {
-    //     switch(amount)
-    //     {
-    //         case 0: 
-    //             return "אין תגובות";
-    //         case 1:
-    //             return "תגובה אחת";
-    //         default:
-    //             return `${amount} תגובות`;
-    //     }
-    // }
 
     return (
         <div className="medium-card-container" style={background}>
@@ -114,27 +99,5 @@ export default function MediumCard(props)
                 </div>
             </div>
         </div>
-        // <Link className="card-container" to={{pathname: `/${title}`}}>
-        //     <img src={url} alt="תמונה ראשית" className="image"/>
-        //     <div className="image-container">
-        //         <div className="category-container">
-        //             <MuiThemeProvider theme={theme}>
-        //                 <Typography variant="caption">
-        //                     {category}
-        //                 </Typography>
-        //             </MuiThemeProvider>
-        //         </div>
-        //     </div>
-        //     <MuiThemeProvider theme={theme}>
-        //         <Typography variant="h5" gutterBottom>
-        //             {title}
-        //         </Typography>
-        //     </MuiThemeProvider>
-        //     {subtitle ? 
-        //     <p className="subtitle">
-        //         {subtitle.length >= 75 ? `${subtitle.slice(0, 75)}...` : subtitle}
-        //     </p>
-        //     : null }
-        // </Link>
     )
 }

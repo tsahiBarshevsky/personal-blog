@@ -67,6 +67,7 @@ export default function App()
 					<Route exact path="/newsletter" component={Newsletter} />
 					<Route exact path="/unsubscribe" component={Unsubscribe} />
 					<Route exact path="/editor" component={Editor} />
+					<Route exact path="/edit" component={Page404} />
 					<Route exact path="/edit/:title" component={EditPost} />
 					<Route exact path="/:title" component={Post} />
 					<Route exact path="*" component={Page404} />

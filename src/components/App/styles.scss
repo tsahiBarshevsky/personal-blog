@@ -1,6 +1,6 @@
 /* === Colors === */
 
-$container-color: #f5f5f5; //354463;
+$container-color: #f5f5f5;
 $card-color: #b0bec5;
 $card-text: whitesmoke;
 $hr-color: #159753;
@@ -93,7 +93,7 @@ $lg: 1920px;
   transition: all 0.5s ease-out;
 
   &.active {
-    background: $footer-color; // #eceff1;
+    background: $footer-color;
     transition: all 0.5s ease-in;
     box-shadow: 0 2px 3px rgba(15, 15, 15, 0.25);
   }
@@ -141,7 +141,6 @@ $lg: 1920px;
         .link-item {
           height: 100%;
           padding: 0 1.1em;
-          //color: #aaa;
           color: $color-white;
           font-weight: 500;
           font-size: 19px;
@@ -262,7 +261,6 @@ $lg: 1920px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  //padding: 10px 40px 10px; //top sides bottom - need to be changed
   width: 100%;
   background-color: $container-color;
   cursor: default;
@@ -346,8 +344,6 @@ $lg: 1920px;
       }
 
       .posts-by-categories {
-        //padding: 0 40px;
-
         .title {
           display: flex;
           justify-content: space-between;
@@ -370,7 +366,6 @@ $lg: 1920px;
       .distributions {
         display: flex;
         flex-direction: column;
-        //background-color: darkcyan;
 
         @media screen and (max-width: 1100px) {
           flex-direction: row;
@@ -379,7 +374,6 @@ $lg: 1920px;
         }
 
         @media screen and (max-width: 885px) {
-          //630px) {
           align-self: center;
           flex-direction: column;
           justify-content: center;
@@ -488,10 +482,6 @@ $lg: 1920px;
             align-items: center;
             margin: 5px 0 5px; //top sides bottom
             cursor: default;
-
-            // @media screen and (max-width: 630px) {
-            //   width: 100%;
-            // }
           }
         }
       }
@@ -636,7 +626,6 @@ $lg: 1920px;
   flex-direction: column;
   justify-content: flex-end;
   align-items: flex-start;
-  //padding: 0 15px 5px; //top sides bottom
   width: 350px;
   height: 450px;
   color: $card-text;
@@ -879,7 +868,6 @@ $lg: 1920px;
   align-items: flex-start;
   width: 100%;
   height: 100%;
-  //padding: 10px;
   box-sizing: border-box;
   background: rgb(2, 0, 36);
   background: linear-gradient(
@@ -892,20 +880,9 @@ $lg: 1920px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  //clip-path: polygon(0 80%, 100% 0, 100% 100%, 0% 100%); --> that's from footer
   -webkit-clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
   clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%); //--> that what should be
-  // -webkit-clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
-  // clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
   z-index: 1;
-
-  // https://images.pexels.com/photos/64778/pexels-photo-64778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
-  // https://images.pexels.com/photos/1448709/pexels-photo-1448709.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940
-
-  // @media screen and (max-width: $xs) {
-  //   -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
-  //   clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-  // }
 
   .hero-black {
     display: flex;
@@ -914,7 +891,6 @@ $lg: 1920px;
     align-items: flex-start;
     width: 100%;
     height: 100%;
-    //padding: 10px;
     clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 90%, 0% 100%);
     z-index: 2;
@@ -926,11 +902,9 @@ $lg: 1920px;
       justify-content: center;
       align-items: flex-start;
       padding: 155px 100px 0; //top sides bottom
-      //padding: 155px 100px;
 
       @media screen and (max-width: 600px) {
         padding: 155px 30px 0; //top sides bottom
-        //padding: 155px 30px;
       }
     }
 
@@ -940,11 +914,9 @@ $lg: 1920px;
       justify-content: center;
       align-items: center;
       padding: 20px 100px 220px; //top sides bottom
-      //padding: 200px 100px;
 
       @media screen and (max-width: 600px) {
         padding: 20px 30px 220px;
-        //padding: 20px 30px;
       }
 
       @media screen and (max-width: 400px) {
@@ -985,7 +957,6 @@ footer {
     align-items: baseline;
     width: 100%;
     background-color: $footer-color;
-    //border: 1px dashed whitesmoke;
 
     .about-me,
     .newsletter,
@@ -997,7 +968,6 @@ footer {
       width: 350px;
       padding: 10px 15px; //top-bottom sides
       margin: 5px;
-      //border: 1px dashed chocolate;
       text-align: right;
 
       .title {
@@ -1178,10 +1148,6 @@ form {
     z-index: 1;
     width: 100%;
     max-width: 1300px;
-    // margin-right: auto;
-    // margin-left: auto;
-    // padding-right: 50px;
-    // padding-left: 50px;
     display: flex;
     justify-content: space-between;
     height: 35px;
@@ -1316,12 +1282,9 @@ form {
 .root {
   background-color: $container-color;
   cursor: default;
-  //user-select: none;
-  //overflow: hidden;
 
   .post-header {
     height: 650px;
-    // padding: 120px 60px 150px; //top sides bottom
     margin-bottom: 50px;
     -webkit-clip-path: polygon(0 0, 100% 0, 100% 0%, 0 100%);
     clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
@@ -1401,8 +1364,6 @@ form {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    //justify-content: flex-start;
-    //padding-right: 50px;
   }
 
   .content {
@@ -1500,7 +1461,6 @@ form {
       .tag-link {
         text-decoration: none;
         color: black;
-        //margin: 0 5px;
         margin-left: 10px;
         font-size: 15px;
         transition: color 0.5s ease-in-out;
@@ -1598,15 +1558,6 @@ form {
       }
     }
 
-    // hr {
-    //   border: 1px solid $hr-color;
-    //   background-color: $hr-color;
-    //   height: 4px;
-    //   border-radius: 5px;
-    //   width: 150px;
-    //   margin: 15px;
-    // }
-
     .about-text {
       display: flex;
       justify-content: center;
@@ -1687,7 +1638,6 @@ form {
   background-color: $color-white;
   min-height: 100%;
   height: 100%;
-  //overflow-y: scroll;
   padding: 40px;
   margin-top: 35px;
 

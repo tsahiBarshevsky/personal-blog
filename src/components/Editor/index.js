@@ -135,13 +135,10 @@ function Editor(props)
                 break;
             default: setDisableCredit(false);
         }
-        switch(tags.length)
-        {
-            case 5:
-                setDisableTags(false);
-                break;
-            default: setDisableTags(true);
-        }
+        if (tags.length > 0 && tags.length <= 5)
+            setDisableTags(false);
+        else
+            setDisableTags(true);
     }, [setDisableTitle, setDisableSubtitle, setDisableCategory, setDisableText, setDisableCredit, setDisableTags,
         title, subtitle, category, text, credit, tags, errorCheck, setDisableSending]);
 

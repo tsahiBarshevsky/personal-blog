@@ -2,16 +2,34 @@ import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
-import { Box, Button, Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel, Input, Snackbar, TextField, Typography, FormHelperText } from '@material-ui/core';
-import { createMuiTheme, MuiThemeProvider, ThemeProvider, StylesProvider, jssPreset } from '@material-ui/core/styles';
+import { Box, Button, Checkbox, FormControl, Snackbar, TextField, Typography } from '@material-ui/core';
+import { withStyles, createMuiTheme, MuiThemeProvider, ThemeProvider, StylesProvider, jssPreset } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import rtl from 'jss-rtl';
 import { create } from 'jss';
-import { red } from '@material-ui/core/colors';
-import ProgressBar from '@ramonak/react-progress-bar';
+import { red, green } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
+import { Bars, useLoading } from '@agney/react-loading';
+
+const styles = () => ({
+    button:
+    {
+        color: 'white',
+        width: 120,
+        height: 40,
+        fontSize: 16,
+        backgroundColor: green[500],
+        borderRadius: 15,
+        marginTop: 40,
+        transition: 'all 0.5s ease-out',
+        '&:hover':
+		{
+			backgroundColor: green[300]
+		}
+    }
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -32,6 +50,20 @@ const theme = createMuiTheme({
     direction: "rtl"
 });
 
+const typographyTheme = createMuiTheme({
+	typography:
+	{
+        subtitle2:
+        {   
+            fontFamily: `"Varela Round", sans-serif`,
+            fontSize: 18,
+            color: '#159753',
+            fontWeight: 600,
+            paddingTop: 10
+        }
+	}
+});
+
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 function Editor(props) 
@@ -41,31 +73,17 @@ function Editor(props)
     const [subtitle, setSubtitle] = useState('');
     const [category, setCategory] = useState('');
     const [text, setText] = useState('');
-
     const [firstRun, setFirstRun] = useState(true);
     const [date, setDate] = useState(new Date());
-    const [progress, setProgress] = useState(0);
-    const [progress2, setProgress2] = useState(0);
-    const [credit, setCredit] = useState('');
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
-    const [editorKey, setEditorKey] = useState(4);
-    const [disableCheckbox, setDisableCheckbox] = useState(true);
-    const [numOfImages, setNumOfImages] = useState(0);
-    const [state, setState] = useState({
-        checkTitle: false,
-        checkSubtitle: false,
-        checkCategory: false,
-        checkText: false,
-        checkCredit: false
+    const { indicatorEl } = useLoading({
+        loading: true,
+        indicator: <Bars width="50" className="loading" />,
     });
-
-    console.log(date);
-
-    const { checkTitle, checkSubtitle, checkCategory, checkText, checkCredit } = state;
-    const errorCheck = [checkTitle, checkSubtitle, checkCategory, checkText, checkCredit].filter((v) => v).length !== 5;
+    const { classes } = props;
 
     useEffect(() => {
         if (firstRun)
@@ -87,17 +105,6 @@ function Editor(props)
 		props.history.replace('/admin');
 		return null;
 	}
-
-    /*const checkBeforeSend = () =>
-    {
-        if (checkTitle && checkSubtitle && checkText && checkCategory && checkCredit)
-            setEnableButton(false); //enable
-    }*/
-
-    const handleChange = (event) => 
-    {
-        setState({ ...state, [event.target.name]: event.target.checked });
-    }
 
     const handleEditorChange = (content, editor) => 
     {
@@ -188,7 +195,7 @@ function Editor(props)
                 <ThemeProvider theme={theme}>
                     <Typography variant="h5" gutterBottom>{`טקסט`}</Typography>
                 </ThemeProvider>
-                <TinyEditor key={editorKey}
+                <TinyEditor
                     apiKey="zldvh8un2rgq0rrlpknan9mw1hjelxw4f565hnhk8qz7b8zs"
                     outputFormat='text'
                     initialValue={text}
@@ -209,41 +216,7 @@ function Editor(props)
                     }}
                     onEditorChange={handleEditorChange}
                 />
-                <FormControl required error={errorCheck} component="fieldset">
-                    <FormLabel component="legend">צ'ק ליסט</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox checked={checkTitle} onChange={handleChange} name="checkTitle" color="primary" />}
-                            label="כותרת"
-                            className="checkBox"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={checkSubtitle} onChange={handleChange} name="checkSubtitle" color="primary" />}
-                            label="תקציר"
-                            className="checkBox"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={checkCategory} onChange={handleChange} name="checkCategory" color="primary" />}
-                            label="קטגוריה"
-                            className="checkBox"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={checkText} onChange={handleChange} name="checkText" color="primary" />}
-                            label="טקסט"
-                            className="checkBox"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox checked={checkCredit} onChange={handleChange} name="checkCredit" color="primary" />}
-                            label="קרדיט תמונה ראשית"
-                            className="checkBox"
-                            color="primary"
-                        />
-                        <FormHelperText className="helper">
-                            {!errorCheck ? "יאללה, שגר אותו!" : "אופס, לא סימנת הכל"}
-                        </FormHelperText>
-                    </FormGroup>
-                </FormControl>
-                <Button variant="contained" onClick={editPost}>עדכן</Button>
+                <Button variant="contained" onClick={editPost} className={classes.button}>עדכן</Button>
                 <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
                     <Alert onClose={closeSnackbar} severity="success">
                         <MuiThemeProvider theme={theme}>
@@ -265,24 +238,15 @@ function Editor(props)
             </div>
             :
             <div className="full-container">
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h3">טוען נתונים...</Typography>
+                {indicatorEl}
+                <MuiThemeProvider theme={typographyTheme}>
+                    <Typography align="center" variant="subtitle2">
+                        טוען נתונים, רק רגע...
+                    </Typography>
                 </MuiThemeProvider>
             </div>}
         </>
     )
-
-    async function getPost()
-    {
-        try 
-		{
-			await firebase.getPost(title).then(setPost);
-		} 
-		catch (error) 
-		{
-			console.log(error.message);
-		}
-    }
 
     async function editPost()
     {
@@ -299,8 +263,10 @@ function Editor(props)
         catch (error) 
         {
             console.log(error.message);
+            setError('משהו קרה!');
+            setOpenError(true);
         }
     }
 }
 
-export default withRouter(Editor);
+export default withRouter(withStyles(styles)(Editor));

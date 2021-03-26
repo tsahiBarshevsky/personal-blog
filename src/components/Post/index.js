@@ -176,7 +176,6 @@ function Post(props)
     const [open, setOpen] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    //const title = props.match.params.title.replaceAll('-', ' ');
     const title = props.match.params.title.replace(/-/g, ' ');
     const image = 'https://firebasestorage.googleapis.com/v0/b/personal-blog-a2e4f.appspot.com/o/images%2Fabout-rounded.jpg?alt=media&token=206a498a-98c0-40ba-bb00-48da4ffa5789';
     const { classes } = props;

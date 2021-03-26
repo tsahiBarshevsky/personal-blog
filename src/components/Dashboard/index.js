@@ -145,6 +145,7 @@ function Dashboard(props)
         marginLeft: 10,
     }
 
+    // table data
     const data = {
         labels: ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
         datasets: 

@@ -18,6 +18,7 @@ import Navbar from '../Navbar';
 import LargeCard from '../Cards/large';
 import BackToTop from '../Back To Top Button';
 import ScrollToTop from '../scrollToTop';
+import { Bars, useLoading } from '@agney/react-loading';
 
 const styles = (theme) => ({
     input:
@@ -78,6 +79,23 @@ const aboutTheme = createMuiTheme({
     }
 });
 
+const loadingTheme = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Varela Round", sans-serif`,
+		},
+        subtitle2:
+        {   
+            fontSize: 18,
+            color: '#159753',
+            fontWeight: 600,
+            paddingTop: 10
+        }
+	}
+});
+
 const theme = createMuiTheme({
 	typography:
 	{
@@ -123,11 +141,15 @@ function Homepage(props)
     const [sixRecentPosts, setSixRecentPosts] = useState([])
     const [categories, setCategories] = useState([]);
     const [tags, setTags] = useState([]);
+    const [loaded, setLoaded] = useState(false);
     const [email, setEmail] = useState('');
     const [open, setOpen] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
-    // const [postsByCategories, setPostsByCategories] = useState([]);
+    const { indicatorEl } = useLoading({
+        loading: true,
+        indicator: <Bars width="50" className="loading" />,
+    });
     const image = 'https://firebasestorage.googleapis.com/v0/b/personal-blog-a2e4f.appspot.com/o/images%2Fabout-rounded.jpg?alt=media&token=206a498a-98c0-40ba-bb00-48da4ffa5789';
     const { classes } = props;
 
@@ -138,6 +160,9 @@ function Homepage(props)
         firebase.categoriesDistribution('homepage').then(setCategories);
         firebase.tagsDistribution().then(setTags);
     }, []);
+
+    if (posts && sixRecentPosts && categories && tags && !loaded)
+        setTimeout(() => { setLoaded(true) }, 1500);
 
     function renderPostsByCategory(category)
     {
@@ -191,143 +216,155 @@ function Homepage(props)
     }
 
     return (
-        <div className="home-container">
-            <Helmet><title>האיש והמילה הכתובה</title></Helmet>
-            <ScrollToTop />
-            <BackToTop showBelow={110} />
-            <Navbar />
-            <Hero />
-            <div className="main-content">
-                <div className="posts-container" id="posts">
-                    <div className="title">
-                        <MuiThemeProvider theme={theme}>
-                            <Typography variant="h6">פוסטים אחרונים</Typography>
-                        </MuiThemeProvider>
-                    </div>
-                    <ScrollContainer className="posts">
-                        {sixRecentPosts.map((post, index) =>
-                            <div key={index}>
-                                <MediumCard
-                                    category={post.category}
-                                    title={post.title}
-                                    subtitle={post.subtitle}
-                                    date={post.date}
-                                    comments={post.comments} />
-                            </div>
-                        )}
-                    </ScrollContainer>
-                </div>
-                <div className="newsletter-container">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h5" gutterBottom>יש לי גם ניוזלטר! הירשמו כמנוי וקבלו מייל עדכון שבועי</Typography>
-                        <Typography variant="subtitle2">התחרטתם? תוכלו <Link className="link" to='/unsubscribe'>לבטל את המינוי</Link> בכל עת</Typography>
-                    </MuiThemeProvider>
-                    <div className="newsletter-textfield">
-                        <Input className={classes.input} 
-                            value={email}
-                            type="email"
-                            autoComplete="off"
-                            disableUnderline 
-                            placeholder="המייל שלך"
-                            startAdornment={<InputAdornment position="start" />} 
-                            onChange={e => setEmail(e.target.value)} />
-                        <IconButton className={classes.button} onClick={addSubscribe}>
-                            <NavigateBeforeRoundedIcon className="icon" />
-                        </IconButton>
-                    </div>
-                </div>
-                <div className="title" style={{marginBottom: 20}}>
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="h6">פוסטים נוספים</Typography>
-                    </MuiThemeProvider>
-                </div>
-                <div className="categories-and-tags">
-                    <div className="posts-by-categories">
-                        {categories.map((category, index) =>
-                            <div key={index}>
-                                {renderPostsByCategory(category.category)}
-                            </div>
-                        )}
-                    </div>
-                    <div className="distributions">
-                        <div className="about">
-                            <img src={image} alt="פדיחה! אמורה להיות תמונה שלי כאן :("/>
-                            <MuiThemeProvider theme={aboutTheme}>
-                                <Typography variant="subtitle1">צחי ברשבסקי</Typography>
-                                <div className="socials-container">
-                                    <div className="social-item">
-                                        <a href="https://www.facebook.com/tsahi.barshavsky/" target="_blank">
-                                            <FaFacebookF className="icon" id="facebook" />
-                                        </a>
-                                    </div>
-                                    <div className="social-item">
-                                        <a href="https://www.instagram.com/tsahi_barshavsky/" target="_blank">
-                                            <FaInstagram className="icon" id="instagram" />
-                                        </a>
-                                    </div>
-                                    <div className="social-item">
-                                        <a href="https://www.thebloggers.co.il/author/tsahib/" target="_blank">
-                                            <GiWorld className="icon" id="blog" />
-                                        </a>
-                                    </div>
-                                </div>
-                                <Typography variant="subtitle2">
-                                    היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
-                                </Typography>
+        <>
+            {loaded ? 
+            <div className="home-container">
+                <Helmet><title>האיש והמילה הכתובה</title></Helmet>
+                <ScrollToTop />
+                <BackToTop showBelow={110} />
+                <Navbar />
+                <Hero />
+                <div className="main-content">
+                    <div className="posts-container" id="posts">
+                        <div className="title">
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="h6">פוסטים אחרונים</Typography>
                             </MuiThemeProvider>
                         </div>
-                        <div className="top-categories-container">
-                            <div className="title">
-                                <MuiThemeProvider theme={theme}>
-                                    <Typography variant="body1">קטגוריות מובילות</Typography>
-                                </MuiThemeProvider>
-                            </div>
+                        <ScrollContainer className="posts">
+                            {sixRecentPosts.map((post, index) =>
+                                <div key={index}>
+                                    <MediumCard
+                                        category={post.category}
+                                        title={post.title}
+                                        subtitle={post.subtitle}
+                                        date={post.date}
+                                        comments={post.comments} />
+                                </div>
+                            )}
+                        </ScrollContainer>
+                    </div>
+                    <div className="newsletter-container">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h5" gutterBottom>יש לי גם ניוזלטר! הירשמו כמנוי וקבלו מייל עדכון שבועי</Typography>
+                            <Typography variant="subtitle2">התחרטתם? תוכלו <Link className="link" to='/unsubscribe'>לבטל את המינוי</Link> בכל עת</Typography>
+                        </MuiThemeProvider>
+                        <div className="newsletter-textfield">
+                            <Input className={classes.input} 
+                                value={email}
+                                type="email"
+                                autoComplete="off"
+                                disableUnderline 
+                                placeholder="המייל שלך"
+                                startAdornment={<InputAdornment position="start" />} 
+                                onChange={e => setEmail(e.target.value)} />
+                            <IconButton className={classes.button} onClick={addSubscribe}>
+                                <NavigateBeforeRoundedIcon className="icon" />
+                            </IconButton>
+                        </div>
+                    </div>
+                    <div className="title" style={{marginBottom: 20}}>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="h6">פוסטים נוספים</Typography>
+                        </MuiThemeProvider>
+                    </div>
+                    <div className="categories-and-tags">
+                        <div className="posts-by-categories">
                             {categories.map((category, index) =>
-                                <div className="category-container" key={index}>
-                                    <MuiThemeProvider theme={theme}>
-                                        <Link style={{textDecoration: 'none', color: 'black'}} to={{pathname: `/categories/${category.category}`}}>
-                                            <Typography variant="subtitle1">{category.category}</Typography>
-                                        </Link>
-                                        <Typography variant="subtitle1">{category.occurrences}</Typography>
-                                    </MuiThemeProvider>
+                                <div key={index}>
+                                    {renderPostsByCategory(category.category)}
                                 </div>
                             )}
                         </div>
-                        <div className="top-tags-container">
-                            <div className="title">
-                                <MuiThemeProvider theme={theme}>
-                                    <Typography variant="body1">תגיות מומלצות</Typography>
+                        <div className="distributions">
+                            <div className="about">
+                                <img src={image} alt="פדיחה! אמורה להיות תמונה שלי כאן :("/>
+                                <MuiThemeProvider theme={aboutTheme}>
+                                    <Typography variant="subtitle1">צחי ברשבסקי</Typography>
+                                    <div className="socials-container">
+                                        <div className="social-item">
+                                            <a href="https://www.facebook.com/tsahi.barshavsky/" target="_blank">
+                                                <FaFacebookF className="icon" id="facebook" />
+                                            </a>
+                                        </div>
+                                        <div className="social-item">
+                                            <a href="https://www.instagram.com/tsahi_barshavsky/" target="_blank">
+                                                <FaInstagram className="icon" id="instagram" />
+                                            </a>
+                                        </div>
+                                        <div className="social-item">
+                                            <a href="https://www.thebloggers.co.il/author/tsahib/" target="_blank">
+                                                <GiWorld className="icon" id="blog" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <Typography variant="subtitle2">
+                                        היפי בהסוואה, כותב את מה שהלב צועק ואיש אינו שומע, רודף אחרי שקיעות ומוצא בהן השראה. בואו למצוא אותי בין השורות.
+                                    </Typography>
                                 </MuiThemeProvider>
                             </div>
-                            {renderTags()}
+                            <div className="top-categories-container">
+                                <div className="title">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="body1">קטגוריות מובילות</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                                {categories.map((category, index) =>
+                                    <div className="category-container" key={index}>
+                                        <MuiThemeProvider theme={theme}>
+                                            <Link style={{textDecoration: 'none', color: 'black'}} to={{pathname: `/categories/${category.category}`}}>
+                                                <Typography variant="subtitle1">{category.category}</Typography>
+                                            </Link>
+                                            <Typography variant="subtitle1">{category.occurrences}</Typography>
+                                        </MuiThemeProvider>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="top-tags-container">
+                                <div className="title">
+                                    <MuiThemeProvider theme={theme}>
+                                        <Typography variant="body1">תגיות מומלצות</Typography>
+                                    </MuiThemeProvider>
+                                </div>
+                                {renderTags()}
+                            </div>
                         </div>
                     </div>
                 </div>
+                <Footer />
+                <Snackbar onClick={handleClose}
+                    anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                    }}
+                    open={open}
+                    autoHideDuration={4000}
+                    onClose={handleClose}
+                    message={
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="subtitle1" align="center">{snackbarMessage}</Typography>
+                        </MuiThemeProvider>}
+                />
+                <Snackbar open={openError} autoHideDuration={3500} onClose={handleClose}>
+                    <Alert onClose={handleClose} severity="error">
+                        <MuiThemeProvider theme={theme}>
+                            <Typography align="center" variant="subtitle1">
+                                {snackbarMessage}
+                            </Typography>
+                        </MuiThemeProvider>
+                    </Alert>
+                </Snackbar>
             </div>
-            <Footer />
-            <Snackbar onClick={handleClose}
-                anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'center',
-                }}
-                open={open}
-                autoHideDuration={4000}
-                onClose={handleClose}
-                message={
-                    <MuiThemeProvider theme={theme}>
-                        <Typography variant="subtitle1" align="center">{snackbarMessage}</Typography>
-                    </MuiThemeProvider>}
-            />
-            <Snackbar open={openError} autoHideDuration={3500} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    <MuiThemeProvider theme={theme}>
-                        <Typography align="center" variant="subtitle1">
-                            {snackbarMessage}
-                        </Typography>
-                    </MuiThemeProvider>
-                </Alert>
-            </Snackbar>
-        </div>
+            : 
+            <div className="full-container">
+                {indicatorEl}
+                <MuiThemeProvider theme={loadingTheme}>
+                    <Typography align="center" variant="subtitle2">
+                        רק רגע...
+                    </Typography>
+                </MuiThemeProvider>
+            </div>}
+        </>
     )
 
     async function addSubscribe()

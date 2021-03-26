@@ -5,7 +5,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 import { Helmet } from 'react-helmet';
 import Navbar from '../Navbar';
-import Footer from '../Footer';
 
 const theme = createMuiTheme({
 	typography:
@@ -31,6 +30,7 @@ export default function Category(props)
         <>
             <Navbar />
             <div className="category-and-tag-page-container">
+                
                 <Helmet><title>פוסטים בקטגוריה {category} | האיש והמילה הכתיבה</title></Helmet>
                 <div className="title">
                     <MuiThemeProvider theme={theme}>
@@ -52,7 +52,6 @@ export default function Category(props)
                     )}
                 </div>
             </div>
-            <Footer />
         </>
     )
 }
