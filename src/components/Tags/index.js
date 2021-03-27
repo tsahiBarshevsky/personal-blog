@@ -34,7 +34,7 @@ function Tags(props)
             <div className="category-and-tag-page-container">
                 <ScrollToTop />
                 <BackToTop showBelow={110} />
-                <Helmet><title>פוסטים עם את התיוג {tag} | האיש והמילה הכתיבה</title></Helmet>
+                <Helmet><title>פוסטים עם התיוג {tag} | האיש והמילה הכתיבה</title></Helmet>
                 <div className="title">
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h5">פוסטים המכילים את התיוג {tag}</Typography>
