@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
-import { Box, Button, Checkbox, FormControl, FormGroup, FormLabel, FormControlLabel, Input, Snackbar, TextField, Typography, FormHelperText } from '@material-ui/core';
+import { 
+    Box, Button, Checkbox, FormControl, FormGroup, FormLabel, 
+    FormControlLabel, Input, Snackbar, TextField, Typography, FormHelperText,
+    InputLabel, Select, MenuItem } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider, ThemeProvider, StylesProvider, jssPreset } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
@@ -32,6 +35,11 @@ const styles = () => ({
 		{
 			backgroundColor: green[300]
 		}
+    },
+    select:
+    {
+        width: 300,
+        transform: 'translateY(8%)'
     }
 });
 
@@ -65,7 +73,8 @@ function Editor(props)
     const [date, setDate] = useState(new Date());
     const [progress, setProgress] = useState(0);
     const [progress2, setProgress2] = useState(0);
-    const [credit, setCredit] = useState('');
+    const [photographer, setPhotographer] = useState('');
+    const [origin, setOrigin] = useState('');
     const [tags, setTags] = useState([]);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
@@ -128,7 +137,7 @@ function Editor(props)
                 break;
             default: setDisableText(false);
         }
-        switch(credit)
+        switch(origin)
         {
             case '':
                 setDisableCredit(true);
@@ -140,7 +149,7 @@ function Editor(props)
         else
             setDisableTags(true);
     }, [setDisableTitle, setDisableSubtitle, setDisableCategory, setDisableText, setDisableCredit, setDisableTags,
-        title, subtitle, category, text, credit, tags, errorCheck, setDisableSending]);
+        title, subtitle, category, text, origin, tags, errorCheck, setDisableSending]);
 
     if (!firebase.getCurrentUsername()) {
 		props.history.replace('/admin');
@@ -171,7 +180,7 @@ function Editor(props)
         setSubtitle('');
         setCategory('');
         setText('');
-        setCredit('');
+        setPhotographer('');
         setDate(new Date());
         const newKey = editorKey * 43;
         setEditorKey(newKey);
@@ -217,7 +226,7 @@ function Editor(props)
                                     var metadata = {
                                         customMetadata : 
                                         {
-                                            'owner': `${credit}`
+                                            'owner': `${photographer}`
                                         }
                                     }
                                     var forestRef = storageRef.child(`posts/${title}/main/main image`);
@@ -296,6 +305,10 @@ function Editor(props)
     const getTags = (tags) => 
     {
         setTags(tags);
+    }
+
+    const handleOriginChange = (event) => {
+        setOrigin(event.target.value);
     }
 
     return (
@@ -386,16 +399,34 @@ function Editor(props)
                                 labelAlignment="center" />
                             </Box>
                         : null}
-                        <FormControl margin="normal" fullWidth>
-                            <TextField label="קרדיט לתמונה ראשית" 
-                                id="main-image-credit" name="main-image-credit"
-                                variant="outlined"
-                                inputProps={{min: 0, style: { marginLeft: '20px' }}} 
-                                autoComplete="off" 
-                                value={credit} 
-                                onChange={e => setCredit(e.target.value)}
-                                className="pb" />
-                        </FormControl>
+                        <div className="wrapper pb">
+                            <FormControl margin="normal" fullWidth>
+                                <TextField label="צילום תמונה ראשית" 
+                                    id="main-image-credit" name="main-image-credit"
+                                    variant="outlined"
+                                    inputProps={{min: 0, style: { marginLeft: '20px' }}} 
+                                    autoComplete="off" 
+                                    value={photographer} 
+                                    onChange={e => setPhotographer(e.target.value)}
+                                    style={{ width: 300 }} />
+                            </FormControl>
+                            <FormControl variant="outlined" fullWidth className={classes.select}>
+                                <InputLabel>מקור</InputLabel>
+                                    <Select 
+                                        labelId="demo-simple-select-outlined-label"
+                                        id="demo-simple-select-outlined"
+                                        value={origin}
+                                        onChange={handleOriginChange}
+                                        label="מקור">
+                                            <MenuItem value=""></MenuItem>
+                                            <MenuItem value='Pexels'>Pexels</MenuItem>
+                                            <MenuItem value='Unsplash'>Unsplash</MenuItem>
+                                            <MenuItem value='Pixabay'>Pixabay</MenuItem>
+                                            <MenuItem value='אלבום פרטי'>אלבום פרטי</MenuItem>
+                                            <MenuItem value='צחי ברשבסקי'>צחי ברשבסקי</MenuItem>
+                                    </Select>
+                            </FormControl>
+                        </div>
                     </MuiThemeProvider>
                 </StylesProvider>
             </form>
@@ -515,7 +546,7 @@ function Editor(props)
                     />
                     <FormControlLabel
                         control={<Checkbox checked={checkTags}  onChange={handleChange} name="checkTags" color="primary" />}
-                        label="5 תגיות"
+                        label="1-5 תגיות"
                         className="checkBox"
                         color="primary"
                         disabled={disableTags}
@@ -577,6 +608,7 @@ function Editor(props)
                         .catch((error) => { console.log(error.message); });
                     });
                 });
+                var credit = photographer !== '' ? `${photographer} - ${origin}`: origin;
                 await firebase.addPost(title, subtitle, date, category, text, credit, tags);
                 setMessage("הפוסט נוסף בהצלחה");
                 setOpenSuccess(true);

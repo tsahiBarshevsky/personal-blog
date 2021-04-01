@@ -259,7 +259,7 @@ function Dashboard(props)
         }
         return (
             <div style={{lineHeight: 1.2}}>
-                {`${maxCategory}`}
+                {`${maxCategory} - ${maxOccurrences}`}
             </div>
         )
     }

@@ -153,17 +153,6 @@ class Firebase
         return months;
     }
 
-    // async getPostsByCategories(category)
-    // {
-    //     var posts = [], ret = [];
-    //     const snapshot = await app.firestore().collection('posts').get();
-    //     snapshot.docs.map(doc => 
-    //     {
-    //         if (doc.data().category === category)
-    //             posts.push(doc.data())
-    //     });
-    // }
-
     async getAllCategories()
     {
         var posts = [], ret = [];
@@ -199,7 +188,7 @@ class Firebase
         if (origin === 'homepage')
         {
             for (var i=0; i<a.length; i++)
-                //if (b[i] >= 4)
+                if (b[i] >= 3)
                     ret.push({category: a[i], occurrences: b[i]});
         }
         else
@@ -232,7 +221,7 @@ class Firebase
             prev = tags[i];
         }
         for (var i=0; i<a.length; i++)
-            if (b[i] >= 1)
+            if (b[i] >= 2)
                 ret.push({tag: a[i], occurrences: b[i]});
         return ret.sort((a,b) => (a.occurrences < b.occurrences) ? 1 : ((b.occurrences < a.occurrences) ? -1 : 0));
     }
