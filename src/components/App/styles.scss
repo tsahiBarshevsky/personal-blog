@@ -1401,8 +1401,6 @@ form {
     .post {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
       white-space: pre-wrap;
       padding: 60px 100px 25px; //top sides bottom
       font-size: 1.2rem;
@@ -1416,17 +1414,28 @@ form {
         display: flex;
         flex-direction: column;
 
-        .image {
+        .image-container {
           width: 500px;
-          padding-bottom: 6px;
+          display: flex;
+          flex-direction: column;
           align-self: center;
 
           @media screen and (max-width: $xs) {
-            padding: 0 0 6px;
-            display: block;
-            margin: 0 auto;
-            max-height: 100%;
-            max-width: 100%;
+            width: 100%;
+          }
+
+          .image {
+            width: 500px;
+            padding-bottom: 6px;
+            align-self: center;
+
+            @media screen and (max-width: $xs) {
+              padding: 0 0 6px;
+              display: block;
+              margin: 0 auto;
+              max-height: 100%;
+              max-width: 100%;
+            }
           }
         }
       }

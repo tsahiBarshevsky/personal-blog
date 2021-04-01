@@ -283,7 +283,7 @@ function Post(props)
                     : 
                         <div className="paragraphs">
                             {Object.keys(images).length >= 1 ?
-                            <>
+                            <div className="image-container">
                                 <img src={images[i++].link} alt="תמונה" className="image" />
                                 <MuiThemeProvider theme={theme}>
                                     <Typography variant="caption">
@@ -291,7 +291,7 @@ function Post(props)
                                     </Typography>
                                 </MuiThemeProvider>
                                 <br />
-                            </> : null }
+                            </div> : null }
                         </div>
                     }
                 </div>
